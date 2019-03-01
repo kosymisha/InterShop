@@ -17,13 +17,13 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(Map<String, Object> model) {
-        model.put("announcement", announcementRepo.findAll());
+        model.put("announcements", announcementRepo.findAll());
         return "main";
     }
 
     @GetMapping("/")
     public String slashMain (Map<String, Object> model) {
-        model.put("announcement", announcementRepo.findAll());
+        model.put("announcements", announcementRepo.findAll());
         return "main";
     }
 

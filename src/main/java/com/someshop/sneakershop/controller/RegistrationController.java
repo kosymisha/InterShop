@@ -6,6 +6,7 @@ import com.someshop.sneakershop.repository.AnnouncementRepo;
 import com.someshop.sneakershop.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -19,15 +20,16 @@ public class RegistrationController {
     private UserRepo userRepo;
 
     @GetMapping("/registration")
-    public String registration() {
+    public String registration(Model model) {
+        model.addAttribute("message", "Add new user.");
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser (Map<String, Object> model, User user) {
+    public String addUser (Model model, User user) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
         if (userFromDb != null) {
-            model.put("message", "User exists.");
+            model.addAttribute("message", "User exists.");
             return "registration";
         }
         user.setActive(true);
