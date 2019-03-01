@@ -23,3 +23,5 @@ public class Application {
         sneakerRepo.save(sneaker1);
         announcementRepo.save(announcement1);
 * */
+
+
