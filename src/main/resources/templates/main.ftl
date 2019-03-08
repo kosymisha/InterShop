@@ -5,7 +5,16 @@
 <div>
     <@l.logout />
 </div>
+<div>
+    <a href="/login">Click to login.</a>
+</div>
+<br/><br/><br/><br/>
+<form action="/main" method="get">
+    <input type="text" placeholder="input name of product..." />
+    <input type="submit" value="Search" />
+</form>
 <div>Announcements:</div>
+
 <#list announcements as announcement>
     <div>
         <span>${announcement.id}</span>
@@ -17,5 +26,13 @@
     </div>
 <#else>
 No announcements.
+</#list>
+Ebay results:
+<#list announcementsEbay as announcementEbay>
+<div>
+    <span>${announcementEbay.title}</span>
+</div>
+    <#else>
+No announcements from Ebay.
 </#list>
 </@c.page>
