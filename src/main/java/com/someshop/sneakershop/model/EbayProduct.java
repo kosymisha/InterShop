@@ -1,20 +1,7 @@
 package com.someshop.sneakershop.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-
-import javax.persistence.*;
-
-@Data
-@AllArgsConstructor
-@Entity
-
 public class EbayProduct {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String title;
     private String categoryName;
     private String photoURL;
@@ -32,14 +19,6 @@ public class EbayProduct {
     }
 
     public EbayProduct() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;

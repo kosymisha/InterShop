@@ -10,7 +10,7 @@
 </div>
 <br/><br/><br/><br/>
 <form action="/main" method="get">
-    <input type="text" placeholder="input name of product..." />
+    <input type="text" name="keyword" placeholder="input name of product..." />
     <input type="submit" value="Search" />
 </form>
 <div>Announcements:</div>
@@ -30,7 +30,12 @@ No announcements.
 Ebay results:
 <#list announcementsEbay as announcementEbay>
 <div>
-    <span>${announcementEbay.title}</span>
+    <br/>
+    <img src="${announcementEbay.photoURL}" /> <br/>
+    <a href="${announcementEbay.productURL}">${announcementEbay.title}</a> <br/>
+    <i>${announcementEbay.categoryName}</i> <br/>
+    <i>${announcementEbay.currency} <b>${announcementEbay.price}</b></i> <br/>
+    <br/>
 </div>
     <#else>
 No announcements from Ebay.
