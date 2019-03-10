@@ -27,11 +27,12 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser (Model model, User user) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
+        User userFromDb = userRepo.findByEmail(user.getEmail());
         if (userFromDb != null) {
             model.addAttribute("message", "User exists.");
             return "registration";
         }
+        //user.setFirstName();
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepo.save(user);

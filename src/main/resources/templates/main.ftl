@@ -6,6 +6,9 @@
     <@l.logout />
 </div>
 <div>
+    <a href="/login/google">login with google</a>
+</div>
+<div>
     <a href="/login">Click to login.</a>
 </div>
 <br/><br/><br/><br/>

@@ -3,6 +3,19 @@
 
 <@c.page>
 ${message}
-<@l.login "/registration" />
+
+<form action="/registration" method="post">
+    <div><label>First Name: <input type="text" name="firstName" /></label></div>
+
+    <div><label>Last Name: <input type="text" name="lastName" /></label></div>
+
+    <div><label>Email: <input type="text" name="email" /></label></div>
+
+    <div><label>Password: <input type="password" name="password" /></label></div>
+
+    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+
+    <div><input type="submit" value="Login" /></div>
+</form>
 
 </@c.page>

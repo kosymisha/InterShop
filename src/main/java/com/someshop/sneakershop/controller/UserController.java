@@ -35,9 +35,9 @@ public class UserController {
 
     @PostMapping
     public String userSave(@RequestParam("userId") User user,
-                           @RequestParam String username,
+                           @RequestParam String email,
                            @RequestParam Map<String, String> form) {
-        user.setUsername(username);
+        //user.setUsername(username);
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)

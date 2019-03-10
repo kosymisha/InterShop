@@ -27,22 +27,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration", "/main").permitAll()
                 .anyRequest().authenticated()
                 .and()
+
                 .formLogin()
                 .loginPage("/login")
                 .permitAll().defaultSuccessUrl("/")
+                .usernameParameter("email").passwordParameter("password")
                 .and()
+
                 .logout().logoutSuccessUrl("/")
                 .permitAll();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
+        auth
+                .jdbcAuthentication()
                 .dataSource(dataSource)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())//;
+                .passwordEncoder(NoOpPasswordEncoder.getInstance())
 
-                .usersByUsernameQuery("select username, password, active from users where username=?")
-                .authoritiesByUsernameQuery("select username, roles from  users inner join user_role  on users.id = user_role.user_id where users.username=?");
+                .usersByUsernameQuery("select email, password, active from users where email=?")
+                .authoritiesByUsernameQuery("select email, roles from  users inner join user_role  on users.id = user_role.user_id where users.email=?");
 
     }
 }
