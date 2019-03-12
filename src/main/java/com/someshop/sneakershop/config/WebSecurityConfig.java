@@ -1,8 +1,8 @@
 package com.someshop.sneakershop.config;
 
 
+import com.someshop.sneakershop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -11,15 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
-    @Qualifier("dataSource")
-    private DataSource dataSource;
+    private UserService userService;
+
     @Override
     protected void configure (HttpSecurity http) throws Exception {
         http
@@ -30,23 +29,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .formLogin()
                 .loginPage("/login")
-                .permitAll().defaultSuccessUrl("/")
+                .permitAll().defaultSuccessUrl("/main")
                 .usernameParameter("email").passwordParameter("password")
                 .and()
 
-                .logout().logoutSuccessUrl("/")
+                .logout().logoutSuccessUrl("/main")
                 .permitAll();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-
-                .usersByUsernameQuery("select email, password, active from users where email=?")
-                .authoritiesByUsernameQuery("select email, roles from  users inner join user_role  on users.id = user_role.user_id where users.email=?");
-
+                .userDetailsService(userService)
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 }

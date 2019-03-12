@@ -1,9 +1,8 @@
 <#import "parts/common.ftl" as c>
 
-<@c.page>
+<@c.page "User Manager">
 User editor.
 <form action="/user" method="post">
-    <input type="text" value="${user.email}" name="email" />
     <#list roles as role>
         <div>
             <label><input type="checkbox" name="${role}" ${user.roles?seq_contains(role)?string("checked", "")} />${role}</label>
