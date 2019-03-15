@@ -1,7 +1,7 @@
 <#import "parts/common.ftl" as c>
 
-<@c.page "Profile">
-<form action="/profile" method="post">
+<@c.page "Options">
+<form action="/profiles/current/options" method="post">
     <div><input type="text" name="firstname" value="${user.firstName}" /></div>
     <div><input type="text" name="lastname" value="${user.lastName}" /></div>
     <div><input type="text" name="email" value="${user.email}" /></div>

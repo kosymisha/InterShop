@@ -1,8 +1,7 @@
 package com.someshop.sneakershop.service;
 
-import com.someshop.sneakershop.model.EbayProduct;
+import com.someshop.sneakershop.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
@@ -25,7 +24,7 @@ public class EbayService {
             "&paginationInput.entriesPerPage=15";
 
     public List getItems(String keyword, String minPrice, String maxPrice, String categoryId ) {
-        List<EbayProduct> ebayProductList = new LinkedList<EbayProduct>();
+        List<Product> ebayProductList = new LinkedList<Product>();
         try {
 
             if (keyword != "" && keyword != null) { urlPattern += "&keywords=" + keyword.replace(" ", "-"); }

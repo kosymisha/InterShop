@@ -1,6 +1,6 @@
 package com.someshop.sneakershop.service;
 
-import com.someshop.sneakershop.model.EbayProduct;
+import com.someshop.sneakershop.model.Product;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class XmlRequestService {
     public List getItemsByUrl(URL url) {
-        List<EbayProduct> ebayProductList = new LinkedList<EbayProduct>();
+        List<Product> ebayProductList = new LinkedList<Product>();
         try{
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -55,13 +55,14 @@ public class XmlRequestService {
                     Node node = nList.item(temp);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element element = (Element) node;
-                        ebayProductList.add(new EbayProduct(
+                        ebayProductList.add(new Product(
                                 element.getElementsByTagName("title").item(0).getTextContent(),
                                 element.getElementsByTagName("primaryCategory").item(0).getLastChild().getTextContent(),
                                 element.getElementsByTagName("galleryURL").item(0).getTextContent(),
                                 element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
-                                element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
-                                element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent()
+                                //element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
+                                //new Double(element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent()),
+                                "from ebay.com"
                         ));
                     }
                 }

@@ -1,6 +1,6 @@
 <#import "parts/common.ftl" as c>
 
-<@c.page "User Manager">
+<@c.page "Profile Manager">
 List of users:
 <table>
     <thead>
@@ -15,7 +15,7 @@ List of users:
     <tr>
         <td>${user.email}</td>
         <td><#list user.roles as role>${role}<#sep>, </#list></td>
-        <td><a href="/user/${user.id}">Edit</a></td>
+        <td><a href="/profiles/${user.id}">Edit</a></td>
     </tr>
 </#list>
     </tbody>

@@ -1,24 +1,62 @@
 package com.someshop.sneakershop.model;
 
-public class EbayProduct {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "product")
+public class Product {
+    /*
+    * id
+    * title
+    * category_name
+    * photo_url
+    * product_url
+    * description
+    * */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column
     private String title;
-    private String categoryName;
-    private String photoURL;
-    private String productURL;
-    private String currency;
-    private String price;
 
-    public EbayProduct(String title, String categoryName, String photoURL, String productURL, String currency, String price) {
+    @Column(name = "category_name")
+    private String categoryName;
+
+    @Column(name = "photo_url")
+    private String photoURL;
+
+    @Column(name = "product_url")
+    private String productURL;
+
+    @Column
+    private String description;
+
+    public Product() {}
+
+    public Product(String title, String categoryName, String photoURL, String productURL, String description) {
         this.title = title;
         this.categoryName = categoryName;
         this.photoURL = photoURL;
         this.productURL = productURL;
-        this.currency = currency;
-        this.price = price;
+        this.description = description;
     }
 
-    public EbayProduct() {}
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -50,21 +88,5 @@ public class EbayProduct {
 
     public void setProductURL(String productURL) {
         this.productURL = productURL;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 }

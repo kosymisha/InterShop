@@ -6,29 +6,47 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "announcements")
+@Table(name = "announcement")
 public class Announcement implements Serializable {
+    /*
+    * id         -
+    * shop_id
+    * product_id -
+    * views      -
+    * price      -
+    * currency   -
+    * */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column
-    private Float price;
+    private String currency;
+
+    @Column
+    private Double price;
 
     @Column
     private Integer views;
 
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "sneaker_id", nullable = false)
-    private Sneaker sneaker;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
 
     public Announcement () {
 
     }
 
-    public Announcement(Float price, Integer views) {
+    public Announcement(String currency, Double price, Integer views, Product product, Shop shop) {
+        this.currency = currency;
         this.price = price;
         this.views = views;
+        this.product = product;
+        this.shop = shop;
     }
 
     public Long getId() {
@@ -39,14 +57,6 @@ public class Announcement implements Serializable {
         this.id = id;
     }
 
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
     public Integer getViews() {
         return views;
     }
@@ -55,11 +65,35 @@ public class Announcement implements Serializable {
         this.views = views;
     }
 
-    public Sneaker getSneaker() {
-        return sneaker;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setSneaker(Sneaker sneaker) {
-        this.sneaker = sneaker;
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 }
