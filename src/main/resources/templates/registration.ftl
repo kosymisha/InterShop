@@ -13,6 +13,11 @@ ${message}
 
     <div><label>Password: <input type="password" name="password" /></label></div>
 
+    <select name="role">
+        <option value="USER">USER</option>
+        <option value="ADMIN">ADMIN</option>
+    </select>
+
     <input type="hidden" name="_csrf" value="${_csrf.token}" />
 
     <div><input type="submit" value="Ok" /></div>

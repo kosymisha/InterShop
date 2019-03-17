@@ -1,7 +1,7 @@
 package com.someshop.sneakershop.controller;
 
 import com.someshop.sneakershop.model.User;
-import com.someshop.sneakershop.repository.AnnouncementRepo;
+import com.someshop.sneakershop.repository.AnnouncementRepository;
 import com.someshop.sneakershop.service.EbayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class MainController {
 
     @Autowired
-    private AnnouncementRepo announcementRepo;
+    private AnnouncementRepository announcementRepository;
 
     @Autowired
     private EbayService ebayService;
@@ -26,10 +26,9 @@ public class MainController {
                        @RequestParam(name = "minPrice", required = false) String minPrice,
                        @RequestParam(name = "maxPrice", required = false) String maxPrice,
                        @RequestParam(name = "categoryId", required = false) String categoryId,
-                       @AuthenticationPrincipal User currentUser
-    ) throws Exception {
+                       @AuthenticationPrincipal User currentUser) throws Exception {
         model.put("currentUser", currentUser);
-        model.put("announcements", announcementRepo.findAll());
+        model.put("announcements", announcementRepository.findAll());
         model.put("announcementsEbay", ebayService.getItems(keyword, minPrice, maxPrice, categoryId));
 
         return "main";

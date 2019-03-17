@@ -1,6 +1,9 @@
 package com.someshop.sneakershop.service;
 
+import com.someshop.sneakershop.model.Announcement;
+import com.someshop.sneakershop.model.Category;
 import com.someshop.sneakershop.model.Product;
+import com.someshop.sneakershop.model.Shop;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,7 +24,7 @@ import java.util.List;
 @Service
 public class XmlRequestService {
     public List getItemsByUrl(URL url) {
-        List<Product> ebayProductList = new LinkedList<Product>();
+        List<Announcement> announcements = new LinkedList<Announcement>();
         try{
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -55,19 +58,23 @@ public class XmlRequestService {
                     Node node = nList.item(temp);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element element = (Element) node;
-                        ebayProductList.add(new Product(
-                                element.getElementsByTagName("title").item(0).getTextContent(),
-                                element.getElementsByTagName("primaryCategory").item(0).getLastChild().getTextContent(),
-                                element.getElementsByTagName("galleryURL").item(0).getTextContent(),
-                                element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
-                                //element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
-                                //new Double(element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent()),
-                                "from ebay.com"
+                        announcements.add(new Announcement(
+                                element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
+                                new Double(element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent()),
+                                1, //views
+                                new Product(
+                                        element.getElementsByTagName("title").item(0).getTextContent(),
+                                        new Category(new Long(element.getElementsByTagName("primaryCategory").item(0).getFirstChild().getTextContent()),
+                                                element.getElementsByTagName("primaryCategory").item(0).getLastChild().getTextContent()),
+                                        element.getElementsByTagName("galleryURL").item(0).getTextContent(),
+                                        element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
+                                        "For more information click in URL."),
+                                new Shop()
                         ));
                     }
                 }
             }
         } catch (Exception e) { e.printStackTrace(); }
-        return ebayProductList;
+        return announcements;
     }
 }

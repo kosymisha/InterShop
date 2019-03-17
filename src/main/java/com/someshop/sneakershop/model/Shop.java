@@ -59,7 +59,6 @@ public class Shop {
         this.url = url;
     }
 
-
     public User getOwner() {
         return owner;
     }

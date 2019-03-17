@@ -1,6 +1,6 @@
 <#import "parts/common.ftl" as c>
 
-<@c.page "My profile">
+<@c.page "${user.firstName} ${user.lastName}">
 
 <div><label>First Name: </label>${user.firstName}</div>
 <div><label>Last Name: </label>${user.lastName}</div>

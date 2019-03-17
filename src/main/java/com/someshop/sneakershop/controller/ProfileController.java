@@ -2,7 +2,7 @@ package com.someshop.sneakershop.controller;
 
 import com.someshop.sneakershop.model.Role;
 import com.someshop.sneakershop.model.User;
-import com.someshop.sneakershop.repository.UserRepo;
+import com.someshop.sneakershop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,20 +22,19 @@ import java.util.stream.Collectors;
 public class ProfileController {
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     @GetMapping("/profiles")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String profiles(Model model) {
-        model.addAttribute("users", userRepo.findAll());
-        return "profilesList";
+        model.addAttribute("users", userRepository.findAll());
+        return "profiles";
     }
 
     @GetMapping("/profiles/{user}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String profilesUser(@PathVariable User user,
-                              Map<String, Object> model) {
-        model.put("user", user);
+    public String profilesUser(@PathVariable User user, Model model) {
+        model.addAttribute("user", user);
         return "profilesCurrent";
     }
 
@@ -68,7 +67,7 @@ public class ProfileController {
                               @RequestParam("email") String email,
                               Map<String, Object> model,
                               @AuthenticationPrincipal User user) {
-        User userFromDb = userRepo.findByEmail(email);
+        User userFromDb = userRepository.findByEmail(email);
         if (userFromDb != null){
             if(userFromDb.getId() != user.getId()) {
                 //model.put("messageEmail", "User exists.");
@@ -79,7 +78,7 @@ public class ProfileController {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        userRepo.save(user);
+        userRepository.save(user);
         //model.put("message", "User saved successfully.");
         model.put("user", user);
         return "profilesCurrent";
@@ -94,19 +93,21 @@ public class ProfileController {
                 .collect(Collectors.toSet());
 
         user.getRoles().clear();
-
+        /*
         for (String key : form.keySet()) {
             if (roles.contains(key)){
                 user.getRoles().add(Role.valueOf(key));
             }
+        }*/
+        for (String value : form.values()){
+            if (roles.contains(value)){
+                user.getRoles().add(Role.valueOf(value));
+            }
         }
 
-        userRepo.save(user);
+        userRepository.save(user);
         model.put("user", user);
         model.put("roles", Role.values());
         return "/profilesEdit";
     }
-
-
-
 }

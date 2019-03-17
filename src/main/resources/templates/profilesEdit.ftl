@@ -3,11 +3,11 @@
 <@c.page "User Manager">
 User editor.
 <form action="/profiles/${user.id}/options" method="post">
-    <#list roles as role>
-        <div>
-            <label><input type="checkbox" name="${role}" ${user.roles?seq_contains(role)?string("checked", "")} />${role}</label>
-        </div>
-    </#list>
+    <select name="combo">
+        <#list roles as role>
+            <option value="${role}">${role}</option>
+        </#list>
+    </select>
     <input type="hidden" value="${user.id}" name="userId">
     <input type="hidden" value="${_csrf.token}" name="_csrf">
     <button type="submit" >Save</button>

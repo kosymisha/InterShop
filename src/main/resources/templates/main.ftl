@@ -22,26 +22,24 @@
     <input type="submit" value="Search" />
 </form>
 <div>Announcements:</div>
-
-<#list announcements as announcement>
-    <div>
-        <span>${announcement.id}</span>
-        <i>${announcement.price}</i>
-        <b>${announcement.views}</b>
-        <i>${announcement.sneaker.getCorporation()}</i>
-        <i>${announcement.sneaker.getModel()}</i>
-        <i>${announcement.sneaker.getColor()}</i>
-    </div>
-<#else>
-No announcements.
-</#list>
-Ebay results:
+    <#list announcements as announcement>
+        <div>
+            <br/>
+            <img src="D://pholder.png" /> <br/>
+            <a href="${announcement.product.productURL}">${announcement.product.title}</a> <br/>
+            <i>${announcement.product.category.categoryName}</i> <br/>
+            <i>${announcement.currency} <b>${announcement.price}</b></i> <br/>
+            <br/>
+        </div>
+    <#else>
+    No announcements.
+    </#list>
 <#list announcementsEbay as announcementEbay>
 <div>
     <br/>
-    <img src="${announcementEbay.photoURL}" /> <br/>
-    <a href="${announcementEbay.productURL}">${announcementEbay.title}</a> <br/>
-    <i>${announcementEbay.categoryName}</i> <br/>
+    <img src="${announcementEbay.product.photoURL}" /> <br/>
+    <a href="${announcementEbay.product.productURL}">${announcementEbay.product.title}</a> <br/>
+    <i>${announcementEbay.product.category.categoryName}</i> <br/>
     <i>${announcementEbay.currency} <b>${announcementEbay.price}</b></i> <br/>
     <br/>
 </div>
