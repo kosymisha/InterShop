@@ -62,12 +62,13 @@ public class XmlRequestService {
                                 element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
                                 new Double(element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent()),
                                 1, //views
+                                element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
                                 new Product(
                                         element.getElementsByTagName("title").item(0).getTextContent(),
                                         new Category(new Long(element.getElementsByTagName("primaryCategory").item(0).getFirstChild().getTextContent()),
                                                 element.getElementsByTagName("primaryCategory").item(0).getLastChild().getTextContent()),
                                         element.getElementsByTagName("galleryURL").item(0).getTextContent(),
-                                        element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
+
                                         "For more information click in URL."),
                                 new Shop()
                         ));

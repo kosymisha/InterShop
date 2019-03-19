@@ -1,4 +1,4 @@
-<#import "parts/common.ftl" as c>
+<#import "../parts/common.ftl" as c>
 
 <@c.page "${shop.nameShop}">
 <div><label>Name: </label>${shop.nameShop}</div>

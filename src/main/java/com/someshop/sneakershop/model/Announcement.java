@@ -29,6 +29,9 @@ public class Announcement implements Serializable {
     @Column
     private Integer views;
 
+    @Column(name = "product_url")
+    private String productURL;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
@@ -41,10 +44,11 @@ public class Announcement implements Serializable {
 
     }
 
-    public Announcement(String currency, Double price, Integer views, Product product, Shop shop) {
+    public Announcement(String currency, Double price, Integer views, String productURL, Product product, Shop shop) {
         this.currency = currency;
         this.price = price;
         this.views = views;
+        this.productURL = productURL;
         this.product = product;
         this.shop = shop;
     }
@@ -95,5 +99,13 @@ public class Announcement implements Serializable {
 
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    public String getProductURL() {
+        return productURL;
+    }
+
+    public void setProductURL(String productURL) {
+        this.productURL = productURL;
     }
 }

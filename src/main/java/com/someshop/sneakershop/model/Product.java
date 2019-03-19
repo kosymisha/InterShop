@@ -27,19 +27,15 @@ public class Product {
     @Column(name = "photo_url")
     private String photoURL;
 
-    @Column(name = "product_url")
-    private String productURL;
-
     @Column
     private String description;
 
     public Product() {}
 
-    public Product(String title, Category category, String photoURL, String productURL, String description) {
+    public Product(String title, Category category, String photoURL, String description) {
         this.title = title;
         this.category = category;
         this.photoURL = photoURL;
-        this.productURL = productURL;
         this.description = description;
     }
 
@@ -73,14 +69,6 @@ public class Product {
 
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
-    }
-
-    public String getProductURL() {
-        return productURL;
-    }
-
-    public void setProductURL(String productURL) {
-        this.productURL = productURL;
     }
 
     public Category getCategory() {
