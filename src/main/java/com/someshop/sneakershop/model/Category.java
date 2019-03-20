@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class Category {
     @Id
     private Long id;
-    @Column(name = "category_name")
+    @Column(name = "category_name", unique = true)
     private String categoryName;
 
     public Category() {

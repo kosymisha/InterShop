@@ -3,6 +3,7 @@ package com.someshop.sneakershop.controller;
 import com.someshop.sneakershop.model.Role;
 import com.someshop.sneakershop.model.User;
 import com.someshop.sneakershop.repository.UserRepository;
+import com.someshop.sneakershop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,7 @@ import java.util.Collections;
 public class RegistrationController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -26,14 +27,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser (Model model, User user, @RequestParam("role") String role) {
-        User userFromDb = userRepository.findByEmail(user.getEmail());
-        if (userFromDb != null) {
-            model.addAttribute("message", "User exists.");
-            return "registration";
-        }
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.valueOf(role)));
-        userRepository.save(user);
+        model.addAttribute("message", userService.create(user, role));
         return "redirect:/login";
     }
 

@@ -1,12 +1,12 @@
 package com.someshop.sneakershop.controller;
 
-import com.someshop.sneakershop.model.*;
+import com.someshop.sneakershop.model.Announcement;
+import com.someshop.sneakershop.model.Shop;
+import com.someshop.sneakershop.model.User;
 import com.someshop.sneakershop.repository.AnnouncementRepository;
-import com.someshop.sneakershop.repository.CategoryRepository;
-import com.someshop.sneakershop.repository.ProductRepository;
 import com.someshop.sneakershop.repository.ShopRepository;
+import com.someshop.sneakershop.service.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,33 +16,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.Map;
 
 @Controller
 public class AnnouncementController {
 
-    @Value("${upload.path}")
-    private String uploadPath;
-
     @Autowired
-    private AnnouncementRepository announcementRepository;
+    private AnnouncementService announcementService;
 
     @Autowired
     private ShopRepository shopRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
     @GetMapping("/announcements")
     public String announcements (Model model, @RequestParam(name = "shop", required = false) Shop shop,
                                  @AuthenticationPrincipal User user) {
-        if(shop != null) model.addAttribute("announcements", announcementRepository.findByShop(shop));
-        else model.addAttribute("announcements", announcementRepository.findAllOrderByOwner(user));
+        model.addAttribute("announcements", announcementService.orderByShop(shop, user));
         model.addAttribute("user", user);
         return "announcement/announcements";
     }
@@ -62,31 +51,9 @@ public class AnnouncementController {
 
     @PostMapping("/announcements")
     public String announcementCreate(
-            @AuthenticationPrincipal User user,
-            @RequestParam(name = "category") String category,
-            @RequestParam(name = "title") String title,
-            @RequestParam(name = "product_url") String product_url,
-            @RequestParam(name = "description") String description,
-            @RequestParam(name = "price") String price,
-            @RequestParam(name = "shop") String shop,
+            @RequestParam Map<String, String> form,
             @RequestParam("photo_url") MultipartFile file) throws IOException {
-
-        Product product = new Product(title, categoryRepository.findByCategoryName(category), "temp", description);
-
-        if(file != null){
-            File uploadDir = new File(uploadPath);
-            if(!uploadDir.exists()){
-                uploadDir.mkdir();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename();
-            file.transferTo(new File(uploadPath + "/" + resultFileName));
-            product.setPhotoURL(resultFileName);
-        }
-        productRepository.save(product);
-        Announcement announcement = new Announcement("USD", new Double(price), 0,
-                "www.com", product, shopRepository.findByNameShop(shop));
-        announcementRepository.save(announcement);
+        announcementService.create(form, file);
         return "announcement/announcementCreate";
     }
 }

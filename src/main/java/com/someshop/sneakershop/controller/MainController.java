@@ -30,7 +30,6 @@ public class MainController {
         model.put("currentUser", currentUser);
         model.put("announcements", announcementRepository.findAll());
         model.put("announcementsEbay", ebayService.getItems(keyword, minPrice, maxPrice, categoryId));
-
         return "main";
     }
 

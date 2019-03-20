@@ -15,10 +15,10 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name_shop")
+    @Column(name = "name_shop", unique = true)
     private String nameShop;
 
-    @Column
+    @Column(unique = true)
     private String url;
 
     @ManyToOne(fetch = FetchType.EAGER)

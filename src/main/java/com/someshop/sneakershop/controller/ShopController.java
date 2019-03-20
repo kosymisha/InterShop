@@ -4,6 +4,8 @@ import com.someshop.sneakershop.model.Role;
 import com.someshop.sneakershop.model.Shop;
 import com.someshop.sneakershop.model.User;
 import com.someshop.sneakershop.repository.ShopRepository;
+import com.someshop.sneakershop.service.ShopService;
+import com.someshop.sneakershop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,9 @@ public class ShopController {
 
     @Autowired
     private ShopRepository shopRepository;
+
+    @Autowired
+    private ShopService shopService;
 
     @GetMapping("/shops")
     public String shops(@AuthenticationPrincipal User user, Model model) {
@@ -32,13 +37,9 @@ public class ShopController {
 
     @GetMapping("/shops/{shop}/delete")
     public String deleteShop (@PathVariable Shop shop, @AuthenticationPrincipal User user, Model model) {
-        if (user.getRoles().contains(Role.ADMIN) || user.getId() == shop.getOwner().getId()){
-            shopRepository.delete(shop);
-        }
+        shopService.delete(shop, user);
         model.addAttribute("shopList", shopRepository.findAll());
         model.addAttribute("user", user);
         return "shop/shops";
     }
-
-
 }

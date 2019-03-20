@@ -2,8 +2,6 @@
 <#import "parts/login.ftl" as l>
 
 <@c.page "Registration">
-${message}
-
 <form action="/registration" method="post">
     <div><label>First Name: <input type="text" name="firstName" /></label></div>
 
