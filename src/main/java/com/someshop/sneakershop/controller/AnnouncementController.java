@@ -1,11 +1,14 @@
 package com.someshop.sneakershop.controller;
 
 import com.someshop.sneakershop.model.Announcement;
+import com.someshop.sneakershop.model.Comment;
 import com.someshop.sneakershop.model.Shop;
 import com.someshop.sneakershop.model.User;
 import com.someshop.sneakershop.repository.AnnouncementRepository;
+import com.someshop.sneakershop.repository.CommentRepository;
 import com.someshop.sneakershop.repository.ShopRepository;
 import com.someshop.sneakershop.service.AnnouncementService;
+import com.someshop.sneakershop.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,9 @@ public class AnnouncementController {
     @Autowired
     private ShopRepository shopRepository;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping("/announcements")
     public String announcements (Model model, @RequestParam(name = "shop", required = false) Shop shop,
                                  @AuthenticationPrincipal User user) {
@@ -40,6 +46,8 @@ public class AnnouncementController {
     public String announcement (Model model, @PathVariable Announcement announcement,
                                 @AuthenticationPrincipal User user){
         model.addAttribute("announcement", announcement);
+        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
+        model.addAttribute("user", user);
         return "announcement/announcement";
     }
 
@@ -55,5 +63,27 @@ public class AnnouncementController {
             @RequestParam("photo_url") MultipartFile file) throws IOException {
         announcementService.create(form, file);
         return "announcement/announcementCreate";
+    }
+
+    @PostMapping("/announcements/{announcement}/comments/create")
+    public String commentCreate (Model model, @AuthenticationPrincipal User user,
+                                 @PathVariable Announcement announcement,
+                                 @RequestParam("commentBox") String message) {
+        commentService.createInAnnouncement(user, message, announcement);
+        model.addAttribute("announcement", announcement);
+        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
+        model.addAttribute("user", user);
+        return "announcement/announcement";
+    }
+
+    @GetMapping("/announcements/{announcement}/comments/{comment}/delete")
+    public String deleteComment (@AuthenticationPrincipal User user,
+                                 @PathVariable Comment comment, Model model,
+                                 @PathVariable Announcement announcement) {
+        commentService.delete(comment);
+        model.addAttribute("announcement", announcement);
+        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
+        model.addAttribute("user", user);
+        return "announcement/announcement";
     }
 }

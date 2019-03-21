@@ -1,22 +1,23 @@
 package com.someshop.sneakershop.model;
 
+import com.someshop.sneakershop.service.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import javax.validation.constraints.Null;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Table(name = "comment")
 public class Comment {
-    /*
-    * id
-    * announcement_id
-    * shop_id
-    * user_id
-    * message
-    * */
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "date")
+    private Date date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shop_id")
@@ -36,12 +37,28 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Long id, Shop shop, Announcement announcement, User author, String message) {
-        this.id = id;
-        this.shop = shop;
+    public Comment(Announcement announcement, User author, String message) {
+        this.shop = null;
         this.announcement = announcement;
         this.author = author;
         this.message = message;
+        this.date = new Date();
+    }
+
+    public Comment(Shop shop, User author, String message) {
+        this.shop = shop;
+        this.announcement = null;
+        this.author = author;
+        this.message = message;
+        this.date = new Date();
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Shop getShop() {
@@ -82,5 +99,9 @@ public class Comment {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getStringDate() {
+        return new SimpleDateFormat("yyyy.MM.dd HH:mm").format(this.date);
     }
 }
