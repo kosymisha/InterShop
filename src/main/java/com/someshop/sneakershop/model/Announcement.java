@@ -30,7 +30,7 @@ public class Announcement implements Serializable {
     private Integer views;
 
 
-    @Column(name = "product_url", unique = true)
+    @Column(name = "product_url"/*, unique = true*/)
     private String productURL;
 
     @ManyToOne(fetch = FetchType.EAGER)

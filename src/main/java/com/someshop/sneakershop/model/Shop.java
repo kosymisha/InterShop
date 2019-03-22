@@ -15,10 +15,10 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name_shop", unique = true)
+    @Column(name = "name_shop"/*, unique = true*/)
     private String nameShop;
 
-    @Column(unique = true)
+    @Column(/*unique = true*/)
     private String url;
 
     @Column(name = "photo_url")

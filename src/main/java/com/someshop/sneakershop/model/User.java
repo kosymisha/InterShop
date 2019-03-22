@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @Column(name = "photo_url")
     private String photoURL;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email"/*, unique = true*/)
     @Email
     private String email;
 

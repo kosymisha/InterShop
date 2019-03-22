@@ -68,6 +68,7 @@ public class ShopController {
         return "shop/shop";
     }
 
+
     @GetMapping("shops/create")
     public String createShop () {
         return "shop/create";
