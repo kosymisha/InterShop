@@ -8,7 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collections;
 
 @Service
@@ -17,16 +19,20 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private FileService fileService;
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userRepository.findByEmail(s);
     }
 
-    public String create (User user, String role) {
+    public String create (User user, String role, MultipartFile file) throws IOException {
         User userFromDb = userRepository.findByEmail(user.getEmail());
         if(userFromDb != null)
             return "User exists";
         user.setActive(true);
+        user.setPhotoURL(fileService.upload(file));
         user.setRoles(Collections.singleton(Role.valueOf(role)));
         userRepository.save(user);
         return "Success";

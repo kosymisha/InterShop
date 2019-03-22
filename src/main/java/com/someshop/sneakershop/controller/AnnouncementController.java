@@ -51,10 +51,21 @@ public class AnnouncementController {
         return "announcement/announcement";
     }
 
-    @GetMapping("/announcements/new")
+    @GetMapping("/announcements/create")
     public String announcementsCreate (@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("shops", shopRepository.findByOwner(user));
         return "announcement/announcementCreate";
+    }
+
+    @GetMapping("/announcements/{announcement}/comments/{comment}/delete")
+    public String deleteComment (@AuthenticationPrincipal User user,
+                                 @PathVariable Comment comment, Model model,
+                                 @PathVariable Announcement announcement) {
+        commentService.delete(comment);
+        model.addAttribute("announcement", announcement);
+        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
+        model.addAttribute("user", user);
+        return "announcement/announcement";
     }
 
     @PostMapping("/announcements")
@@ -70,17 +81,6 @@ public class AnnouncementController {
                                  @PathVariable Announcement announcement,
                                  @RequestParam("commentBox") String message) {
         commentService.createInAnnouncement(user, message, announcement);
-        model.addAttribute("announcement", announcement);
-        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
-        model.addAttribute("user", user);
-        return "announcement/announcement";
-    }
-
-    @GetMapping("/announcements/{announcement}/comments/{comment}/delete")
-    public String deleteComment (@AuthenticationPrincipal User user,
-                                 @PathVariable Comment comment, Model model,
-                                 @PathVariable Announcement announcement) {
-        commentService.delete(comment);
         model.addAttribute("announcement", announcement);
         model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
         model.addAttribute("user", user);

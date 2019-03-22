@@ -21,18 +21,41 @@ public class Shop {
     @Column(unique = true)
     private String url;
 
+    @Column(name = "photo_url")
+    private String photoURL;
+
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User owner;
 
-
-    public Shop(String nameShop, String url, User owner) {
+    public Shop(String nameShop, String url, User owner, String photoURL, String description) {
         this.nameShop = nameShop;
         this.url = url;
         this.owner = owner;
+        this.photoURL = photoURL;
+        this.description = description;
     }
 
     public Shop() {
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public Long getId() {

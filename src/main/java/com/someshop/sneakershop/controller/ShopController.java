@@ -9,6 +9,7 @@ import com.someshop.sneakershop.service.CommentService;
 import com.someshop.sneakershop.service.ShopService;
 import com.someshop.sneakershop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class ShopController {
@@ -53,6 +58,21 @@ public class ShopController {
         return "shop/shops";
     }
 
+    @GetMapping("shops/{shop}/comments/{comment}/delete")
+    public String deleteComment (@PathVariable Shop shop, @PathVariable Comment comment,
+                                 @AuthenticationPrincipal User user, Model model) {
+        commentService.delete(comment);
+        model.addAttribute("shop", shop);
+        model.addAttribute("comments", commentService.findAllByShop(shop));
+        model.addAttribute("user", user);
+        return "shop/shop";
+    }
+
+    @GetMapping("shops/create")
+    public String createShop () {
+        return "shop/create";
+    }
+
     @PostMapping("/shops/{shop}/comments/create")
     public String commentCreate (@PathVariable Shop shop, Model model, @AuthenticationPrincipal User user,
                                  @RequestParam("commentBox") String message) {
@@ -63,13 +83,12 @@ public class ShopController {
         return "shop/shop";
     }
 
-    @GetMapping("shops/{shop}/comments/{comment}/delete")
-    public String deleteComment (@PathVariable Shop shop, @PathVariable Comment comment,
-                                 @AuthenticationPrincipal User user, Model model) {
-        commentService.delete(comment);
-        model.addAttribute("shop", shop);
-        model.addAttribute("comments", commentService.findAllByShop(shop));
-        model.addAttribute("user", user);
-        return "shop/shop";
+    @PostMapping("shops/create")
+    @PreAuthorize("hasAuthority('SELLER')")
+    public String createShop (@AuthenticationPrincipal User user,
+                              @RequestParam Map<String, String> form,
+                              @RequestParam("photo_url") MultipartFile file) throws IOException {
+        shopService.create(form, file, user);
+        return "shop/create";
     }
 }

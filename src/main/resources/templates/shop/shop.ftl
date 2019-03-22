@@ -1,9 +1,11 @@
 <#import "../parts/common.ftl" as c>
 
 <@c.page "${shop.nameShop}">
+    <div><img width="200" height="200" src="/img/${shop.photoURL}" /></div>
     <div><label>Name: </label>${shop.nameShop}</div>
     <div><label>URL: </label>${shop.url}</div>
     <div><label>Owner: </label>${shop.owner.firstName} ${shop.owner.lastName}</div>
+    <div><label>Description: </label>${shop.description}</div>
     <br/>
     <div>Comments: </div>
     <form action="/shops/${shop.id}/comments/create" method="post" >

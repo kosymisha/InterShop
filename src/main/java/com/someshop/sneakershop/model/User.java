@@ -21,6 +21,9 @@ public class User implements UserDetails {
     @Column(name = "lastname")
     private String lastName;
 
+    @Column(name = "photo_url")
+    private String photoURL;
+
     @Column(name = "email", unique = true)
     @Email
     private String email;
@@ -36,16 +39,26 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public User(String firstName, String lastName, @Email String email, String password, boolean active, Set<Role> roles) {
+    public User(String firstName, String lastName, @Email String email, String password, boolean active, Set<Role> roles,
+                String photoURL) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.active = active;
         this.roles = roles;
+        this.photoURL = photoURL;
     }
 
     public User() {
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public Long getId() {
