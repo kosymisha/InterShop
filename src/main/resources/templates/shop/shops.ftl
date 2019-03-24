@@ -1,6 +1,10 @@
-<#import "../parts/common.ftl" as c>
-
-<@c.page "Shop Manager">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shops</title>
+</head>
+<body>
 
 List of shops:
 <table>
@@ -41,4 +45,5 @@ List of shops:
     </#list>
     </tbody>
 </table>
-</@c.page>
+</body>
+</html>

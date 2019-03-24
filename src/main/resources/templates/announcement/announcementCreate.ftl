@@ -1,7 +1,11 @@
-<#import "../parts/common.ftl" as c>
-
-<@c.page "new">
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
+<body>
     <form action="/announcements" method="post" enctype="multipart/form-data">
         <select name="category">
             <option value="Coats & Jackets">Coats & Jackets</option>
@@ -23,4 +27,5 @@
         <div><input type="submit" value="Create" /></div>
     </form>
 
-</@c.page>
+</body>
+</html>

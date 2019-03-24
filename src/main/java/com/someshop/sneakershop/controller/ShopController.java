@@ -58,30 +58,9 @@ public class ShopController {
         return "shop/shops";
     }
 
-    @GetMapping("shops/{shop}/comments/{comment}/delete")
-    public String deleteComment (@PathVariable Shop shop, @PathVariable Comment comment,
-                                 @AuthenticationPrincipal User user, Model model) {
-        commentService.delete(comment);
-        model.addAttribute("shop", shop);
-        model.addAttribute("comments", commentService.findAllByShop(shop));
-        model.addAttribute("user", user);
-        return "shop/shop";
-    }
-
-
     @GetMapping("shops/create")
     public String createShop () {
         return "shop/create";
-    }
-
-    @PostMapping("/shops/{shop}/comments/create")
-    public String commentCreate (@PathVariable Shop shop, Model model, @AuthenticationPrincipal User user,
-                                 @RequestParam("commentBox") String message) {
-        commentService.createInShop(user, message, shop);
-        model.addAttribute("shop", shop);
-        model.addAttribute("comments", commentService.findAllByShop(shop));
-        model.addAttribute("user", user);
-        return "shop/shop";
     }
 
     @PostMapping("shops/create")

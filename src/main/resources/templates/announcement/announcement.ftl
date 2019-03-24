@@ -1,6 +1,11 @@
-<#import "../parts/common.ftl" as c>
-
-<@c.page "asd">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcement</title>
+</head>
+<body>
+<body>
             <br/>
             <img width="100" height="100" src="/img/${announcement.product.photoURL}" /> <br/>
             <a href="${announcement.productURL}">${announcement.product.title}</a> <br/>
@@ -25,4 +30,5 @@
     <#else>
         No comments.
     </#list>
-</@c.page>
+</body>
+</html>

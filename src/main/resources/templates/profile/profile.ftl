@@ -1,6 +1,10 @@
-<#import "../parts/common.ftl" as c>
-
-<@c.page "${profileUser.firstName} ${profileUser.lastName}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
 <div><img width="200" height="200" src="/img/${profileUser.photoURL?if_exists}" /></div>
 <div><label>First Name: </label>${profileUser.firstName}</div>
 <div><label>Last Name: </label>${profileUser.lastName}</div>
@@ -18,4 +22,5 @@
             </form>
         </#if>
     </#list>
-</@c.page>
+</body>
+</html>

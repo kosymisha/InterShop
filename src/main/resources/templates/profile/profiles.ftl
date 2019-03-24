@@ -1,6 +1,10 @@
-<#import "../parts/common.ftl" as c>
-
-<@c.page "Profile Manager">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profiles</title>
+</head>
+<body>
 List of users:
 <table>
     <thead>
@@ -20,4 +24,5 @@ List of users:
 </#list>
     </tbody>
 </table>
-</@c.page>
+</body>
+</html>

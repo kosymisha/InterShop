@@ -1,6 +1,10 @@
-<#import "../parts/common.ftl" as c>
-
-<@c.page "Create shop">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
 
     <form action="/shops/create" method="post" enctype="multipart/form-data">
         <div><input type="text" name="name_shop" placeholder="input name" /></div>
@@ -11,4 +15,5 @@
         <div><input type="submit" value="Create" /></div>
     </form>
 
-</@c.page>
+</body>
+</html>

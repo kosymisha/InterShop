@@ -1,7 +1,12 @@
-<#import "parts/common.ftl" as c>
-<#import "parts/login.ftl" as l>
 
-<@c.page "Shop">
+<#import "parts/login.ftl" as l>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>InterShop</title>
+</head>
+<body>
 <#if currentUser??>
     <div>
         <p>Welcome, ${currentUser.getFirstName()} ${currentUser.getLastName()}</p>
@@ -46,4 +51,5 @@
     <#else>
 No announcements from Ebay.
 </#list>
-</@c.page>
+</body>
+</html>

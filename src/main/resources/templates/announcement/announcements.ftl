@@ -1,6 +1,10 @@
-<#import "../parts/common.ftl" as c>
-
-<@c.page "Announcements">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcements</title>
+</head>
+<body>
     <#list announcements as announcement>
         <div>
             <br/>
@@ -24,4 +28,5 @@
     <#else>
     No announcements.
     </#list>
-</@c.page>
+</body>
+</html>
