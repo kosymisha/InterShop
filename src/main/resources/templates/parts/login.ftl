@@ -3,13 +3,13 @@
         <div><label>Email: <input type="text" name="email" /></label></div>
         <div><label>Password: <input type="password" name="password" /></label></div>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
-        <div><input type="submit" value="Login" /></div>
+        <div><button class="btn btn-primary" type="submit">Sign in</button></div>
     </form>
 </#macro>
 
 <#macro logout>
         <form action="/logout" method="post">
-            <input type="submit" value="Logout" />
+            <button class="btn btn-primary" type="submit">Sign out</button>
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
         </form>
 </#macro>

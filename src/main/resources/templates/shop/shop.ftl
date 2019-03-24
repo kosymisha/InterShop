@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Shop</title>
-</head>
-<body onload="onLoad(${shop.id})">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<#import "../parts/common.ftl" as c>
+<@c.page "InterShop" "${shop.id}">
+
 <script>
     function loadDoc(shop, comment) {
         var httpRequest = new XMLHttpRequest();
@@ -48,6 +43,13 @@
     <div><label>Owner: </label>${shop.owner.firstName} ${shop.owner.lastName}</div>
     <div><label>Description: </label>${shop.description}</div>
     <br/>
+    <#list user.roles as role>
+        <#if role == 'ADMIN'>
+        <a href="/shops/${shop.id}/delete">delete</a>
+        <#elseif shop.owner.id == user.id>
+        <a href="/shops/${shop.id}/delete">delete</a>
+        </#if>
+    </#list>
+    <br/>
     <div id="comm" name="commentsList"></div>
-</body>
-</html>
+</@c.page>

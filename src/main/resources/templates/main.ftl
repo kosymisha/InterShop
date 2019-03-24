@@ -1,26 +1,7 @@
 
-<#import "parts/login.ftl" as l>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>InterShop</title>
-</head>
-<body>
-<#if currentUser??>
-    <div>
-        <p>Welcome, ${currentUser.getFirstName()} ${currentUser.getLastName()}</p>
-    </div>
-    <div>
-        <@l.logout />
-    </div>
-<#else>
-    <div>
-        <a href="/login">Click to login.</a>
-    </div>
-</#if>
 
-
+<#import "parts/common.ftl" as c>
+<@c.page "InterShop" "">
 <br/><br/><br/><br/>
 <form action="/main" method="get">
     <input type="text" name="keyword" placeholder="input name of product..." />
@@ -51,5 +32,4 @@
     <#else>
 No announcements from Ebay.
 </#list>
-</body>
-</html>
+</@c.page>

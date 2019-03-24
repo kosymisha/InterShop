@@ -53,6 +53,14 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
+    }
+
+    public boolean isSeller() {
+        return roles.contains(Role.SELLER);
+    }
+
     public String getPhotoURL() {
         return photoURL;
     }

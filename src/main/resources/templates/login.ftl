@@ -1,14 +1,8 @@
 
 <#import "parts/login.ftl" as l>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
+<#import "parts/common.ftl" as c>
+<@c.page "InterShop" "">
 Welcome
 <@l.login "/login" />
 <a href="/registration">Create new user.</a>
-</body>
-</html>
+</@c.page>

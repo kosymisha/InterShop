@@ -31,9 +31,6 @@ public class ShopController {
     @Autowired
     private ShopService shopService;
 
-    @Autowired
-    private CommentService commentService;
-
     @GetMapping("/shops")
     public String shops(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("shopList", shopRepository.findAllOrderByOwner(user));
@@ -45,7 +42,6 @@ public class ShopController {
     public String shopsById (@PathVariable Shop shop, Model model,
                              @AuthenticationPrincipal User user) {
         model.addAttribute("shop", shop);
-        model.addAttribute("comments", commentService.findAllByShop(shop));
         model.addAttribute("user", user);
         return "shop/shop";
     }

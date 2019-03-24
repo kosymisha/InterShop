@@ -24,7 +24,7 @@ public class CommentController {
     public String getShopComments(Model model, @AuthenticationPrincipal User user,
                                   @PathVariable Shop shop) {
         model.addAttribute("user", user);
-        model.addAttribute("shop", shop);
+        model.addAttribute("object", shop);
         model.addAttribute("comments", commentService.findAllByShop(shop));
         return "comments";
     }
@@ -33,7 +33,7 @@ public class CommentController {
     public String getAnnouncementComments(Model model, @AuthenticationPrincipal User user,
                                   @PathVariable Announcement announcement) {
         model.addAttribute("user", user);
-        model.addAttribute("announcement", announcement);
+        model.addAttribute("object", announcement);
         model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
         return "comments";
     }
@@ -42,7 +42,7 @@ public class CommentController {
     public String deleteShopComment (@PathVariable Shop shop, @PathVariable Comment comment,
                                      @AuthenticationPrincipal User user, Model model) {
         commentService.delete(comment);
-        model.addAttribute("shop", shop);
+        model.addAttribute("object", shop);
         model.addAttribute("comments", commentService.findAllByShop(shop));
         model.addAttribute("user", user);
         return "comments";
@@ -52,8 +52,28 @@ public class CommentController {
     public String createShopComment (@PathVariable Shop shop, Model model, @AuthenticationPrincipal User user,
                                      @RequestParam("commentBox") String message) {
         commentService.createInShop(user, message, shop);
-        model.addAttribute("shop", shop);
+        model.addAttribute("object", shop);
         model.addAttribute("comments", commentService.findAllByShop(shop));
+        model.addAttribute("user", user);
+        return "comments";
+    }
+
+    @GetMapping("announcements/{announcement}/comments/{comment}/delete")
+    public String deleteAnnouncementComment (@PathVariable Announcement announcement, @PathVariable Comment comment,
+                                     @AuthenticationPrincipal User user, Model model) {
+        commentService.delete(comment);
+        model.addAttribute("object", announcement);
+        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
+        model.addAttribute("user", user);
+        return "comments";
+    }
+
+    @PostMapping("/announcements/{announcement}/comments/create")
+    public String createAnnouncementComment (@PathVariable Announcement announcement, Model model, @AuthenticationPrincipal User user,
+                                     @RequestParam("commentBox") String message) {
+        commentService.createInAnnouncement(user, message, announcement);
+        model.addAttribute("object", announcement);
+        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
         model.addAttribute("user", user);
         return "comments";
     }

@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create</title>
-</head>
-<body>
-
+<#import "../parts/common.ftl" as c>
+<@c.page "InterShop" "">
     <form action="/shops/create" method="post" enctype="multipart/form-data">
         <div><input type="text" name="name_shop" placeholder="input name" /></div>
         <div><input type="text" name="url" placeholder="input shop url" /></div>
@@ -14,6 +8,4 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div><input type="submit" value="Create" /></div>
     </form>
-
-</body>
-</html>
+</@c.page>

@@ -28,17 +28,20 @@ public class AnnouncementService {
     @Autowired
     private ShopRepository shopRepository;
 
-    public void create (Map<String, String> form, MultipartFile file) throws IOException {
+    public Announcement create (Map<String, String> form, MultipartFile file) throws IOException {
         Announcement announcement = new Announcement("USD",
                 new Double(form.get("price")), 0, "",
                 productService.create(form.get("title"), form.get("category"), file, form.get("description")),
                 shopRepository.findByNameShop(form.get("shop")));
         announcement.setProductURL(announcement.getShop().getUrl() + "/" + announcement.getProduct().getId());
         announcementRepository.save(announcement);
+        return announcement;
     }
 
-    public void delete (Announcement announcement) {
-        announcementRepository.delete(announcement);
+    public void delete (Announcement announcement, User user) {
+        if (user.getRoles().contains(Role.ADMIN) || user.getId().equals(announcement.getShop().getOwner().getId())) {
+            announcementRepository.delete(announcement);
+        }
     }
 
     public List<Announcement> orderByShop (Shop shop, User user) {

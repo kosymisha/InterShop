@@ -1,34 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Announcement</title>
-</head>
-<body>
-<body>
-            <br/>
-            <img width="100" height="100" src="/img/${announcement.product.photoURL}" /> <br/>
-            <a href="${announcement.productURL}">${announcement.product.title}</a> <br/>
-            <i>${announcement.product.category.categoryName}</i> <br/>
-            <i>${announcement.currency} <b>${announcement.price}</b></i> <br/>
-            <br/>
-    <div>Comments: </div>
-    <form action="/announcements/${announcement.id}/comments/create" method="post" >
-        <input type="text" name="commentBox" placeholder="input your comment" />
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
-        <input type="submit" value="Ok" />
-    </form>
-    <#list comments as comment>
-        <div>${comment.author.firstName} ${comment.author.lastName} ${comment.getStringDate()}</div>
-        <div>${comment.message}</div>
-        <#list user.roles as role>
-            <#if role == 'ADMIN' || comment.author.id == user.id>
-                <div><a href="/announcements/${announcement.id}/comments/${comment.id}/delete">delete</a></div>
-            </#if>
-        </#list>
-        <br>
-    <#else>
-        No comments.
+<#import "../parts/common.ftl" as c>
+<@c.page "InterShop" "${announcement.id}">
+<script>
+    function loadDoc(announcement, comment) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if(this.readyState === 4 && this.status === 200) {
+                document.getElementById("comm").innerHTML = this.responseText;
+            }
+        };
+        httpRequest.open("GET", "http://localhost:8080/announcements/" + announcement + "/comments/" + comment + "/delete", true);
+        httpRequest.send();
+    }
+
+    function addCom(announcement, csrfToken) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if(this.readyState === 4 && this.status === 200) {
+                document.getElementById("comm").innerHTML = this.responseText;
+            }
+        };
+        httpRequest.open("POST", "http://localhost:8080/announcements/" + announcement + "/comments/create", true);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.setRequestHeader('X-CSRF-Token', csrfToken);
+        httpRequest.send("commentBox=" + document.getElementById("comBox").value);
+    }
+
+    function onLoad(announcement) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if(this.readyState === 4 && this.status === 200) {
+                document.getElementById("comm").innerHTML = this.responseText;
+            }
+        };
+        httpRequest.open("GET", "http://localhost:8080/announcements/" + announcement + "/comments", true);
+        httpRequest.send();
+    }
+</script>
+    <br/>
+    <img width="100" height="100" src="/img/${announcement.product.photoURL}" /> <br/>
+    <a href="${announcement.productURL}">${announcement.product.title}</a> <br/>
+    <i>${announcement.product.category.categoryName}</i> <br/>
+    <i>${announcement.currency} <b>${announcement.price}</b></i> <br/>
+    <br/>
+    <#list user.roles as role>
+        <#if role == 'ADMIN'>
+        <a href="/announcements/${announcement.id}/delete">delete</a>
+        <#elseif announcement.shop.owner.id == user.id>
+        <a href="/announcements/${announcement.id}/delete">delete</a>
+        </#if>
     </#list>
-</body>
-</html>
+    <br/>
+    <div id="comm" name="commentsList"></div>
+</@c.page>

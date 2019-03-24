@@ -25,7 +25,7 @@ public class ShopService {
     }
 
     public void delete(Shop shop, User user) {
-        if (user.getRoles().contains(Role.ADMIN) || user.getId() == shop.getOwner().getId()){
+        if (user.getRoles().contains(Role.ADMIN) || user.getId().equals(shop.getOwner().getId())){
             shopRepository.delete(shop);
         }
     }

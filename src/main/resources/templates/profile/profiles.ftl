@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Profiles</title>
-</head>
-<body>
+<#import "../parts/common.ftl" as c>
+<@c.page "InterShop" "">
 List of users:
 <table>
     <thead>
@@ -24,5 +19,4 @@ List of users:
 </#list>
     </tbody>
 </table>
-</body>
-</html>
+</@c.page>
