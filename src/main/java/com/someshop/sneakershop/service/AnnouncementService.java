@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,7 +31,7 @@ public class AnnouncementService {
 
     public Announcement create (Map<String, String> form, MultipartFile file) throws IOException {
         Announcement announcement = new Announcement("USD",
-                new Double(form.get("price")), 0, "",
+                new BigDecimal(form.get("price")), 0, "",
                 productService.create(form.get("title"), form.get("category"), file, form.get("description")),
                 shopRepository.findByNameShop(form.get("shop")));
         announcement.setProductURL(announcement.getShop().getUrl() + "/" + announcement.getProduct().getId());

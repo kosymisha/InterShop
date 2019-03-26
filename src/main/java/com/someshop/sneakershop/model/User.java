@@ -8,11 +8,12 @@ import javax.validation.constraints.Email;
 import java.util.Collection;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "user")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "firstname")
@@ -24,7 +25,7 @@ public class User implements UserDetails {
     @Column(name = "photo_url")
     private String photoURL;
 
-    @Column(name = "email"/*, unique = true*/)
+    @Column(name = "email")
     @Email
     private String email;
 
@@ -39,6 +40,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<Shop> shops;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private Set<Comment> comments;
+
     public User(String firstName, String lastName, @Email String email, String password, boolean active, Set<Role> roles,
                 String photoURL) {
         this.firstName = firstName;
@@ -51,6 +58,22 @@ public class User implements UserDetails {
     }
 
     public User() {
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<Shop> getShops() {
+        return shops;
+    }
+
+    public void setShops(Set<Shop> shops) {
+        this.shops = shops;
     }
 
     public boolean isAdmin() {

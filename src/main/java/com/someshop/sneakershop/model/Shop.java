@@ -1,24 +1,19 @@
 package com.someshop.sneakershop.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "shop")
 public class Shop {
-    /*
-    * id
-    * owner (user_id) manyToOne
-    * name_shop
-    * url
-    * */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_shop"/*, unique = true*/)
+    @Column(name = "name_shop")
     private String nameShop;
 
-    @Column(/*unique = true*/)
+    @Column
     private String url;
 
     @Column(name = "photo_url")
@@ -31,6 +26,12 @@ public class Shop {
     @JoinColumn(name = "user_id")
     private User owner;
 
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private Set<Announcement> announcements;
+
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private Set<Comment> comments;
+
     public Shop(String nameShop, String url, User owner, String photoURL, String description) {
         this.nameShop = nameShop;
         this.url = url;
@@ -40,6 +41,22 @@ public class Shop {
     }
 
     public Shop() {
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(Set<Announcement> announcements) {
+        this.announcements = announcements;
     }
 
     public String getDescription() {

@@ -1,20 +1,13 @@
 package com.someshop.sneakershop.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
 public class Product {
-    /*
-    * id
-    * title
-    * category_name
-    * photo_url
-    * product_url
-    * description
-    * */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -29,6 +22,17 @@ public class Product {
 
     @Column
     private String description;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<Announcement> announcements;
+
+    public Set<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(Set<Announcement> announcements) {
+        this.announcements = announcements;
+    }
 
     public Product() {}
 

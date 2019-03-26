@@ -1,17 +1,19 @@
 package com.someshop.sneakershop.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
 public class Category {
     @Id
     private Long id;
-    @Column(name = "category_name"/*, unique = true*/)
+
+    @Column(name = "category_name")
     private String categoryName;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<Product> products;
 
     public Category() {
     }
@@ -19,6 +21,14 @@ public class Category {
     public Category(Long id, String categoryName) {
         this.id = id;
         this.categoryName = categoryName;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     public Long getId() {

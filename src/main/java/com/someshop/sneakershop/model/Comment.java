@@ -1,10 +1,6 @@
 package com.someshop.sneakershop.model;
 
-import com.someshop.sneakershop.service.CommentService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,7 +9,7 @@ import java.util.Date;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "date")

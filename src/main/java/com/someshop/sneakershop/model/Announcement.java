@@ -1,36 +1,27 @@
 package com.someshop.sneakershop.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Table(name = "announcement")
 public class Announcement implements Serializable {
-    /*
-    * id         -
-    * shop_id
-    * product_id -
-    * views      -
-    * price      -
-    * currency   -
-    * */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
     private String currency;
 
     @Column
-    private Double price;
+    private BigDecimal price;
 
     @Column
     private Integer views;
 
-
-    @Column(name = "product_url"/*, unique = true*/)
+    @Column(name = "product_url")
     private String productURL;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,17 +32,32 @@ public class Announcement implements Serializable {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
+    @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL)
+    private Set<Comment> comments;
+
     public Announcement () {
 
     }
 
-    public Announcement(String currency, Double price, Integer views, String productURL, Product product, Shop shop) {
+    public Announcement(String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop) {
         this.currency = currency;
         this.price = price;
         this.views = views;
         this.productURL = productURL;
         this.product = product;
         this.shop = shop;
+        this.price.setScale(2);
+        /*
+        ^\d{1, 6}(\.?\d{2,1})$
+        */
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public Long getId() {
@@ -78,11 +84,11 @@ public class Announcement implements Serializable {
         this.currency = currency;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

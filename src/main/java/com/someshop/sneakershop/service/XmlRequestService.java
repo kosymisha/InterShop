@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
@@ -52,7 +53,7 @@ public class XmlRequestService {
                         Element element = (Element) node;
                         announcements.add(new Announcement(
                                 element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
-                                new Double(element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent()),
+                                new BigDecimal(element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent()),
                                 1, //views
                                 element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
                                 new Product(
