@@ -13,9 +13,8 @@ public class Product {
     @Column
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(name = "category_name")
+    private String categoryName;
 
     @Column(name = "photo_url")
     private String photoURL;
@@ -36,9 +35,9 @@ public class Product {
 
     public Product() {}
 
-    public Product(String title, Category category, String photoURL, String description) {
+    public Product(String title, String categoryName, String photoURL, String description) {
         this.title = title;
-        this.category = category;
+        this.categoryName = categoryName;
         this.photoURL = photoURL;
         this.description = description;
     }
@@ -75,11 +74,11 @@ public class Product {
         this.photoURL = photoURL;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategory() {
+        return categoryName;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

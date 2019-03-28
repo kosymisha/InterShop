@@ -12,6 +12,9 @@ public class Announcement implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "store_id")
+    private String storeId;
+
     @Column
     private String currency;
 
@@ -39,17 +42,22 @@ public class Announcement implements Serializable {
 
     }
 
-    public Announcement(String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop) {
+    public Announcement(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop) {
+        this.storeId = storeId;
         this.currency = currency;
         this.price = price;
         this.views = views;
         this.productURL = productURL;
         this.product = product;
         this.shop = shop;
-        this.price.setScale(2);
-        /*
-        ^\d{1, 6}(\.?\d{2,1})$
-        */
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public Set<Comment> getComments() {

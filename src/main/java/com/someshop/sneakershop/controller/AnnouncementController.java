@@ -33,7 +33,7 @@ public class AnnouncementController {
     @GetMapping("/announcements")
     public String announcements (Model model, @RequestParam(name = "shop", required = false) Shop shop,
                                  @AuthenticationPrincipal User user) {
-        model.addAttribute("announcements", announcementService.orderByShop(shop, user));
+        model.addAttribute("announcements", announcementService.findAllAndOrderByShop(shop, user));
         model.addAttribute("user", user);
         return "announcement/announcements";
     }
@@ -56,7 +56,7 @@ public class AnnouncementController {
     public String announcementDelete (@AuthenticationPrincipal User user, Model model,
                                       @PathVariable Announcement announcement) {
         announcementService.delete(announcement, user);
-        model.addAttribute("announcements", announcementService.orderByShop(null, user));
+        model.addAttribute("announcements", announcementService.findAllAndOrderByShop(null, user));
         model.addAttribute("user", user);
         return "announcement/announcements";
     }

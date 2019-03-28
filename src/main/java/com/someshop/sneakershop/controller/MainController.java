@@ -2,6 +2,7 @@ package com.someshop.sneakershop.controller;
 
 import com.someshop.sneakershop.model.User;
 import com.someshop.sneakershop.repository.AnnouncementRepository;
+import com.someshop.sneakershop.service.CategoryService;
 import com.someshop.sneakershop.service.EbayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,17 +21,21 @@ public class MainController {
     @Autowired
     private EbayService ebayService;
 
-    @GetMapping("/main")
+    @Autowired
+    private CategoryService categoryService;
+
+    @GetMapping("/")
     public String main(Map<String, Object> model,
-                       @RequestParam(name = "keyword", required = false) String keyword,
-                       @RequestParam(name = "minPrice", required = false) String minPrice,
-                       @RequestParam(name = "maxPrice", required = false) String maxPrice,
-                       @RequestParam(name = "categoryId", required = false) String categoryId,
+                       //@RequestParam(name = "keyword", required = false) String keyword,
+                       //@RequestParam(name = "minPrice", required = false) String minPrice,
+                       //@RequestParam(name = "maxPrice", required = false) String maxPrice,
+                       //@RequestParam(name = "categoryId", required = false) String categoryId,
+                       //@RequestParam(name = "sort") String sort,
                        @AuthenticationPrincipal User currentUser) throws Exception {
         model.put("currentUser", currentUser);
         model.put("announcements", announcementRepository.findAll());
-        model.put("announcementsEbay", ebayService.getItems(keyword, minPrice, maxPrice, categoryId));
+        //ebayService.getItems(keyword, minPrice, maxPrice, categoryId);
+        model.put("categories", categoryService.findAll());
         return "main";
     }
-
 }

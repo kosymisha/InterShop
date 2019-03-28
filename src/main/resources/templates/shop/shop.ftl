@@ -37,7 +37,7 @@
         httpRequest.send();
     }
 </script>
-    <div><img width="200" height="200" src="/img/${shop.photoURL}" /></div>
+    <div><img width="200" height="200" src="${shop.photoURL}" /></div>
     <div><label>Name: </label>${shop.nameShop}</div>
     <div><label>URL: </label>${shop.url}</div>
     <div><label>Owner: </label>${shop.owner.firstName} ${shop.owner.lastName}</div>

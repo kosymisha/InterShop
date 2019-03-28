@@ -13,13 +13,15 @@ import java.util.List;
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
     List<Announcement> findByShop (Shop shop);
 
-    @Query(value = "select announcement.id, announcement.currency, announcement.price, " +
+    @Query(value = "select announcement.id, announcement.store_id, announcement.currency, announcement.price, " +
             "announcement.views, announcement.product_url, announcement.product_id, announcement.shop_id " +
             "from announcement inner join shop on announcement.shop_id = shop.id where user_id = ?1 " +
             "union " +
-            "select announcement.id, announcement.currency, announcement.price, " +
+            "select announcement.id, announcement.store_id, announcement.currency, announcement.price, " +
             "announcement.views, announcement.product_url, announcement.product_id, announcement.shop_id " +
             "from announcement inner join shop on announcement.shop_id = shop.id where user_id != ?1", nativeQuery = true)
     List<Announcement> findAllOrderByOwner(User user);
+
+    Announcement findByStoreId(String storeId);
 
 }

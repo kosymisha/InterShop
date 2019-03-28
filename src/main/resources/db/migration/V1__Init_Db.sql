@@ -1,16 +1,16 @@
 create table category (
   id bigint not null,
-  category_name varchar(20) UNIQUE ,
+  category_name varchar(40) UNIQUE ,
   primary key (id));
 
 create table product (
   id bigint not null AUTO_INCREMENT,
   description varchar(200),
   photo_url varchar(100),
-  title varchar(50) not null,
-  category_id bigint not null,
-  primary key (id),
-  foreign key (category_id) references category (id)) ;
+  title varchar(80) not null,
+  category_name varchar(50) not null,
+  primary key (id)
+  /*foreign key (category_id) references category (id)*/) ;
 
 create table user (
   id bigint not null AUTO_INCREMENT,
@@ -39,9 +39,10 @@ create table shop (
 
 create table announcement (
   id bigint not null AUTO_INCREMENT,
+  store_id varchar(50),
   currency varchar(5) not null,
   price decimal(19,2) not null,
-  product_url varchar(100) UNIQUE ,
+  product_url varchar(160) ,
   views integer not null,
   product_id bigint not null,
   shop_id bigint not null,

@@ -17,15 +17,24 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @Autowired
     private FileService fileService;
 
     public Product create(String title, String category, MultipartFile file, String description) throws IOException {
         Product product = new Product(title,
-                categoryRepository.findByCategoryName(category),
+                category,
                 fileService.upload(file),
+                description);
+        productRepository.save(product);
+        return product;
+    }
+
+    public Product create(String title, String categoryName, String photoURL, String description) {
+        Product product = new Product(title,
+                categoryName,
+                photoURL,
                 description);
         productRepository.save(product);
         return product;

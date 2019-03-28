@@ -21,9 +21,9 @@ public class FileService {
                 uploadDir.mkdir();
             }
             String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+            String resultFileName = uuidFile + "." + file.getOriginalFilename()/*.substring(file.getOriginalFilename().lastIndexOf("."))*/;
             file.transferTo(new File(uploadPath + "/" + resultFileName));
-            return resultFileName;
+            return "/img/" + resultFileName;
         }
         return null;
     }

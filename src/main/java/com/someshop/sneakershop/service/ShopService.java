@@ -29,4 +29,8 @@ public class ShopService {
             shopRepository.delete(shop);
         }
     }
+
+    public Shop findByNameShop (String shop) {
+        return shopRepository.findByNameShop(shop);
+    }
 }
