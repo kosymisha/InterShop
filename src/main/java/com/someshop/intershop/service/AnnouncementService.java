@@ -33,14 +33,15 @@ public class AnnouncementService {
         return announcement;
     }
 
-    public void create (String storeId, String currency, String price, String productURL, String title, String categoryId,
+    public Announcement create (String storeId, String currency, String price, String productURL, String title, String categoryId,
                         String categoryName, String shop, String photoURL) {
         if (announcementRepository.findByStoreId(storeId) == null) {
             Announcement announcement = new Announcement(storeId, currency, new BigDecimal(price).setScale(2), 0, productURL,
                     productService.create(title, categoryName, photoURL, "For more information click in URL."),
                     shopService.findByNameShop(shop));
             announcementRepository.save(announcement);
-        }
+            return announcement;
+        } else { return announcementRepository.findByStoreId(storeId); }
     }
 
     public void delete (Announcement announcement, User user) {

@@ -1,5 +1,6 @@
 package com.someshop.intershop.service;
 
+import com.someshop.intershop.model.Announcement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -13,13 +14,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class XmlParseService {
     @Autowired
     private AnnouncementService announcementService;
 
-    public void parseEbay (StringBuffer response) throws IOException, SAXException, ParserConfigurationException {
+    public List<Announcement> parseEbay (StringBuffer response) throws IOException, SAXException, ParserConfigurationException {
+        List<Announcement> announcements = new LinkedList<Announcement>();
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(response.toString())));
         if (doc.getFirstChild().getFirstChild().getTextContent().equals("Success")) { //if request was successful
             NodeList nList = doc.getElementsByTagName("item"); // getting elements which names are "item"
@@ -27,6 +31,7 @@ public class XmlParseService {
                 Node node = nList.item(temp);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
+                    announcements.add(
                     announcementService.create(
                             element.getElementsByTagName("itemId").item(0).getTextContent(),
                             element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
@@ -36,9 +41,10 @@ public class XmlParseService {
                             element.getElementsByTagName("primaryCategory").item(0).getFirstChild().getTextContent(),
                             element.getElementsByTagName("primaryCategory").item(0).getLastChild().getTextContent(),
                             "eBay",
-                            element.getElementsByTagName("galleryURL").item(0).getTextContent());
+                            element.getElementsByTagName("galleryURL").item(0).getTextContent()));
                 }
             }
         }
+        return announcements;
     }
 }

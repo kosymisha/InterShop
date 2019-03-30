@@ -2,7 +2,7 @@
 
 <#import "parts/common.ftl" as c>
 <@c.page "InterShop" "">
-<script src="/js/searchMain.js" type="text/javascript" ></script>
+<script src="/js/searchMain.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <style>
     .catdiv{
         overflow-x: auto;
@@ -11,17 +11,24 @@
 </style>
 <div class="row">
     <div class="col">
-        <div class="row mt-3 ml-2 mr-2">
+        <div class="row mt-3 ml-2 mr-2" id="categoryList">
+            <input type="text" class="form-control" placeholder="Search category..." id="keywordCategory" aria-describedby="basic-addon2" ong onkeyup="searchCategory()">
             <div class="catdiv">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <div id="catlist">
+                    <object name="objects">
                     <label class="btn btn-secondary active">
-                        <input type="radio" name="options" value="0" id="option1" autocomplete="off" checked> None
+                        <input type="radio" name="options" value="0" id="option1" autocomplete="off" checked>None
                     </label>
+                    </object>
                     <#list categories as category>
+                    <object name="objects">
                         <label class="btn btn-secondary">
-                            <input type="radio" name="options" value="${category.id}" autocomplete="off"> ${category.categoryName}
+                            <input type="radio" name="options" value="${category.id}" autocomplete="off" >${category.categoryName}
                         </label>
+                    </object>
                     </#list>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,19 +84,8 @@
 <div class="row">
 <div class="col">
 
-<div>Announcements:</div>
-    <#list announcements as announcement>
-        <div>
-            <br/>
-            <img width="100" height="100" src="${announcement.product.photoURL}" /> <br/>
-            <a href="${announcement.productURL}">${announcement.product.title}</a> <br/>
-            <i>${announcement.product.getCategory()}</i> <br/>
-            <i>${announcement.currency} <b>${announcement.price}</b></i> <br/>
-            <br/>
-        </div>
-    <#else>
-    No announcements.
-    </#list>
+<div id="advs"></div>
+
 </div>
 </div>
 </@c.page>

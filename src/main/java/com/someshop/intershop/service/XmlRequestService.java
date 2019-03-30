@@ -23,18 +23,13 @@ public class XmlRequestService {
     @Autowired
     private XmlParseService xmlParseService;
 
-    public void send(URL url, String method) throws IOException, SAXException, ParserConfigurationException {
-        List<Announcement> announcements = new LinkedList<Announcement>();
-
-
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod(method);
-            BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) { response.append(inputLine); } in.close();
-
-            xmlParseService.parseEbay(response);
-
+    public List<Announcement> send(URL url, String method) throws IOException, SAXException, ParserConfigurationException {
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        httpURLConnection.setRequestMethod(method);
+        BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) { response.append(inputLine); } in.close();
+        return xmlParseService.parseEbay(response);
     }
 }

@@ -30,4 +30,10 @@ public class CategoryService {
     public List<Category> findAll () {
         return categoryRepository.findAll();
     }
+
+    public List<Category> findAllByKeyword (String keyword) {
+        List<Category> categories = categoryRepository.findAll();
+
+        return categories;
+    }
 }
