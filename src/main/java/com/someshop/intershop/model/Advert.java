@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
-@Table(name = "announcement")
-public class Announcement implements Serializable {
+@Table(name = "advert")
+public class Advert implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,14 +35,14 @@ public class Announcement implements Serializable {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
-    public Announcement () {
+    public Advert() {
 
     }
 
-    public Announcement(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop) {
+    public Advert(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop) {
         this.storeId = storeId;
         this.currency = currency;
         this.price = price;
@@ -51,6 +51,10 @@ public class Announcement implements Serializable {
         this.product = product;
         this.shop = shop;
     }
+
+    public void addView () { this.views++; }
+
+    public int getCommentsSize() { return comments.size(); }
 
     public String getStoreId() {
         return storeId;

@@ -1,10 +1,10 @@
 package com.someshop.intershop.controller;
 
-import com.someshop.intershop.model.Announcement;
+import com.someshop.intershop.model.Advert;
 import com.someshop.intershop.model.Comment;
 import com.someshop.intershop.model.Shop;
 import com.someshop.intershop.model.User;
-import com.someshop.intershop.service.CommentService;
+import com.someshop.intershop.service.impl.CommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CommentController {
 
     @Autowired
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     @GetMapping("shops/{shop}/comments")
     public String getShopComments(Model model, @AuthenticationPrincipal User user,
@@ -26,16 +26,16 @@ public class CommentController {
         model.addAttribute("user", user);
         model.addAttribute("object", shop);
         model.addAttribute("comments", commentService.findAllByShop(shop));
-        return "comments";
+        return "/parts/shopComments";
     }
 
-    @GetMapping("announcements/{announcement}/comments")
-    public String getAnnouncementComments(Model model, @AuthenticationPrincipal User user,
-                                  @PathVariable Announcement announcement) {
+    @GetMapping("adverts/{advert}/comments")
+    public String getAdvertComments(Model model, @AuthenticationPrincipal User user,
+                                  @PathVariable Advert advert) {
         model.addAttribute("user", user);
-        model.addAttribute("object", announcement);
-        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
-        return "comments";
+        model.addAttribute("object", advert);
+        model.addAttribute("comments", commentService.findAllByAdvert(advert));
+        return "/parts/advertComments";
     }
 
     @GetMapping("shops/{shop}/comments/{comment}/delete")
@@ -45,7 +45,7 @@ public class CommentController {
         model.addAttribute("object", shop);
         model.addAttribute("comments", commentService.findAllByShop(shop));
         model.addAttribute("user", user);
-        return "comments";
+        return "/parts/shopComments";
     }
 
     @PostMapping("/shops/{shop}/comments/create")
@@ -55,27 +55,27 @@ public class CommentController {
         model.addAttribute("object", shop);
         model.addAttribute("comments", commentService.findAllByShop(shop));
         model.addAttribute("user", user);
-        return "comments";
+        return "/parts/shopComments";
     }
 
-    @GetMapping("announcements/{announcement}/comments/{comment}/delete")
-    public String deleteAnnouncementComment (@PathVariable Announcement announcement, @PathVariable Comment comment,
-                                     @AuthenticationPrincipal User user, Model model) {
+    @GetMapping("adverts/{advert}/comments/{comment}/delete")
+    public String deleteAdvertComment (@PathVariable Advert advert, @PathVariable Comment comment,
+                                             @AuthenticationPrincipal User user, Model model) {
         commentService.delete(comment);
-        model.addAttribute("object", announcement);
-        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
+        model.addAttribute("object", advert);
+        model.addAttribute("comments", commentService.findAllByAdvert(advert));
         model.addAttribute("user", user);
-        return "comments";
+        return "/parts/advertComments";
     }
 
-    @PostMapping("/announcements/{announcement}/comments/create")
-    public String createAnnouncementComment (@PathVariable Announcement announcement, Model model, @AuthenticationPrincipal User user,
-                                     @RequestParam("commentBox") String message) {
-        commentService.createInAnnouncement(user, message, announcement);
-        model.addAttribute("object", announcement);
-        model.addAttribute("comments", commentService.findAllByAnnouncement(announcement));
+    @PostMapping("/adverts/{advert}/comments/create")
+    public String createAdvertComment (@PathVariable Advert advert, Model model, @AuthenticationPrincipal User user,
+                                       @RequestParam("commentBox") String message) {
+        commentService.createInAdvert(user, message, advert);
+        model.addAttribute("object", advert);
+        model.addAttribute("comments", commentService.findAllByAdvert(advert));
         model.addAttribute("user", user);
-        return "comments";
+        return "/parts/advertComments";
     }
 
 }

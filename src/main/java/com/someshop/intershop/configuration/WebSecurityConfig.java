@@ -1,4 +1,4 @@
-package com.someshop.intershop.config;
+package com.someshop.intershop.configuration;
 
 
 import com.someshop.intershop.service.UserService;
@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure (HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/registration", "/", "/img/**", "/js/**", "/search").permitAll()
+                .antMatchers("/registration", "/", "/img/**", "/js/**", "/search", "/categories").permitAll()
                 .anyRequest().authenticated()
                 .and()
 

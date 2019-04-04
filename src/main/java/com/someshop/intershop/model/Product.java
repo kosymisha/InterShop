@@ -13,8 +13,9 @@ public class Product {
     @Column
     private String title;
 
-    @Column(name = "category_name")
-    private String categoryName;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(name = "photo_url")
     private String photoURL;
@@ -23,21 +24,21 @@ public class Product {
     private String description;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private Set<Announcement> announcements;
+    private Set<Advert> adverts;
 
-    public Set<Announcement> getAnnouncements() {
-        return announcements;
+    public Set<Advert> getAdverts() {
+        return adverts;
     }
 
-    public void setAnnouncements(Set<Announcement> announcements) {
-        this.announcements = announcements;
+    public void setAdverts(Set<Advert> adverts) {
+        this.adverts = adverts;
     }
 
     public Product() {}
 
-    public Product(String title, String categoryName, String photoURL, String description) {
+    public Product(String title, Category category, String photoURL, String description) {
         this.title = title;
-        this.categoryName = categoryName;
+        this.category = category;
         this.photoURL = photoURL;
         this.description = description;
     }
@@ -74,11 +75,11 @@ public class Product {
         this.photoURL = photoURL;
     }
 
-    public String getCategory() {
-        return categoryName;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategory(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

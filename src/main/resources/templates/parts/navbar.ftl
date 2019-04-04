@@ -13,7 +13,7 @@
             </li>
             <#if isAdmin || isSeller>
             <li class="nav-item">
-                <a class="nav-link" href="/announcements">Announcements</a>
+                <a class="nav-link" href="/adverts">Adverts</a>
             </li>
             </#if>
             <#if isAdmin>

@@ -1,30 +1,10 @@
 package com.someshop.intershop.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
-@Service
-public class FileService {
-
-    @Value("${upload.path}")
-    private String uploadPath;
-
-    public String upload (MultipartFile file) throws IOException {
-        if(file != null){
-            File uploadDir = new File(uploadPath);
-            if(!uploadDir.exists()){
-                uploadDir.mkdir();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename()/*.substring(file.getOriginalFilename().lastIndexOf("."))*/;
-            file.transferTo(new File(uploadPath + "/" + resultFileName));
-            return "/img/" + resultFileName;
-        }
-        return null;
-    }
+public interface FileService {
+    String uploadLocal (MultipartFile file) throws IOException;
+    String uploadToS3 (MultipartFile file) throws IOException;
 }

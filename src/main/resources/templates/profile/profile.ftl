@@ -1,5 +1,5 @@
 <#import "../parts/common.ftl" as c>
-<@c.page "InterShop" "">
+<@c.page "InterShop">
 <div><img width="200" height="200" src="${profileUser.photoURL?if_exists}" /></div>
 <div><label>First Name: </label>${profileUser.firstName}</div>
 <div><label>Last Name: </label>${profileUser.lastName}</div>

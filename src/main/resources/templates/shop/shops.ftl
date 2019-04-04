@@ -1,5 +1,5 @@
 <#import "../parts/common.ftl" as c>
-<@c.page "InterShop" "">
+<@c.page "InterShop">
 <a href="/shops/create" >Create new shop</a>
 <table>
     <thead>

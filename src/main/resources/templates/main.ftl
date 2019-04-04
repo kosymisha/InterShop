@@ -1,7 +1,7 @@
 
 
 <#import "parts/common.ftl" as c>
-<@c.page "InterShop" "">
+<@c.page "InterShop">
 <script src="/js/searchMain.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <style>
     .catdiv{
@@ -12,24 +12,22 @@
 <div class="row">
     <div class="col">
         <div class="row mt-3 ml-2 mr-2" id="categoryList">
-            <input type="text" class="form-control" placeholder="Search category..." id="keywordCategory" aria-describedby="basic-addon2" ong onkeyup="searchCategory()">
-            <div class="catdiv">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <div id="catlist">
-                    <object name="objects">
+            <input type="text" class="form-control" placeholder="Search category..." id="keywordCategory" aria-describedby="basic-addon2" onkeyup="inputCategory()">
+            <div class="catdiv" id="toch">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <object class="btn btn-secondary">
                     <label class="btn btn-secondary active">
                         <input type="radio" name="options" value="0" id="option1" autocomplete="off" checked>None
                     </label>
-                    </object>
+                </object>
                     <#list categories as category>
-                    <object name="objects">
+                    <object name="objects" class="btn btn-secondary" >
                         <label class="btn btn-secondary">
                             <input type="radio" name="options" value="${category.id}" autocomplete="off" >${category.categoryName}
                         </label>
                     </object>
                     </#list>
-                    </div>
-                </div>
+            </div>
             </div>
         </div>
         <div class="row mt-3 ml-3 mr-3">

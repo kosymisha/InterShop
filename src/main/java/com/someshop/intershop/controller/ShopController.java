@@ -4,6 +4,8 @@ import com.someshop.intershop.model.Shop;
 import com.someshop.intershop.model.User;
 import com.someshop.intershop.repository.ShopRepository;
 import com.someshop.intershop.service.ShopService;
+import com.someshop.intershop.service.impl.CommentServiceImpl;
+import com.someshop.intershop.service.impl.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +27,10 @@ public class ShopController {
     private ShopRepository shopRepository;
 
     @Autowired
-    private ShopService shopService;
+    private ShopServiceImpl shopService;
+
+    @Autowired
+    private CommentServiceImpl commentService;
 
     @GetMapping("/shops")
     public String shops(@AuthenticationPrincipal User user, Model model) {
@@ -39,6 +44,8 @@ public class ShopController {
                              @AuthenticationPrincipal User user) {
         model.addAttribute("shop", shop);
         model.addAttribute("user", user);
+        model.addAttribute("comments", commentService.findAllByShop(shop));
+        model.addAttribute("object", shop);
         return "shop/shop";
     }
 

@@ -1,7 +1,7 @@
 <#import "parts/login.ftl" as l>
 <#import "parts/bootstrapLoad.ftl" as bs>
 <#import "parts/common.ftl" as c>
-<@c.page "InterShop" "">
+<@c.page "InterShop">
 <form action="/registration" method="post" enctype="multipart/form-data">
     <div><label>First Name: <input type="text" name="firstName" /></label></div>
     <div><label>Last Name: <input type="text" name="lastName" /></label></div>

@@ -1,12 +1,8 @@
 <#import "../parts/common.ftl" as c>
-<@c.page "InterShop"  "">
-    <form action="/announcements" method="post" enctype="multipart/form-data">
-        <select name="category">
-            <option value="Coats & Jackets">Coats & Jackets</option>
-            <option value="Pants">Pants</option>
-            <option value="Shirts">Shirts</option>
-            <option value="Athletic Shoes">Athletic Shoes</option>
-        </select>
+<@c.page "InterShop">
+    <form action="/adverts" method="post" enctype="multipart/form-data">
+        <input type="text" class="form-control" placeholder="Search category..." id="keywordCategory" aria-describedby="basic-addon2" onkeyup="inputCategory()">
+        <#include "../parts/categories.ftl" />
         <div><input type="text" name="title" placeholder="input title" /></div>
         <div><input type="file" name="photo_url" value="Add file" /></div>
         <div><input type="text" name="description" placeholder="input description" /></div>

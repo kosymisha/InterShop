@@ -27,7 +27,7 @@ public class Shop {
     private User owner;
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
-    private Set<Announcement> announcements;
+    private Set<Advert> adverts;
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private Set<Comment> comments;
@@ -51,12 +51,12 @@ public class Shop {
         this.comments = comments;
     }
 
-    public Set<Announcement> getAnnouncements() {
-        return announcements;
+    public Set<Advert> getAdverts() {
+        return adverts;
     }
 
-    public void setAnnouncements(Set<Announcement> announcements) {
-        this.announcements = announcements;
+    public void setAdverts(Set<Advert> adverts) {
+        this.adverts = adverts;
     }
 
     public String getDescription() {

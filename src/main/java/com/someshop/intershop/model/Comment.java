@@ -20,8 +20,8 @@ public class Comment {
     private Shop shop;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "announcement_id")
-    private Announcement announcement;
+    @JoinColumn(name = "advert_id")
+    private Advert advert;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -33,9 +33,9 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Announcement announcement, User author, String message) {
+    public Comment(Advert advert, User author, String message) {
         this.shop = null;
-        this.announcement = announcement;
+        this.advert = advert;
         this.author = author;
         this.message = message;
         this.date = new Date();
@@ -43,7 +43,7 @@ public class Comment {
 
     public Comment(Shop shop, User author, String message) {
         this.shop = shop;
-        this.announcement = null;
+        this.advert = null;
         this.author = author;
         this.message = message;
         this.date = new Date();
@@ -73,12 +73,12 @@ public class Comment {
         this.shop = shop;
     }
 
-    public Announcement getAnnouncement() {
-        return announcement;
+    public Advert getAdvert() {
+        return advert;
     }
 
-    public void setAnnouncement(Announcement announcement) {
-        this.announcement = announcement;
+    public void setAdvert(Advert advert) {
+        this.advert = advert;
     }
 
     public User getAuthor() {

@@ -12,6 +12,7 @@ function search() {
     if (minPrice !== "" && minPrice != null && isValidPriceChecker(minPrice)) { url = url + "&minPrice=" + minPrice; }
     if (maxPrice !== "" && minPrice != null && isValidPriceChecker(maxPrice)) { url = url + "&maxPrice=" + maxPrice; }
     if(isAvailableRequest) {
+        console.log(url); debugger;
         get(url);
     } else { alert('Input keywords or choose category.'); }
 }
@@ -27,7 +28,7 @@ function isValidPriceChecker(value) {
 }
 
 function get(url) {
-    //document.getElementById("advs").innerText = url;
+    //alert(url);
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function () {
         if(this.readyState === 4 && this.status === 200) {
@@ -38,46 +39,40 @@ function get(url) {
     httpRequest.send();
 }
 
+function inputCategory() {
+    var k = event.keyCode || event.charCode;
+    if (k === 8) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if(this.readyState === 4 && this.status === 200) {
+                document.getElementById("toch").innerHTML = this.responseText;
+                searchCategory();
+            }
+        };
+        httpRequest.open("GET", "http://localhost:8080/categories", true);
+        httpRequest.send();
+    } else {
+        searchCategory();
+    }
+}
+
 function searchCategory() {
     var keyword = document.getElementById("keywordCategory").value;
     var categories = document.getElementsByName("objects");
-    var categoriesElement = document.getElementById("catlist");
+    var source = document.getElementsByName("objects");
     console.log(categories);
-
-    //var regex = new RegExp(keyword);
-    /*
-    var filtered = Array.from(categories).filter(function(value, index, arr){
-        //var a = new RegExp(categories.innerText);
-        if (value.innerText.indexOf(keyword) !== 0){
-            return value;
-        }
-    });
-    console.log('keyword ' + keyword);
-    console.log('filtered:');
-    console.log(filtered);*/
     var isContainsKeyword = false;
     do {
         isContainsKeyword = false;
         categories.forEach(function(category){ if(category.innerText.toLowerCase().indexOf(keyword) === -1) {isContainsKeyword = true;} });
-        console.log('isContKey ' + isContainsKeyword); debugger;
+        console.log('s size: ' + source);
+        console.log('c size: ' + categories);
+        debugger;
         for (var l = 0; l < categories.length; l++) {
             if (categories.item(l).innerText.toLowerCase().indexOf(keyword) === -1) {
-                console.log('removed ' + categories.item(l).innerText);
                 categories.item(l).remove();
                 break;
             }
         }
     } while (isContainsKeyword);
-    /*
-    categories.forEach(function(category){
-        if (category.innerText.toLowerCase().indexOf(keyword) === -1) {
-            console.log(category);
-            debugger;
-            category.remove();
-        } else { console.log(category.innerText); }
-    });
-    console.log(categories);
-    debugger;
-    */
-    //categoriesElement.innerHTML = categories.values();
 }

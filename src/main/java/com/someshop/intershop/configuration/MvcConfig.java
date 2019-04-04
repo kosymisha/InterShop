@@ -1,4 +1,4 @@
-package com.someshop.intershop.config;
+package com.someshop.intershop.configuration;
 
 
 import org.springframework.beans.factory.annotation.Value;
