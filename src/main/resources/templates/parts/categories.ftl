@@ -6,12 +6,12 @@
                 <input type="radio" name="options" value="0" id="option1" autocomplete="off" checked>None
             </label>
         </object>
-                    <#list categories as category>
-                    <object name="objects" class="btn btn-secondary" >
-                        <label class="btn btn-secondary">
-                            <input type="radio" name="options" value="${category.id}" autocomplete="off" >${category.categoryName}
-                        </label>
-                    </object>
-                    </#list>
+        <#list categories as category>
+            <object name="objects" class="btn btn-secondary" >
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" value="${category.id}" autocomplete="off" >${category.categoryName}
+                </label>
+            </object>
+        </#list>
     </div>
 </div>

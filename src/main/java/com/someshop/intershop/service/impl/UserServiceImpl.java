@@ -1,5 +1,6 @@
 package com.someshop.intershop.service.impl;
 
+import com.someshop.intershop.dto.UserDto;
 import com.someshop.intershop.model.Role;
 import com.someshop.intershop.model.User;
 import com.someshop.intershop.repository.UserRepository;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private FileServiceImpl fileService;
+    private FileService fileService;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -48,5 +51,14 @@ public class UserServiceImpl implements UserService {
 
     public void delete (User user) {
         userRepository.delete(user);
+    }
+
+    @Override
+    public List<UserDto> findAll() {
+        List<UserDto> userDtos = new LinkedList<>();
+        for (User user : userRepository.findAll()) {
+            userDtos.add(new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getPhotoURL()));
+        }
+        return userDtos;
     }
 }

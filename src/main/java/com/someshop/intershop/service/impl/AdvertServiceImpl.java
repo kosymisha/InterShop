@@ -1,8 +1,9 @@
 package com.someshop.intershop.service.impl;
 
+import com.someshop.intershop.dto.AdvertDto;
 import com.someshop.intershop.model.*;
 import com.someshop.intershop.repository.AdvertRepository;
-import com.someshop.intershop.service.*;
+import com.someshop.intershop.service.AdvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,8 +45,8 @@ public class AdvertServiceImpl implements AdvertService {
                 0, "",
                 productService.create(form.get("title"),
                         categoryService.findById(form.get("options")),
-                        file, form.get("description")),
-                shopServiceImpl.findByNameShop(form.get("shop")));
+                        file),
+                shopServiceImpl.findByNameShop(form.get("shop")), form.get("description"));
         advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getProduct().getId());
         advertRepository.save(advert);
         return advert;
@@ -55,8 +56,8 @@ public class AdvertServiceImpl implements AdvertService {
                           String categoryName, String shop, String photoURL) {
         if (advertRepository.findByStoreId(storeId) == null) {
             Advert advert = new Advert(storeId, currency, new BigDecimal(price).setScale(2), 0, productURL,
-                    productService.create(title, categoryService.findByIdAndNameOrCreate(categoryId, categoryName), photoURL, "For more information click in URL."),
-                    shopServiceImpl.findByNameShop(shop));
+                    productService.create(title, categoryService.findByIdAndNameOrCreate(categoryId, categoryName), photoURL),
+                    shopServiceImpl.findByNameShop(shop), "For more information click in URL.");
             advertRepository.save(advert);
             return advert;
         } else { return advertRepository.findByStoreId(storeId); }
@@ -68,19 +69,37 @@ public class AdvertServiceImpl implements AdvertService {
         }
     }
 
-    public List<Advert> findAllAndOrderByShop (Shop shop, User user) {
-        if(shop != null) return advertRepository.findByShop(shop);
-        else return advertRepository.findAllOrderByOwner(user);
+    @Override
+    public List<Advert> findAll() {
+        return advertRepository.findAll();
     }
 
-    public List<Advert> search (String categoryId, String keyword, String minPrice, String maxPrice, String sort) throws ParserConfigurationException, SAXException, IOException {
+    public List<AdvertDto> findAllAndOrderByShop (Shop shop, User user) {
+        List<AdvertDto> advertDtos = new LinkedList<>();
+        if(shop != null) {
+            for (Advert advert : advertRepository.findByShop(shop)) {
+                advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getPrice(), advert.getViews(), advert.getProduct(), advert.getShop()));
+            }
+        } else {
+            for (Advert advert : advertRepository.findAllOrderByOwner(user)) {
+                advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getPrice(), advert.getViews(), advert.getProduct(), advert.getShop()));
+            }
+        }
+        return advertDtos;
+    }
+
+    public List<AdvertDto> search (String categoryId, String keyword, String minPrice, String maxPrice, String sort) throws ParserConfigurationException, SAXException, IOException {
+        List<AdvertDto> advertDtos = new LinkedList<>();
         List<Advert> adverts = new LinkedList<>();
         List<Product> products = productService.findByCriteria(categoryId, keyword);
         for (Product product : products) { adverts.addAll(product.getAdverts()); }
         adverts = addWithoutDuplicates(adverts, ebayService.getItems(keyword, minPrice, maxPrice, categoryId));
         adverts = filterByPrice(adverts, minPrice, maxPrice);
         adverts = sort(adverts, sort);
-        return adverts;
+        for (Advert advert : adverts) {
+            advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getPrice(), advert.getViews(), advert.getProduct(), advert.getShop()));
+        }
+        return advertDtos;
     }
 
     public List<Advert> filterByPrice(List<Advert> adverts, String minPrice, String maxPrice) {

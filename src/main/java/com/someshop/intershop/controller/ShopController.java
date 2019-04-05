@@ -2,10 +2,7 @@ package com.someshop.intershop.controller;
 
 import com.someshop.intershop.model.Shop;
 import com.someshop.intershop.model.User;
-import com.someshop.intershop.repository.ShopRepository;
 import com.someshop.intershop.service.ShopService;
-import com.someshop.intershop.service.impl.CommentServiceImpl;
-import com.someshop.intershop.service.impl.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,18 +21,11 @@ import java.util.Map;
 public class ShopController {
 
     @Autowired
-    private ShopRepository shopRepository;
-
-    @Autowired
-    private ShopServiceImpl shopService;
-
-    @Autowired
-    private CommentServiceImpl commentService;
+    private ShopService shopService;
 
     @GetMapping("/shops")
     public String shops(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("shopList", shopRepository.findAllOrderByOwner(user));
-        model.addAttribute("user", user);
+        model.addAttribute("shopList", shopService.findAllOrderByOwner(user)); //dto
         return "shop/shops";
     }
 
@@ -43,17 +33,14 @@ public class ShopController {
     public String shopsById (@PathVariable Shop shop, Model model,
                              @AuthenticationPrincipal User user) {
         model.addAttribute("shop", shop);
-        model.addAttribute("user", user);
-        model.addAttribute("comments", commentService.findAllByShop(shop));
-        model.addAttribute("object", shop);
+        model.addAttribute("userId", user.getId());
         return "shop/shop";
     }
 
     @GetMapping("/shops/{shop}/delete")
     public String deleteShop (@PathVariable Shop shop, @AuthenticationPrincipal User user, Model model) {
         shopService.delete(shop, user);
-        model.addAttribute("shopList", shopRepository.findAll());
-        model.addAttribute("user", user);
+        model.addAttribute("shopList", shopService.findAllOrderByOwner(user)); //dto
         return "shop/shops";
     }
 

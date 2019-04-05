@@ -3,7 +3,7 @@ package com.someshop.intershop.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "advert")
@@ -24,6 +24,9 @@ public class Advert implements Serializable {
     @Column
     private Integer views;
 
+    @Column
+    private String description;
+
     @Column(name = "product_url")
     private String productURL;
 
@@ -42,7 +45,7 @@ public class Advert implements Serializable {
 
     }
 
-    public Advert(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop) {
+    public Advert(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop, String description) {
         this.storeId = storeId;
         this.currency = currency;
         this.price = price;
@@ -50,6 +53,25 @@ public class Advert implements Serializable {
         this.productURL = productURL;
         this.product = product;
         this.shop = shop;
+        this.description = description;
+    }
+
+    public List<Comment> getCommentsOrderByDate(){
+        List<Comment> comments = new LinkedList<>(getComments());
+        Collections.sort(comments, new Comparator<Comment>() {
+            public int compare(Comment c1, Comment c2) {
+                return c1.getDate().compareTo(c2.getDate()) * -1;
+            }
+        });
+        return comments;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void addView () { this.views++; }

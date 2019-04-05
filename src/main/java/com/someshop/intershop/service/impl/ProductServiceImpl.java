@@ -29,20 +29,18 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private FileServiceImpl fileServiceImpl;
 
-    public Product create(String title, Category category, MultipartFile file, String description) throws IOException {
+    public Product create(String title, Category category, MultipartFile file) throws IOException {
         Product product = new Product(title,
                 category,
-                fileServiceImpl.uploadToS3(file),
-                description);
+                fileServiceImpl.uploadToS3(file));
         productRepository.save(product);
         return product;
     }
 
-    public Product create(String title, Category category, String photoURL, String description) {
+    public Product create(String title, Category category, String photoURL) {
         Product product = new Product(title,
                 category,
-                photoURL,
-                description);
+                photoURL);
         productRepository.save(product);
         return product;
     }

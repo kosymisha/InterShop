@@ -1,23 +1,20 @@
 package com.someshop.intershop.dto;
 
-import com.someshop.intershop.model.Comment;
-import com.someshop.intershop.model.Role;
-import com.someshop.intershop.model.Shop;
-
-import java.util.Set;
-
 public class UserDto {
-
     private Long id;
     private String firstName;
     private String lastName;
     private String photoURL;
-    private String email;
-    private String password;
-    private boolean active;
-    private Set<Role> roles;
-    private Set<Shop> shops;
-    private Set<Comment> comments;
+
+    public UserDto() {
+    }
+
+    public UserDto(Long id, String firstName, String lastName, String photoURL) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.photoURL = photoURL;
+    }
 
     public Long getId() {
         return id;
@@ -49,53 +46,5 @@ public class UserDto {
 
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Set<Shop> getShops() {
-        return shops;
-    }
-
-    public void setShops(Set<Shop> shops) {
-        this.shops = shops;
-    }
-
-    public Set<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
     }
 }

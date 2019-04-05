@@ -1,7 +1,7 @@
 package com.someshop.intershop.model;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "shop")
@@ -44,6 +44,16 @@ public class Shop {
     }
 
     public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public List<Comment> getCommentsOrderByDate(){
+        List<Comment> comments = new LinkedList<>(getComments());
+        Collections.sort(comments, new Comparator<Comment>() {
+            public int compare(Comment c1, Comment c2) {
+                return c1.getDate().compareTo(c2.getDate()) * -1;
+            }
+        });
         return comments;
     }
 

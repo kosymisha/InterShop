@@ -9,9 +9,7 @@
     <i>${advert.currency} <b>${advert.price}</b></i> <br/>
     <i>Views: ${advert.views}</i>
     <br/>
-        <#if isAdmin>
-        <a href="/adverts/${advert.id}/delete">delete</a>
-        <#elseif advert.shop.owner.id == currentUserId>
+        <#if isAdmin || advert.shop.owner.id == currentUserId>
         <a href="/adverts/${advert.id}/delete">delete</a>
         </#if>
     <br/>
@@ -20,16 +18,15 @@
 
     <div id="comm" name="commentsList">Comments:
         <div><input type="text" id="advComBox" name="commentBox" placeholder="input your comment" />
-        <button onclick="createAdvertComment(${object.id}, '${_csrf.token}')">Send</button></div>
-        <#if comments??>
-            <#list comments as comment>
+        <button onclick="createAdvertComment(${advert.id}, '${_csrf.token}')">Send</button></div>
+        <#if advert.comments??>
+            <#list advert.getCommentsOrderByDate() as comment>
                 <div>${comment.author.firstName} ${comment.author.lastName} ${comment.getStringDate()}</div>
                 <div>${comment.message}</div>
-                <#list user.roles as role>
-                    <#if role == 'ADMIN' || comment.author.id == user.id>
-                        <div><button onclick="deleteAdvertComment(${object.id}, ${comment.id})">delete</button></div>
+
+                    <#if isAdmin || comment.author.id == currentUserId>
+                        <div><button onclick="deleteAdvertComment(${advert.id}, ${comment.id})">delete</button></div>
                     </#if>
-                </#list>
                 <br>
             </#list>
         <#else>

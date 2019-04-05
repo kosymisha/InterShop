@@ -10,7 +10,7 @@ function deleteAdvertComment (advertId, comment) {
 }
 
 function createAdvertComment(advertId, csrfToken) {
-    alert("hjk");
+    alert("advert");
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function () {
         if(this.readyState === 4 && this.status === 200) {

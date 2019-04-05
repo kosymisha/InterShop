@@ -1,11 +1,11 @@
 <#import "../parts/common.ftl" as c>
+<#include "../parts/security.ftl" />
 <@c.page "InterShop">
 <div><img width="200" height="200" src="${profileUser.photoURL?if_exists}" /></div>
 <div><label>First Name: </label>${profileUser.firstName}</div>
 <div><label>Last Name: </label>${profileUser.lastName}</div>
 <div><label>Email: </label>${profileUser.email}</div>
-    <#list user.roles as role>
-        <#if role == 'ADMIN'>
+        <#if isAdmin>
             <form action="/profiles/${profileUser.id}/role" method="post">
                 <select name="role">
                     <option value="USER">USER</option>
@@ -16,5 +16,4 @@
                 <button type="submit" >Save</button>
             </form>
         </#if>
-    </#list>
 </@c.page>

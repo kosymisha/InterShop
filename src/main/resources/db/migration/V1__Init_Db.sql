@@ -5,7 +5,6 @@ create table category (
 
 create table product (
   id bigint not null AUTO_INCREMENT,
-  description varchar(200),
   photo_url varchar(100),
   title varchar(80) not null,
   category_id bigint not null,
@@ -44,6 +43,7 @@ create table advert (
   price decimal(19,2) not null,
   product_url varchar(160) ,
   views integer not null,
+  description varchar(200),
   product_id bigint not null,
   shop_id bigint not null,
   primary key (id),
