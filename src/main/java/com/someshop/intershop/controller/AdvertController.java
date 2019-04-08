@@ -50,7 +50,7 @@ public class AdvertController {
 
     @GetMapping("/adverts/create")
     public String advertsCreate (@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("shops", shopService.findByOwner(user)); //dto
+        model.addAttribute("shops", shopService.findByOwner(user.getId().toString())); //dto
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("products", productService.findAll());
         return "advert/create";
@@ -67,7 +67,7 @@ public class AdvertController {
     @PostMapping("/adverts")
     public String advertCreate(
             @RequestParam Map<String, String> form, Model model,
-            @RequestParam("photo_url") MultipartFile file) throws IOException {
+            @RequestParam(value = "photo_url", required = false) MultipartFile file) throws IOException {
         Advert advert = advertService.create(form, file);
         model.addAttribute("advert", advert);
         return "redirect:/adverts/" + advert.getId();

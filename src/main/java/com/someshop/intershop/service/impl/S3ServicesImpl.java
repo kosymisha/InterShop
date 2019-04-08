@@ -1,6 +1,7 @@
 package com.someshop.intershop.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
@@ -26,12 +27,12 @@ public class S3ServicesImpl implements S3Services {
 
     @Override
     public void downloadFile(String keyName) {
-            S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, keyName));
+        S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, keyName));
     }
 
     @Override
     public void uploadFile(String keyName, MultipartFile file) throws IOException {
-            s3client.putObject(new PutObjectRequest(bucketName, keyName, file.getInputStream(), null));
+        s3client.putObject(new PutObjectRequest(bucketName, keyName, file.getInputStream(), null).withCannedAcl(CannedAccessControlList.PublicRead));
     }
 }
 

@@ -23,6 +23,10 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    public String getIdString() {
+        return id.toString();
+    }
+
     public Set<Product> getProducts() {
         return products;
     }

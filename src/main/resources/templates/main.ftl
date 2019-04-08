@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col">
         <div class="row mt-3 ml-2 mr-2" id="categoryList">
-            <input type="text" class="form-control" placeholder="Search category..." id="keywordCategory" aria-describedby="basic-addon2" onkeyup="inputCategory()">
+            <input type="text" class="form-control mb-1" placeholder="Search category..." id="keywordCategory" aria-describedby="basic-addon2" onkeyup="inputCategory()">
             <div class="catdiv" id="toch">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <object class="btn btn-secondary">

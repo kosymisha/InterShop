@@ -21,12 +21,16 @@
                 <a class="nav-link" href="/profiles">Profiles</a>
             </li>
             </#if>
+            <#if isUser>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/my">My orders</a>
+                </li>
+            </#if>
         </ul>
         <#if firstname == "guest">
             <div><a class="nav-link" href="/login">Sign in</a></div>
         <#else>
             <a class="nav-link" href="/profiles/my">${firstname} ${lastname}</a>
-            <@l.logout/>
         </#if>
     </div>
 </nav>

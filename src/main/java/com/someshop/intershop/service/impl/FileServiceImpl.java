@@ -45,4 +45,9 @@ public class FileServiceImpl implements FileService {
         }
         return  null;
     }
+
+    @Override
+    public String downloadFromS3() throws IOException {
+        return null;
+    }
 }

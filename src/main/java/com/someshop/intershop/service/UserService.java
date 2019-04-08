@@ -13,4 +13,5 @@ public interface UserService extends UserDetailsService {
     void changeRole (User user, String role);
     void delete (User user);
     List<UserDto> findAll ();
+    User findById (String id);
 }

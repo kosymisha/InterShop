@@ -7,4 +7,5 @@ import java.io.IOException;
 public interface FileService {
     String uploadLocal (MultipartFile file) throws IOException;
     String uploadToS3 (MultipartFile file) throws IOException;
+    String downloadFromS3 () throws IOException;
 }

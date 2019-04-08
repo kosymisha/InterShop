@@ -3,7 +3,7 @@ package com.someshop.intershop.service.impl;
 import com.someshop.intershop.dto.AdvertDto;
 import com.someshop.intershop.model.*;
 import com.someshop.intershop.repository.AdvertRepository;
-import com.someshop.intershop.service.AdvertService;
+import com.someshop.intershop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,19 +18,19 @@ import java.util.*;
 public class AdvertServiceImpl implements AdvertService {
 
     @Autowired
-    private ProductServiceImpl productService;
+    private ProductService productService;
 
     @Autowired
     private AdvertRepository advertRepository;
 
     @Autowired
-    private ShopServiceImpl shopServiceImpl;
+    private ShopService shopService;
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    private EbayServiceImpl ebayService;
+    private EbayService ebayService;
 
     public void addView (Advert advert) {
         advert.addView();
@@ -39,28 +39,57 @@ public class AdvertServiceImpl implements AdvertService {
 
     public Advert create (Map<String, String> form, MultipartFile file)
             throws IOException {
-        Advert advert = new Advert(null,
-                "USD",
-                new BigDecimal(form.get("price")),
-                0, "",
-                productService.create(form.get("title"),
-                        categoryService.findById(form.get("options")),
-                        file),
-                shopServiceImpl.findByNameShop(form.get("shop")), form.get("description"));
-        advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getProduct().getId());
-        advertRepository.save(advert);
-        return advert;
+        if(form.get("productId") != null) {
+            return createWithExistingProduct(form);
+        } else {
+            return createWithNewProduct(form, file);
+        }
     }
 
     public Advert create (String storeId, String currency, String price, String productURL, String title, String categoryId,
                           String categoryName, String shop, String photoURL) {
         if (advertRepository.findByStoreId(storeId) == null) {
-            Advert advert = new Advert(storeId, currency, new BigDecimal(price).setScale(2), 0, productURL,
+            Advert advert = new Advert(storeId,
+                    currency,
+                    new BigDecimal(price).setScale(2),
+                    0,
+                    productURL,
                     productService.create(title, categoryService.findByIdAndNameOrCreate(categoryId, categoryName), photoURL),
-                    shopServiceImpl.findByNameShop(shop), "For more information click in URL.");
+                    shopService.findByNameShop(shop),
+                    "For more information click in URL.");
             advertRepository.save(advert);
             return advert;
         } else { return advertRepository.findByStoreId(storeId); }
+    }
+
+    @Override
+    public Advert createWithExistingProduct(Map<String, String> form) {
+        Advert advert = new Advert(null,
+                "USD",
+                new BigDecimal(form.get("price")),
+                0,
+                "",
+                productService.findById(form.get("productId")),
+                shopService.findByNameShop(form.get("shop")),
+                form.get("description"));
+        advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getProduct().getId());
+        advertRepository.save(advert);
+        return advert;
+    }
+
+    @Override
+    public Advert createWithNewProduct(Map<String, String> form, MultipartFile file) throws IOException {
+        Advert advert = new Advert(null,
+                "USD",
+                new BigDecimal(form.get("price")),
+                0,
+                "",
+                productService.create(form.get("title"), categoryService.findById(form.get("options")), file),
+                shopService.findByNameShop(form.get("shop")),
+                form.get("description"));
+        advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getProduct().getId());
+        advertRepository.save(advert);
+        return advert;
     }
 
     public void delete (Advert advert, User user) {

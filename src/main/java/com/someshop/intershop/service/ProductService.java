@@ -10,6 +10,7 @@ import java.util.List;
 public interface ProductService {
     Product create(String title, Category category, MultipartFile file) throws IOException;
     Product create(String title, Category category, String photoURL);
+    Product findById (String id);
     List<Product> findAll();
     List<Product> findByCriteria(String categoryId, String keyword);
 

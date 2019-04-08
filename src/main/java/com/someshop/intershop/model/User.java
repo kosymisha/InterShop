@@ -84,6 +84,8 @@ public class User implements UserDetails {
         return roles.contains(Role.SELLER);
     }
 
+    public boolean isUser() { return roles.contains(Role.USER); }
+
     public String getPhotoURL() {
         return photoURL;
     }

@@ -16,6 +16,8 @@ public interface AdvertService {
     void addView (Advert advert);
     Advert create (Map<String, String> form, MultipartFile file) throws IOException;
     Advert create (String storeId, String currency, String price, String productURL, String title, String categoryId, String categoryName, String shop, String photoURL) ;
+    Advert createWithExistingProduct (Map<String, String> form);
+    Advert createWithNewProduct (Map<String, String> form, MultipartFile file) throws IOException;
     void delete (Advert advert, User user);
     List<Advert> findAll();
     List<AdvertDto> findAllAndOrderByShop (Shop shop, User user);

@@ -53,7 +53,7 @@ create table advert (
 create table comment (
   id bigint not null AUTO_INCREMENT,
   date datetime not null,
-  message varchar(50) not null,
+  message varchar(200) not null,
   advert_id bigint,
   user_id bigint not null,
   shop_id bigint,

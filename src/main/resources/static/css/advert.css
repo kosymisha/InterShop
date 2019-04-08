@@ -1,0 +1,9 @@
+#advert{
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+#desc {
+    width: 200px;
+    word-break: normal;
+}

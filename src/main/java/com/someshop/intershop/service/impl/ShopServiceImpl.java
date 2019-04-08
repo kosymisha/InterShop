@@ -39,9 +39,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<ShopDto> findByOwner(User owner) {
+    public List<ShopDto> findByOwner(String id) {
         List<ShopDto> shopDtos = new LinkedList<>();
-        for (Shop shop : shopRepository.findByOwner(owner)) {
+        for (Shop shop : shopRepository.findByOwner(id)) {
             shopDtos.add(new ShopDto(shop.getNameShop()));
         }
         return shopDtos;

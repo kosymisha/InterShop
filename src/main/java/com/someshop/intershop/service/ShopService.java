@@ -13,6 +13,6 @@ public interface ShopService {
     void create(Map<String, String> form, MultipartFile file, User user) throws IOException;
     void delete(Shop shop, User user);
     Shop findByNameShop (String shop);
-    List<ShopDto> findByOwner (User owner);
+    List<ShopDto> findByOwner (String id);
     List<ShopDto> findAllOrderByOwner (User user);
 }

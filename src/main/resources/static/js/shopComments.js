@@ -10,7 +10,6 @@ function deleteShopComment (shopId, comment) {
 }
 
 function createShopComment(shopId, csrfToken) {
-    alert("hjk");
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function () {
         if(this.readyState === 4 && this.status === 200) {

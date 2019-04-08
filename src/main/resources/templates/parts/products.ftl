@@ -1,16 +1,21 @@
+<#include "../parts/security.ftl" />
 <div id="prods">
-    Products:<br/>
-    <#if products??>
-        <#list products as product>
-            <object name="objectsProd">
-            <img width="100" height="100" src="${product.photoURL}" /><br/>
-            <div>${product.title}</div>
-            <div>${product.category.categoryName}</div>
-            <div><button ">Add</button></div>
-            <br/>
-            </object>
-        </#list>
-    <#else>
-        No products.
-    </#if>
+                        <#if products??>
+                            <div class="card-columns m-2">
+                                <#list products as product>
+                                    <object name="objectsProd">
+                                        <div class="card m-2" >
+                                            <img src="${product.photoURL}" /><br/>
+                                            <div>${product.title}</div>
+                                            <div>${product.category.categoryName}</div>
+                                            <div><button class="btn btn-secondary" onclick="chooseProduct('${product.id}', '${currentUserId}')">Add</button></div>
+                                        </div>
+                                    </object>
+                                <#else >
+                                    No products.
+                                </#list>
+                            </div>
+                        <#else>
+                            No products.
+                        </#if>
 </div>
