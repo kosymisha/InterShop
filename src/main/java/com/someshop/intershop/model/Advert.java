@@ -8,6 +8,7 @@ import java.util.*;
 @Entity
 @Table(name = "advert")
 public class Advert implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +31,9 @@ public class Advert implements Serializable {
     @Column(name = "product_url")
     private String productURL;
 
+    @Column(name = "available")
+    private Boolean available;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
@@ -41,11 +45,15 @@ public class Advert implements Serializable {
     @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
+    private Set<Order> orders;
+
     public Advert() {
 
     }
 
-    public Advert(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop, String description) {
+    public Advert(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop, String description,
+                  Boolean available) {
         this.storeId = storeId;
         this.currency = currency;
         this.price = price;
@@ -54,6 +62,7 @@ public class Advert implements Serializable {
         this.product = product;
         this.shop = shop;
         this.description = description;
+        this.available = available;
     }
 
     public List<Comment> getCommentsOrderByDate(){
@@ -64,6 +73,22 @@ public class Advert implements Serializable {
             }
         });
         return comments;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     public String getDescription() {

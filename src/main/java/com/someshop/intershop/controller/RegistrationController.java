@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 
 
 @Controller
@@ -27,9 +28,9 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser (Model model, User user,
-                           @RequestParam("role") String role,
+                           @RequestParam Map<String, String> form,
                            @RequestParam(name = "photo_url") MultipartFile file) throws IOException {
-        model.addAttribute("message", userService.create(user, role, file));
+        model.addAttribute("message", userService.create(user, null, file));
         return "redirect:/login";
     }
 }

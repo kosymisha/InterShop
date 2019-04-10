@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface XmlParseService {
     List<Advert> parseEbay (StringBuffer response) throws IOException, SAXException, ParserConfigurationException;
+    String parseCurrency (StringBuffer response, String currency) throws IOException, SAXException, ParserConfigurationException;
 }

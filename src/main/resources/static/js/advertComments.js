@@ -9,7 +9,7 @@ function deleteAdvertComment (advertId, comment) {
     httpRequest.send();
 }
 
-function createAdvertComment(advertId, csrfToken) {
+function createAdvertComment(advertId) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function () {
         if(this.readyState === 4 && this.status === 200) {
@@ -18,6 +18,5 @@ function createAdvertComment(advertId, csrfToken) {
     };
     httpRequest.open("POST", "http://localhost:8080/adverts/" + advertId + "/comments/create", true);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    httpRequest.setRequestHeader('X-CSRF-Token', csrfToken);
     httpRequest.send("commentBox=" + document.getElementById("advComBox").value);
 }

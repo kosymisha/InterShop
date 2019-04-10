@@ -4,7 +4,7 @@
                         <div class="input-group mb-3">
                             <input type="text" id="advComBox" maxlength="200" name="commentBox" class="form-control" placeholder="Input your comment" aria-label="Recipient's username" aria-describedby="button-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="createAdvertComment(${advertId}, '${_csrf.token}')">Send</button>
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="createAdvertComment(${advertId})">Send</button>
                             </div>
                         </div>
                     </#if>

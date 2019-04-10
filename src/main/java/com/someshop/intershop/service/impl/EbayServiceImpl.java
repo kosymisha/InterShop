@@ -28,7 +28,7 @@ public class EbayServiceImpl implements EbayService {
         if (keyword != null) { urlPattern += "&keywords=" + keyword; }
         if (minPrice != null) { urlPattern += "&itemFilter(" + i + ").name=MinPrice&itemFilter(" + i + ").value=" + minPrice; i++; }
         if (maxPrice != null) { urlPattern += "&itemFilter(" + i + ").name=MaxPrice&itemFilter(" + i + ").value=" + maxPrice; }
-        return xmlRequestService.send(new URL(urlPattern), "GET");
+        return xmlRequestService.getAds(new URL(urlPattern));
     }
 }
 /*

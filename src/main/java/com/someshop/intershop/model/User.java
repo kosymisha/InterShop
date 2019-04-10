@@ -43,8 +43,15 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Shop> shops;
 
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_number", referencedColumnName = "number_card")
+    private BankCard card;
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Comment> comments;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Order> orders;
 
     public User(String firstName, String lastName, @Email String email, String password, boolean active, Set<Role> roles,
                 String photoURL) {
@@ -58,6 +65,22 @@ public class User implements UserDetails {
     }
 
     public User() {
+    }
+
+    public BankCard getCard() {
+        return card;
+    }
+
+    public void setCard(BankCard card) {
+        this.card = card;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     public Set<Comment> getComments() {

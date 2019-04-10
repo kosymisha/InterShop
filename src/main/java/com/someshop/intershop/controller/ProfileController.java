@@ -38,6 +38,19 @@ public class ProfileController {
         return "profile/profile";
     }
 
+    @GetMapping("/profiles/{profile}/delete")
+    public String deleteProfile (@PathVariable User profile, @AuthenticationPrincipal User user) {
+        userService.delete(user, profile);
+        return "redirect:/logout";
+    }
+
+    @GetMapping("/profiles/{profile}/active")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String setActiveProfile (@PathVariable User profile, @RequestParam(name = "value") Boolean value) {
+        userService.setActive(profile, value);
+        return "redirect:/profiles/" + profile.getId();
+    }
+
     @PostMapping("/profiles/{profileUser}/role")
     public String userSave(@PathVariable User profileUser,
                            @RequestParam(name = "role") String role,

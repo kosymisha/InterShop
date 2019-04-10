@@ -2,6 +2,7 @@
 <#include "../parts/security.ftl" />
 <@c.page "InterShop">
 <script src="/js/advertComments.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
+<script src="/js/cart.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <link rel="stylesheet" type="text/css"  href="/css/advert.css" media="all">
 <div class="row">
     <div class="col ml-8 mr-8 mt-5" id="advert">
@@ -13,14 +14,16 @@
                 <h3>${advert.product.title}</h3>
                 <label><a href="${advert.productURL}">go to ${advert.shop.nameShop}</a></label><br/>
                 <label>Category:</label><i> ${advert.product.category.categoryName}</i><br/>
-                <label>Price:</label><i> <b>${advert.price}</b> ${advert.currency}</i> <br/>
+                <label>Price:</label> <b>${advert.price}</b> <sup>${advert.currency}</sup> <b id="currencyHelp">${eurPrice.price}</b><sup id="currencyHelp">${eurPrice.currency}</sup> <b id="currencyHelp">${bynPrice.price}</b> <sup id="currencyHelp">${bynPrice.currency}</sup><br/>
                 <label>Views: </label><i> ${advert.views}</i><br/>
                 <label>Description:</label><i id="desc"> ${advert.description}</i><br/>
                 <br/>
                     <#if isAdmin || advert.shop.owner.id == currentUserId>
                         <button class="btn btn-danger" onclick="window.location.href = '/adverts/${advert.id}/delete';">DELETE</button>
-                    <#elseif isUser>
-                        <button type="button" class="btn btn-warning">BUY</button>
+                    <#elseif isUser && advert.available>
+                        <button id="addCartBtn" class="btn btn-warning" onclick="addToCart('${advert.id}')">ADD TO CART</button>
+                    <#elseif isUser && !advert.available>
+                        <button id="notAvailBtn" class="btn btn-warning" >NOT AVAILABLE</button>
                     </#if>
                 <br/>
             </div>
@@ -32,7 +35,7 @@
                         <div class="input-group mb-3">
                             <input type="text" id="advComBox" maxlength="200" name="commentBox" class="form-control" placeholder="Input your comment" aria-label="Recipient's username" aria-describedby="button-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="createAdvertComment(${advert.id}, '${_csrf.token}')">Send</button>
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="createAdvertComment(${advert.id})">Send</button>
                             </div>
                         </div>
                     </#if>

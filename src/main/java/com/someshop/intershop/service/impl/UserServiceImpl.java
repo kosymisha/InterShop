@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
             return "User exists";
         user.setActive(true);
         user.setPhotoURL(fileService.uploadToS3(file));
+        //user.setPhotoURL(fileService.uploadLocal(file));
         user.setRoles(Collections.singleton(Role.valueOf(role)));
         userRepository.save(user);
         return "Success";
@@ -49,8 +50,16 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    public void delete (User user) {
-        userRepository.delete(user);
+    public void delete (User user, User profile) {
+        if (user.getId().equals(profile.getId())) {
+            userRepository.delete(profile);
+        }
+    }
+
+    @Override
+    public void setActive(User profile, Boolean value) {
+        profile.setActive(value);
+        userRepository.save(profile);
     }
 
     @Override

@@ -11,7 +11,8 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     String create (User user, String role, MultipartFile file) throws IOException;
     void changeRole (User user, String role);
-    void delete (User user);
+    void delete (User user, User profile);
+    void setActive (User profile, Boolean value);
     List<UserDto> findAll ();
     User findById (String id);
 }

@@ -11,11 +11,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/shops">Shops</a>
             </li>
-            <#if isAdmin || isSeller>
             <li class="nav-item">
                 <a class="nav-link" href="/adverts">Adverts</a>
             </li>
-            </#if>
             <#if isAdmin>
             <li class="nav-item">
                 <a class="nav-link" href="/profiles">Profiles</a>
@@ -23,7 +21,7 @@
             </#if>
             <#if isUser>
                 <li class="nav-item">
-                    <a class="nav-link" href="/orders/my">My orders</a>
+                    <a class="nav-link" href="/orders/my">Orders</a>
                 </li>
             </#if>
         </ul>

@@ -25,7 +25,10 @@ public class ShopServiceImpl implements ShopService {
     private FileServiceImpl fileService;
 
     public void create(Map<String, String> form, MultipartFile file, User user) throws IOException {
-        shopRepository.save(new Shop(form.get("name_shop"), form.get("url"), user, fileService.uploadToS3(file), form.get("description")));
+        shopRepository.save(new Shop(form.get("name_shop"), form.get("url"), user,
+                fileService.uploadToS3(file),
+                //fileService.uploadLocal(file),
+                form.get("description")));
     }
 
     public void delete(Shop shop, User user) {

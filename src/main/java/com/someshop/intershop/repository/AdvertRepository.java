@@ -26,4 +26,7 @@ public interface AdvertRepository extends JpaRepository<Advert, Long>, JpaSpecif
 
     Advert findByStoreId(String storeId);
 
+    @Query(value = "select * from advert where id = ?1", nativeQuery = true)
+    Advert findById (String id);
+
 }

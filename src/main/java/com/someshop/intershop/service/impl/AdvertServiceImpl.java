@@ -56,7 +56,8 @@ public class AdvertServiceImpl implements AdvertService {
                     productURL,
                     productService.create(title, categoryService.findByIdAndNameOrCreate(categoryId, categoryName), photoURL),
                     shopService.findByNameShop(shop),
-                    "For more information click in URL.");
+                    "For more information click in URL.",
+                    true);
             advertRepository.save(advert);
             return advert;
         } else { return advertRepository.findByStoreId(storeId); }
@@ -71,7 +72,8 @@ public class AdvertServiceImpl implements AdvertService {
                 "",
                 productService.findById(form.get("productId")),
                 shopService.findByNameShop(form.get("shop")),
-                form.get("description"));
+                form.get("description"),
+                true);
         advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getProduct().getId());
         advertRepository.save(advert);
         return advert;
@@ -86,10 +88,16 @@ public class AdvertServiceImpl implements AdvertService {
                 "",
                 productService.create(form.get("title"), categoryService.findById(form.get("options")), file),
                 shopService.findByNameShop(form.get("shop")),
-                form.get("description"));
+                form.get("description"),
+                true);
         advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getProduct().getId());
         advertRepository.save(advert);
         return advert;
+    }
+
+    @Override
+    public Advert findById(String id) {
+        return advertRepository.findById(id);
     }
 
     public void delete (Advert advert, User user) {

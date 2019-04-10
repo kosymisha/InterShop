@@ -11,6 +11,15 @@ create table product (
   primary key (id),
   foreign key (category_id) references category (id)) ;
 
+create table bank_card (
+  number_card VARCHAR(16) NOT NULL ,
+  first_name_card VARCHAR(20) NOT NULL ,
+  last_name_card VARCHAR(20) NOT NULL ,
+  month INTEGER NOT NULL ,
+  year INTEGER NOT NULL ,
+  PRIMARY KEY (number_card)
+);
+
 create table user (
   id bigint not null AUTO_INCREMENT,
   active bit,
@@ -19,7 +28,10 @@ create table user (
   lastname varchar(20),
   password varchar(20) not null,
   photo_url varchar(100),
-  primary key (id)) ;
+  card_number VARCHAR(16),
+  primary key (id),
+  FOREIGN KEY (card_number) REFERENCES bank_card (number_card)
+) ;
 
 create table user_role (
   user_id bigint not null,
@@ -44,6 +56,7 @@ create table advert (
   product_url varchar(160) ,
   views integer not null,
   description varchar(200),
+  available bit NOT NULL ,
   product_id bigint not null,
   shop_id bigint not null,
   primary key (id),
@@ -60,7 +73,21 @@ create table comment (
   primary key (id),
   foreign key (shop_id) references shop (id),
   foreign key (advert_id) references advert (id),
-  foreign key (user_id) references user (id)) ;
+  foreign key (user_id) references user (id)
+);
+
+create table orders (
+  id BIGINT not null AUTO_INCREMENT,
+  date datetime not null,
+  paid bit,
+  user_id BIGINT not null,
+  advert_id BIGINT not null,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES user (id),
+  FOREIGN KEY (advert_id) REFERENCES advert (id)
+);
+
+
 
 #create table hibernate_sequence (next_val bigint);
 #insert into hibernate_sequence values ( 1 );

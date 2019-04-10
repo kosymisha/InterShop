@@ -9,5 +9,6 @@ import java.net.URL;
 import java.util.List;
 
 public interface XmlRequestService {
-    List<Advert> send(URL url, String method) throws IOException, SAXException, ParserConfigurationException;
+    List<Advert> getAds(URL url) throws IOException, SAXException, ParserConfigurationException;
+    String getCurrencyValue (String currency) throws IOException, ParserConfigurationException, SAXException;
 }

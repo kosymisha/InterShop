@@ -23,6 +23,9 @@ import java.util.Map;
 public class AdvertController {
 
     @Autowired
+    private CurrencyService currencyService;
+
+    @Autowired
     private AdvertService advertService;
 
     @Autowired
@@ -44,6 +47,8 @@ public class AdvertController {
     @GetMapping("/adverts/{advert}")
     public String advert (Model model, @PathVariable Advert advert){
         model.addAttribute("advert", advert);
+        model.addAttribute("eurPrice", currencyService.getEurValueFromUsd(advert.getPrice()));
+        model.addAttribute("bynPrice", currencyService.getBynValueFromUsd(advert.getPrice()));
         advertService.addView(advert);
         return "advert/advert";
     }

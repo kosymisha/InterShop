@@ -20,6 +20,7 @@ import java.util.List;
 
 @Service
 public class XmlParseServiceImpl implements XmlParseService {
+
     @Autowired
     private AdvertServiceImpl advertServiceImpl;
 
@@ -47,5 +48,21 @@ public class XmlParseServiceImpl implements XmlParseService {
             }
         }
         return adverts;
+    }
+
+    @Override
+    public String parseCurrency(StringBuffer response, String currency) throws IOException, SAXException, ParserConfigurationException {
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(response.toString())));
+        NodeList nList = doc.getElementsByTagName("Valute");
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node node = nList.item((temp));
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) node;
+                if (element.getElementsByTagName("CharCode").item(0).getTextContent().equals(currency)) {
+                    return element.getElementsByTagName("Value").item(0).getTextContent();
+                }
+            }
+        }
+        return null;
     }
 }

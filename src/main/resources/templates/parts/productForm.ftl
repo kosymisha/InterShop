@@ -35,7 +35,6 @@
                 </select>
             </div>
         </div>
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <input type="hidden" name="productId" value="${product.id}" />
         <button type="submit" class="btn btn-secondary" >Create</button>
     </form>

@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/registration", "/", "/img/**", "/js/**", "/search", "/categories", "/products",
-                        "/adverts/{advert}", "/css/**", "/static/**", "/orders").permitAll()
+                        "/adverts/{advert}", "/css/**", "/static/**", "/orders/**", "/buckets/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
 
@@ -35,7 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .logout().logoutSuccessUrl("/")
-                .permitAll();
+                .permitAll()
+                .and()
+                .csrf().disable();
+        //<input type="hidden" name="_csrf" value="${_csrf.token}" />
     }
 
     @Override

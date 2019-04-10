@@ -1,13 +1,10 @@
 package com.someshop.intershop.controller;
 
-import com.someshop.intershop.model.User;
-import com.someshop.intershop.repository.AdvertRepository;
 import com.someshop.intershop.service.AdvertService;
-import com.someshop.intershop.service.CategoryService;
+import com.someshop.intershop.service.CurrencyService;
 import com.someshop.intershop.service.impl.CategoryServiceImpl;
 import com.someshop.intershop.service.impl.SearchServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
