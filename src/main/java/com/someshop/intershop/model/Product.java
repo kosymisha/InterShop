@@ -20,9 +20,6 @@ public class Product {
     @Column(name = "photo_url")
     private String photoURL;
 
-    @Column
-    private String description;
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<Advert> adverts;
 
@@ -36,19 +33,10 @@ public class Product {
 
     public Product() {}
 
-    public Product(String title, Category category, String photoURL, String description) {
+    public Product(String title, Category category, String photoURL) {
         this.title = title;
         this.category = category;
         this.photoURL = photoURL;
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Long getId() {

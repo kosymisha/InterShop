@@ -1,12 +1,10 @@
 package com.someshop.intershop.controller;
 
-import com.someshop.intershop.model.User;
-import com.someshop.intershop.repository.AdvertRepository;
-import com.someshop.intershop.service.CategoryService;
+import com.someshop.intershop.service.AdvertService;
+import com.someshop.intershop.service.CurrencyService;
 import com.someshop.intershop.service.impl.CategoryServiceImpl;
 import com.someshop.intershop.service.impl.SearchServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +16,7 @@ import java.util.Map;
 public class MainController {
 
     @Autowired
-    private AdvertRepository advertRepository;
+    private AdvertService advertService;
 
     @Autowired
     private CategoryServiceImpl categoryService;
@@ -27,9 +25,8 @@ public class MainController {
     private SearchServiceImpl searchService;
 
     @GetMapping("/")
-    public String main(Map<String, Object> model, @AuthenticationPrincipal User currentUser) throws Exception {
-        model.put("currentUser", currentUser);
-        model.put("adverts", advertRepository.findAll());
+    public String main(Map<String, Object> model) {
+        model.put("adverts", advertService.findAll());
         model.put("categories", categoryService.findAll());
         return "main";
     }
@@ -42,8 +39,6 @@ public class MainController {
                          @RequestParam(name = "maxPrice", required = false) String maxPrice,
                          Model model) {
         model.addAttribute("adverts", searchService.search(categoryId, keyword, minPrice, maxPrice, sort));
-        //model.addAttribute("adverts", ebayService.getItems(keyword, minPrice, maxPrice, categoryId));
-        //model.addAttribute("adverts", advertRepository.findAll());
         return "parts/advertsMain";
     }
 }

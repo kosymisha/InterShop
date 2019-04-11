@@ -3,11 +3,12 @@ package com.someshop.intershop.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "advert")
 public class Advert implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +25,14 @@ public class Advert implements Serializable {
     @Column
     private Integer views;
 
+    @Column
+    private String description;
+
     @Column(name = "product_url")
     private String productURL;
+
+    @Column(name = "available")
+    private Boolean available;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
@@ -38,11 +45,15 @@ public class Advert implements Serializable {
     @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
+    private Set<Order> orders;
+
     public Advert() {
 
     }
 
-    public Advert(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop) {
+    public Advert(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop, String description,
+                  Boolean available) {
         this.storeId = storeId;
         this.currency = currency;
         this.price = price;
@@ -50,6 +61,42 @@ public class Advert implements Serializable {
         this.productURL = productURL;
         this.product = product;
         this.shop = shop;
+        this.description = description;
+        this.available = available;
+    }
+
+    public List<Comment> getCommentsOrderByDate(){
+        List<Comment> comments = new LinkedList<>(getComments());
+        Collections.sort(comments, new Comparator<Comment>() {
+            public int compare(Comment c1, Comment c2) {
+                return c1.getDate().compareTo(c2.getDate()) * -1;
+            }
+        });
+        return comments;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void addView () { this.views++; }

@@ -1,16 +1,33 @@
-<div id="comm" name="commentsList">Comments:
-    <div><input type="text" id="advComBox" name="commentBox" placeholder="input your comment" />
-        <button onclick="createAdvertComment(${object.id}, '${_csrf.token}')">Send</button></div>
-<#list comments as comment>
-        <div>${comment.author.firstName} ${comment.author.lastName} ${comment.getStringDate()}</div>
-        <div>${comment.message}</div>
-    <#list user.roles as role>
-        <#if role == 'ADMIN' || comment.author.id == user.id>
-                <div><button onclick="deleteAdvertComment(${object.id}, ${comment.id})">delete</button></div>
-        </#if>
-    </#list>
-        <br>
-<#else>
-        No comments.
-</#list>
+<#include "../parts/security.ftl" />
+<div id="comm" name="commentsList"><h5>Comments</h5>
+                    <#if currentUserId != 0>
+                        <div class="input-group mb-3">
+                            <input type="text" id="advComBox" maxlength="200" name="commentBox" class="form-control" placeholder="Input your comment" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="createAdvertComment(${advertId})">Send</button>
+                            </div>
+                        </div>
+                    </#if>
+                    <#if comments??>
+                        <#list comments as comment>
+                            <div class="row mt-2">
+                                <div class="col-10">
+                                    <div class="media">
+                                        <img width="65" height="65" src="${comment.author.photoURL}" class="mr-3" >
+                                        <div class="media-body">
+                                            <b class="mt-0">${comment.author.firstName} ${comment.author.lastName}</b><i> ${comment.getStringDate()}</i>
+                                            <p>${comment.message}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <#if isAdmin || comment.author.id == currentUserId>
+                                        <div><button class="btn btn-danger" onclick="deleteAdvertComment(${advertId}, ${comment.id})">DELETE</button></div>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#list>
+                    <#else>
+                        No comments.
+                    </#if>
 </div>

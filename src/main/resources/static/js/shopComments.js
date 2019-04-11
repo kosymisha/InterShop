@@ -9,8 +9,7 @@ function deleteShopComment (shopId, comment) {
     httpRequest.send();
 }
 
-function createShopComment(shopId, csrfToken) {
-    alert("hjk");
+function createShopComment(shopId) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function () {
         if(this.readyState === 4 && this.status === 200) {
@@ -19,6 +18,5 @@ function createShopComment(shopId, csrfToken) {
     };
     httpRequest.open("POST", "http://localhost:8080/shops/" + shopId + "/comments/create", true);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    httpRequest.setRequestHeader('X-CSRF-Token', csrfToken);
     httpRequest.send("commentBox=" + document.getElementById("comBox").value);
 }

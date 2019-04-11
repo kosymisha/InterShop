@@ -6,12 +6,12 @@ import com.someshop.intershop.model.Shop;
 import com.someshop.intershop.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface CommentService {
-    List<Comment> findAllByAdvert (Advert advert);
-    List<Comment> findAllByShop (Shop shop);
+    List<Comment> orderByDate (List<Comment> comments);
     void createInAdvert (User user, String message, Advert advert);
     void createInShop (User user, String message,Shop shop);
-    void delete (Comment comment);
+    void delete (Comment comment, User user);
 }

@@ -5,7 +5,6 @@
         <div><input type="text" name="url" placeholder="input shop url" /></div>
         <div><input type="text" name="description" placeholder="input description" /></div>
         <div><input type="file" name="photo_url" value="Add file" /></div>
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div><input type="submit" value="Create" /></div>
     </form>
 </@c.page>

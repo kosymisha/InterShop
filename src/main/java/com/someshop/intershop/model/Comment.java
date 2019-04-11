@@ -2,7 +2,7 @@ package com.someshop.intershop.model;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "comment")

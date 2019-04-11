@@ -3,6 +3,8 @@ package com.someshop.intershop.service.impl;
 import com.someshop.intershop.model.Category;
 import com.someshop.intershop.model.Product;
 import com.someshop.intershop.repository.ProductRepository;
+import com.someshop.intershop.service.CategoryService;
+import com.someshop.intershop.service.FileService;
 import com.someshop.intershop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -24,27 +26,31 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    private FileServiceImpl fileServiceImpl;
+    private FileService fileService;
 
-    public Product create(String title, Category category, MultipartFile file, String description) throws IOException {
+    public Product create(String title, Category category, MultipartFile file) throws IOException {
         Product product = new Product(title,
                 category,
-                fileServiceImpl.uploadToS3(file),
-                description);
+                fileService.uploadToS3(file));
+                //fileService.uploadLocal(file));
         productRepository.save(product);
         return product;
     }
 
-    public Product create(String title, Category category, String photoURL, String description) {
+    public Product create(String title, Category category, String photoURL) {
         Product product = new Product(title,
                 category,
-                photoURL,
-                description);
+                photoURL);
         productRepository.save(product);
         return product;
+    }
+
+    @Override
+    public Product findById(String id) {
+        return productRepository.findById(id);
     }
 
     public List<Product> findAll() {

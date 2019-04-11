@@ -39,10 +39,15 @@ public class FileServiceImpl implements FileService {
     public String uploadToS3 (MultipartFile file) throws IOException {
         if (file != null) {
             String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            s3Services.uploadFile(resultFileName, file);
-            return "https://s3.amazonaws.com/" + bucketName  + "/" + resultFileName;
+            //String resultFileName = uuidFile + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            s3Services.uploadFile(uuidFile, file);
+            return "https://s3.amazonaws.com/" + bucketName  + "/" + uuidFile;
         }
         return  null;
+    }
+
+    @Override
+    public String downloadFromS3() throws IOException {
+        return null;
     }
 }

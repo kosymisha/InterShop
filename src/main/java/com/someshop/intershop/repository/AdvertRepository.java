@@ -16,14 +16,17 @@ public interface AdvertRepository extends JpaRepository<Advert, Long>, JpaSpecif
     List<Advert> findByShop (Shop shop);
 
     @Query(value = "select advert.id, advert.store_id, advert.currency, advert.price, " +
-            "advert.views, advert.product_url, advert.product_id, advert.shop_id " +
+            "advert.views, advert.description, advert.available, advert.product_url, advert.product_id, advert.shop_id " +
             "from advert inner join shop on advert.shop_id = shop.id where user_id = ?1 " +
             "union " +
             "select advert.id, advert.store_id, advert.currency, advert.price, " +
-            "advert.views, advert.product_url, advert.product_id, advert.shop_id " +
+            "advert.views, advert.description, advert.available, advert.product_url, advert.product_id, advert.shop_id " +
             "from advert inner join shop on advert.shop_id = shop.id where user_id != ?1", nativeQuery = true)
     List<Advert> findAllOrderByOwner(User user);
 
     Advert findByStoreId(String storeId);
+
+    @Query(value = "select * from advert where id = ?1", nativeQuery = true)
+    Advert findById (String id);
 
 }

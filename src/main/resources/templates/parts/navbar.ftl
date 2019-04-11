@@ -11,22 +11,29 @@
             <li class="nav-item">
                 <a class="nav-link" href="/shops">Shops</a>
             </li>
-            <#if isAdmin || isSeller>
             <li class="nav-item">
                 <a class="nav-link" href="/adverts">Adverts</a>
             </li>
-            </#if>
             <#if isAdmin>
             <li class="nav-item">
                 <a class="nav-link" href="/profiles">Profiles</a>
             </li>
+            </#if>
+            <#if isUser>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/my">Orders</a>
+                </li>
+            </#if>
+            <#if isSeller>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sales">Sales</a>
+                </li>
             </#if>
         </ul>
         <#if firstname == "guest">
             <div><a class="nav-link" href="/login">Sign in</a></div>
         <#else>
             <a class="nav-link" href="/profiles/my">${firstname} ${lastname}</a>
-            <@l.logout/>
         </#if>
     </div>
 </nav>
