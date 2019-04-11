@@ -40,9 +40,9 @@ create table user_role (
 
 create table shop (
   id bigint not null AUTO_INCREMENT,
-  description varchar(200),
-  name_shop varchar(20) not null UNIQUE ,
-  photo_url varchar(100),
+  description varchar(500),
+  name_shop varchar(60) not null UNIQUE ,
+  photo_url varchar(80),
   url varchar(100) not null UNIQUE ,
   user_id bigint not null,
   primary key (id),
