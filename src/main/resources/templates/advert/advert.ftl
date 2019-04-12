@@ -1,6 +1,6 @@
 <#import "../parts/common.ftl" as c>
 <#include "../parts/security.ftl" />
-<@c.page "InterShop">
+<@c.page "${advert.product.title}">
 <script src="/js/advertComments.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <script src="/js/cart.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <link rel="stylesheet" type="text/css"  href="/css/advert.css" media="all">
@@ -17,6 +17,7 @@
                 <label>Price:</label> <b>${advert.price}</b> <sup>${advert.currency}</sup> <b id="currencyHelp">${eurPrice.price}</b><sup id="currencyHelp">${eurPrice.currency}</sup> <b id="currencyHelp">${bynPrice.price}</b> <sup id="currencyHelp">${bynPrice.currency}</sup><br/>
                 <label>Views: </label><i> ${advert.views}</i><br/>
                 <label>Description:</label><i id="desc"> ${advert.description}</i><br/>
+                <label>Shop: </label><i><a href="/shops/${advert.shop.id}" > ${advert.shop.nameShop}</a></i>
                 <br/>
                 <div class="row">
                     <#if isAdmin || advert.shop.owner.id == currentUserId>
@@ -70,9 +71,13 @@
                             <div class="row mt-2">
                                 <div class="col-10">
                                     <div class="media">
-                                        <img width="65" height="65" src="${comment.author.photoURL}" class="mr-3" >
+                                        <img width="65" src="${comment.author.photoURL}" class="mr-3" >
                                         <div class="media-body">
-                                            <b class="mt-0">${comment.author.firstName} ${comment.author.lastName}</b><i> ${comment.getStringDate()}</i>
+                                            <#if isAdmin>
+                                                <a href="/profiles/${comment.author.id}"><b class="mt-0">${comment.author.firstName} ${comment.author.lastName}</b></a><i> ${comment.getStringDate()}</i>
+                                            <#else>
+                                                <b class="mt-0">${comment.author.firstName} ${comment.author.lastName}</b><i> ${comment.getStringDate()}</i>
+                                            </#if>
                                             <p>${comment.message}</p>
                                         </div>
                                     </div>

@@ -6,6 +6,7 @@ import com.someshop.intershop.model.Shop;
 import com.someshop.intershop.model.User;
 import com.someshop.intershop.repository.ShopRepository;
 import com.someshop.intershop.service.ShopService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,19 +25,44 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     private FileServiceImpl fileService;
 
-    public void create(Map<String, String> form, MultipartFile file, User user) throws IOException {
-        shopRepository.save(new Shop(form.get("shopName"),
-                form.get("shopUrl"),
-                user,
-                fileService.uploadToS3(file),
-                //fileService.uploadLocal(file),
-                form.get("description")));
+    public Shop create(Map<String, String> form, MultipartFile file, User user) throws IOException {
+        if (shopRepository.findByNameShop(form.get("shopName")) == null) {
+            Shop shop = new Shop(form.get("shopName"),
+                    form.get("shopUrl"),
+                    user,
+                    fileService.uploadToS3(file),
+                    //fileService.uploadLocal(file),
+                    form.get("description"));
+            shopRepository.save(shop);
+            return shop;
+        } else {
+            return null;
+        }
     }
 
     public void delete(Shop shop, User user) {
         if (user.getRoles().contains(Role.ADMIN) || user.getId().equals(shop.getOwner().getId())){
             shopRepository.delete(shop);
         }
+    }
+
+    @Override
+    public Shop saveInfo(Shop shop, User user, Map<String, String> form, MultipartFile file) {
+        Shop shopFromBd = shopRepository.findByNameShop(form.get("shopName"));
+        if ((shopFromBd == null || shopFromBd.getId().equals(shop.getId())) &&
+                shop.getOwner().getId().equals(user.getId())) {
+            if (!file.isEmpty()) {
+                try {
+                    //delete old photo from s3
+                    shop.setPhotoURL(fileService.uploadToS3(file));
+                } catch (IOException e) { e.printStackTrace(); }
+            }
+            shop.setNameShop(form.get("shopName"));
+            shop.setUrl(form.get("shopUrl"));
+            shop.setDescription(form.get("description"));
+            shopRepository.save(shop);
+            return shop;
+        } else return null;
     }
 
     public Shop findByNameShop (String shop) {

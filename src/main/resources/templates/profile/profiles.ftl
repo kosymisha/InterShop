@@ -1,5 +1,5 @@
 <#import "../parts/common.ftl" as c>
-<@c.page "InterShop">
+<@c.page "Profiles">
 List of users:
 <table>
     <thead>

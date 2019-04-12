@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 @Controller
 public class ProfileController {
@@ -58,5 +61,26 @@ public class ProfileController {
         userService.changeRole(profileUser, role);
         model.addAttribute("profileUser", profileUser);
         return "redirect:/profiles/" + profileUser.getId();
+    }
+
+    @GetMapping("/profiles/my/options")
+    public String options (@AuthenticationPrincipal User profileUser, Model model) {
+        model.addAttribute("profileUser", profileUser);
+        return "profile/options";
+    }
+
+    @PostMapping("/profiles/my/options/save")
+    public String optionsSave (@AuthenticationPrincipal User profileUser, Model model,
+                               @RequestParam Map<String, String> form, @RequestParam("photo_url") MultipartFile file) {
+        User newUser = userService.changeInfo(profileUser, form, file);
+        if (newUser != null) {
+            model.addAttribute("message", "Success");
+            model.addAttribute("profileUser", newUser);
+            return "profile/options";
+        } else {
+            model.addAttribute("message","User with that email already exists");
+            model.addAttribute("profileUser", profileUser);
+        return "profile/options";
+        }
     }
 }

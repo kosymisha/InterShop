@@ -1,6 +1,7 @@
 <#import "../parts/common.ftl" as c>
-<@c.page "InterShop">
-<a href="/shops/create" >Create new shop</a>
+<#include "../parts/security.ftl" />
+<@c.page "Shops">
+<a href="/shops/create" class="btn btn-secondary>Create new shop</a>
 <table>
     <thead>
     <tr>
@@ -15,7 +16,11 @@
 <tr>
     <td><img width="100" height="100" src="${shop.photoURL}" /></td>
     <td>${shop.nameShop}</td>
-    <td>${shop.owner.firstName} ${shop.owner.lastName} </td>
+    <#if isAdmin>
+        <td><a href="/profiles/${shop.owner.id}">${shop.owner.firstName} ${shop.owner.lastName}</a> </td>
+    <#else>
+        <td>${shop.owner.firstName} ${shop.owner.lastName} </td>
+    </#if>
     <td><a href="/shops/${shop.id}">more</a></td>
 </tr>
     </#list>

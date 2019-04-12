@@ -1,5 +1,5 @@
 <#import "../parts/common.ftl" as c>
-<@c.page "InterShop">
+<@c.page "Create shop">
 <script src="/js/createShop.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <div class="row mt-3 ml-3">
     <div class="col col-md-6">
@@ -30,6 +30,7 @@
                 </div>
             </div>
             <div><input class="btn btn-secondary" type="submit" value="Create" /></div>
+            <#if message??>${message}</#if>
         </form>
     </div>
 </div>

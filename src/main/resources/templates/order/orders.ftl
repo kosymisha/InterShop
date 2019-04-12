@@ -27,7 +27,7 @@
             <tr class="rows">
                 <td scope="row">${order.id}</td>
                 <td><img height="100" src="${order.advert.product.photoURL}" /></td>
-                <td>${order.advert.product.title}</td>
+                <td><a href="/adverts/${order.advert.id}">${order.advert.product.title}</a></td>
                 <td>${order.advert.price} ${order.advert.currency}</td>
                 <td><form action="/orders/${order.id}/confirm" method="get">
                     <button class="btn btn-warning" type="submit" >CONFIRM</button>

@@ -1,7 +1,7 @@
 <#import "parts/login.ftl" as l>
 <#import "parts/bootstrapLoad.ftl" as bs>
 <#import "parts/common.ftl" as c>
-<@c.page "InterShop">
+<@c.page "Registration">
 <script src="/js/registration.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <div class="row mt-3 ml-3">
     <div class="col col-md-6">

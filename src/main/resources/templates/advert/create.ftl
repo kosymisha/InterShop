@@ -1,11 +1,11 @@
 <#import "../parts/common.ftl" as c>
 <#include "../parts/security.ftl" />
-<@c.page "InterShop">
+<@c.page "Create advert">
 <script src="/js/searchProduct.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <nav>
     <div class="nav nav-tabs" id="nav-tab">
-            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Create with new product</a>
-            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Create with existing product</a>
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Create with new product</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Create with existing product</a>
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent m-1">
@@ -35,8 +35,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>SHOP</label>
-                                    <select name="shop" class="form-control form-control-sm">
+                                    <label id="shopLabel">SHOP</label>
+                                    <select id="shopInput" name="shop" class="form-control form-control-sm">
+                                        <option value="EMPTY" >Choose...</option>
                                         <#list shops as shop>
                                             <option value="${shop.nameShop}">${shop.nameShop}</option>
                                         </#list>
@@ -49,10 +50,10 @@
                 </div>
         </div>
         <div class="tab-pane fade m-3" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-            <div id="productForm">
-            <label>Search by title</label>
-            <div><input type="text" name="title" class="form-control form-control-sm" id="titleProd" placeholder="input title" onkeyup="inputProductTitle()" maxlength="80" /></div><br/>
-            <div id="prods">
+                <div id="productForm">
+                    <label>Search by title</label>
+                    <div><input type="text" name="title" class="form-control form-control-sm" id="titleProd" placeholder="input title" onkeyup="inputProductTitle()" maxlength="80" /></div><br/>
+                    <div id="prods">
                         <#if products??>
                             <div class="card-columns m-2">
                                 <#list products as product>
@@ -69,8 +70,8 @@
                         <#else>
                             No products.
                         </#if>
-            </div>
-            </div>
+                    </div>
+                </div>
         </div>
 </div>
 </@c.page>

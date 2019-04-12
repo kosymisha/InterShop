@@ -53,6 +53,29 @@ public class UserServiceImpl implements UserService {
         return "Success";
     }
 
+    @Override
+    public User changeInfo(User profileUser, Map<String, String> form, MultipartFile file) {
+        User user = userRepository.findByEmail(form.get("email"));
+        if (user == null || user.getId().equals(profileUser.getId())) {
+            if (!file.isEmpty()) {
+                try {
+                    // delete ole file from s3
+                    profileUser.setPhotoURL(fileService.uploadToS3(file));
+                } catch (IOException e) { e.printStackTrace(); }
+            }
+            profileUser.setFirstName(form.get("firstName"));
+            profileUser.setLastName(form.get("lastName"));
+            profileUser.setEmail(form.get("email"));
+            profileUser.getCard().setNumberCard(form.get("numberCard"));
+            profileUser.getCard().setFirstNameCard(form.get("firstNameCard").toUpperCase());
+            profileUser.getCard().setLastNameCard(form.get("lastNameCard").toUpperCase());
+            profileUser.getCard().setMonth(form.get("monthCard"));
+            profileUser.getCard().setYear(form.get("yearCard"));
+            userRepository.save(profileUser);
+            return profileUser;
+        } else return null;
+    }
+
     public void changeRole (User user, String role) {
         user.getRoles().clear();
         user.getRoles().add(Role.valueOf(role));

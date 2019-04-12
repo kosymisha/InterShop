@@ -1,4 +1,8 @@
 function search() {
+    document.getElementById("advs").innerHTML = "<div  class=\"spinner-border text-secondary\" role=\"status\">" +
+        "  <span class=\"sr-only\">Loading...</span>" +
+        "</div>";
+    debugger;
     var sort = document.getElementById("inputGroupSelect01").value;
     var category = document.querySelector('input[name="options"]:checked').value;
     var keyword = document.getElementById("keyword").value;

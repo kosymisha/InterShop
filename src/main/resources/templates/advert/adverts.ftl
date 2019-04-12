@@ -1,8 +1,8 @@
 <#import "../parts/common.ftl" as c>
 <#include "../parts/security.ftl" />
-<@c.page "InterShop">
+<@c.page "Adverts">
 <#if isSeller>
-<a href="/adverts/create" >Create new advert</a>
+<a href="/adverts/create" class="btn btn-secondary">Create new advert</a>
 </#if>
     <#list adverts as advert>
         <div>

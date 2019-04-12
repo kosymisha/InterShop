@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService {
     void setActive (User profile, Boolean value);
     List<UserDto> findAll ();
     User findById (String id);
+    User changeInfo (User profileUser, Map<String, String> form, MultipartFile file);
 }

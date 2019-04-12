@@ -82,7 +82,7 @@
 <div class="row">
 <div class="col">
 
-<div id="advs"></div>
+<div align="center" id="advs"></div>
 
 </div>
 </div>

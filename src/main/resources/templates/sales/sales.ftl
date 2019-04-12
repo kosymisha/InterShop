@@ -1,7 +1,7 @@
 
 <#import "../parts/login.ftl" as l>
 <#import "../parts/common.ftl" as c>
-<@c.page "Orders">
+<@c.page "Sales">
 <script src="/js/cart.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <link rel="stylesheet" type="text/css"  href="/css/orders.css" media="all">
         <div id="table-wrapper">

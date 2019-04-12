@@ -13,9 +13,13 @@
                             <div class="row mt-2">
                                 <div class="col-10">
                                     <div class="media">
-                                        <img width="65" height="65" src="${comment.author.photoURL}" class="mr-3" >
+                                        <img width="65" src="${comment.author.photoURL}" class="mr-3" >
                                         <div class="media-body">
-                                            <b class="mt-0">${comment.author.firstName} ${comment.author.lastName}</b><i> ${comment.getStringDate()}</i>
+                                            <#if isAdmin>
+                                                <a href="/profiles/${comment.author.id}"><b class="mt-0">${comment.author.firstName} ${comment.author.lastName}</b></a><i> ${comment.getStringDate()}</i>
+                                            <#else>
+                                                <b class="mt-0">${comment.author.firstName} ${comment.author.lastName}</b><i> ${comment.getStringDate()}</i>
+                                            </#if>
                                             <p>${comment.message}</p>
                                         </div>
                                     </div>

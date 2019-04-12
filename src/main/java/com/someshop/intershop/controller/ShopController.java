@@ -51,10 +51,27 @@ public class ShopController {
 
     @PostMapping("shops/create")
     @PreAuthorize("hasAuthority('SELLER')")
-    public String createShop (@AuthenticationPrincipal User user,
+    public String createShop (@AuthenticationPrincipal User user, Model model,
                               @RequestParam Map<String, String> form,
                               @RequestParam("photo_url") MultipartFile file) throws IOException {
-        shopService.create(form, file, user);
-        return "shop/create";
+        Shop shop = shopService.create(form, file, user);
+        if (shop != null) return "redirect:/shops/" + shop.getId();
+        else { model.addAttribute("message", "Shop with that name already exists"); return "shop/create"; }
+    }
+
+    @GetMapping("/shops/{shop}/options")
+    @PreAuthorize("hasAuthority('SELLER')")
+    public String options (@PathVariable Shop shop, Model model) {
+        model.addAttribute("shop", shop);
+        return "shop/options";
+    }
+
+    @PostMapping("/shops/{shop}/options/save")
+    @PreAuthorize("hasAuthority('SELLER')")
+    public String optionsSave (@PathVariable Shop shop, @AuthenticationPrincipal User user, Model model,
+                               @RequestParam Map<String, String> form, @RequestParam("photo_url") MultipartFile file) {
+        Shop newShop =  shopService.saveInfo(shop, user, form, file);
+        if (newShop != null) {model.addAttribute("message","Success"); return "shop/options";}
+        else { model.addAttribute("message","Shop with that name already exists"); return "shop/options"; }
     }
 }

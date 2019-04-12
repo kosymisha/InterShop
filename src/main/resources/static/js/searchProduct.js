@@ -84,18 +84,44 @@ function isValidFormCreateWithProd () {
     console.log('category ' + category);
     console.log('file ' + file);
     debugger;
-    if ( file === null || file === "") {document.getElementById("photoLabel").style.color = "red"; isValidForm = false;}
-    else { document.getElementById("photoLabel").style.color = "#495057"; }
-    if (!isValidPriceChecker(price)) { document.getElementById("priceLabel").style.color = "red"; isValidForm =  false;}
-    else { document.getElementById("priceLabel").style.color = "#495057"; }
-    if (title === null || title === "") { document.getElementById("titleLabel").style.color = "red"; isValidForm =  false; }
-    else { document.getElementById("titleLabel").style.color = "#495057"; }
-    if (category === "0") { document.getElementById("categoryLabel").style.color = "red"; isValidForm =  false; }
-    else { document.getElementById("categoryLabel").style.color = "#495057"; }
+    if ( file === null || file === "") {
+        document.getElementById("photoLabel").style.color = "red";
+        isValidForm = false;
+    } else { document.getElementById("photoLabel").style.color = "#495057"; }
 
-    if(!isValidForm) return false
+    if (!isValidPriceChecker(price)) {
+        document.getElementById("priceLabel").style.color = "red";
+        isValidForm =  false;
+    } else { document.getElementById("priceLabel").style.color = "#495057"; }
+
+    if (title === null || title === "") {
+        document.getElementById("titleLabel").style.color = "red";
+        isValidForm =  false;
+    } else { document.getElementById("titleLabel").style.color = "#495057"; }
+
+    if (category === "0") {
+        document.getElementById("categoryLabel").style.color = "red";
+        isValidForm =  false;
+    } else { document.getElementById("categoryLabel").style.color = "#495057"; }
+
+    if (document.getElementById("shopInput").options[document.getElementById("shopInput").selectedIndex].value === "EMPTY") {
+        document.getElementById("shopLabel").style.color = "red";
+        isValidForm = false;
+    } else { document.getElementById("shopLabel").style.color = "#495057"; }
+
+    return isValidForm;
 }
 
 function isValidFormCreateNewProd () {
-    if (!isValidPriceChecker(document.getElementById("inputPrice").value)) { document.getElementById("priceLabel").style.color = "red"; return false; }
+    var isValidForm = true;
+    if (!/^[1-9]\d{0,8}(\.\d{1,2})?$/.test(document.getElementById("inputPrice2").value)) {
+        document.getElementById("priceLabel2").style.color = "red";
+        debugger;
+        isValidForm = false;
+    } else { document.getElementById("priceLabel2").style.color = "#495057"; }
+    if (document.getElementById("shopInput2").options[document.getElementById("shopInput2").selectedIndex].value === "EMPTY") {
+        document.getElementById("shopLabel2").style.color = "red";
+        isValidForm = false;
+    } else { document.getElementById("shopLabel2").style.color = "#495057"; }
+    return isValidForm;
 }
