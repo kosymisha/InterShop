@@ -19,37 +19,35 @@
                 <label>Description:</label><i id="desc"> ${advert.description}</i><br/>
                 <label>Shop: </label><i><a href="/shops/${advert.shop.id}" > ${advert.shop.nameShop}</a></i>
                 <br/>
-                <div class="row">
+                <div class="btn-group" role="group" aria-label="Basic example">
                     <#if isAdmin || advert.shop.owner.id == currentUserId>
-                    <div class="col">
-                        <button class="btn btn-danger" onclick="window.location.href = '/adverts/${advert.id}/delete';">DELETE</button>
-                    </div>
+                       <!-- <button class="btn btn-danger" onclick="window.location.href = '/adverts/${advert.id}/delete';">DELETE</button> -->
+                        <a href="/adverts/${advert.id}/delete" class="btn btn-danger">DELETE</a>
                     </#if>
-                    <#if !advert.available && advert.shop.owner.id == currentUserId>
-                    <div class="col">
-                        <form method="get" action="/adverts/${advert.id}/available">
+                    <#if !advert.available && advert.shop.owner.id == currentUserId><!--
+                        <form method="get" action="/adverts/{advert.id}/available">
                             <input type="hidden" name="value" value="true" >
                             <button type="submit" id="notAvailBtn" class="btn btn-warning" >SET AVAILABLE</button>
-                        </form>
-                    </div>
-                    <#elseif advert.available && advert.shop.owner.id == currentUserId>
-                    <div class="col">
-                        <form method="get" action="/adverts/${advert.id}/available">
+                        </form> -->
+                    <a href="/adverts/${advert.id}/available?value=true" class="btn btn-warning">SET AVAILABLE</a>
+                    <#elseif advert.available && advert.shop.owner.id == currentUserId><!--
+                        <form method="get" action="/adverts/{advert.id}/available">
                             <input type="hidden" name="value" value="false" >
                             <button type="submit" id="notAvailBtn" class="btn btn-warning" >SET NON AVAILABLE</button>
-                        </form>
-                    </div>
-                    <#elseif !advert.available>
+                        </form> -->
+                    <a href="/adverts/${advert.id}/available?value=false" class="btn btn-warning">SET NON AVAILABLE</a>
+                    <#elseif !advert.available><!--
                     <div class="col">
                         <button id="notAvailBtn" class="btn btn-warning" >NOT AVAILABLE</button>
-                    </div>
+                    </div>-->
+                    <a class="btn btn-warning">NOT AVAILABLE</a>
                     <#elseif isUser && advert.available>
-                    <div class="col">
+                        <!--
                         <form method="get" action="/orders/create">
-                            <input type="hidden" name="advertId" value="${advert.id}" >
+                            <input type="hidden" name="advertId" value="{advert.id}" >
                             <button type="submit" id="addCartBtn" class="btn btn-warning">ADD TO CART</button>
-                        </form>
-                    </div>
+                        </form> -->
+                        <a href="/orders/create?advertId=${advert.id}" class="btn btn-warning">ADD TO CART</a>
                     </#if>
                 </div>
                 <br/>

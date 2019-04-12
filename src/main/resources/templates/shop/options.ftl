@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <input class="btn btn-secondary" type="submit" value="Save" />
+                        <input class="btn btn-primary" type="submit" value="Save" />
                         <a class="btn btn-secondary" href="/shops/${shop.id}" >Back</a>
                     </div><br>
                     <#if message??>${message}</#if>

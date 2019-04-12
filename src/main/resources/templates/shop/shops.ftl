@@ -1,7 +1,9 @@
 <#import "../parts/common.ftl" as c>
 <#include "../parts/security.ftl" />
 <@c.page "Shops">
-<a href="/shops/create" class="btn btn-secondary>Create new shop</a>
+<#if isSeller>
+<a href="/shops/create" class="btn btn-secondary mt-4 mb-4">Create new shop</a>
+</#if>
 <table>
     <thead>
     <tr>

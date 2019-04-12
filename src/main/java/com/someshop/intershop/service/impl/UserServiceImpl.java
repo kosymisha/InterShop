@@ -54,6 +54,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean changePassword(User profileUser, Map<String, String> form) {
+        if (profileUser.getPassword().equals(form.get("currentPassword"))) {
+            profileUser.setPassword(form.get("password"));
+            userRepository.save(profileUser);
+            return true;
+        } else return false;
+    }
+
+    @Override
     public User changeInfo(User profileUser, Map<String, String> form, MultipartFile file) {
         User user = userRepository.findByEmail(form.get("email"));
         if (user == null || user.getId().equals(profileUser.getId())) {

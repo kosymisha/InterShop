@@ -11,6 +11,7 @@ import java.util.Map;
 
 public interface UserService extends UserDetailsService {
     String create (Map<String, String> from, MultipartFile file) throws IOException;
+    Boolean changePassword (User profileUser, Map<String, String> form);
     void changeRole (User user, String role);
     void delete (User user, User profile);
     void setActive (User profile, Boolean value);

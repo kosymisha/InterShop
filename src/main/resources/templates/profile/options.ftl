@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="submit" class="btn btn-secondary">Save</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                         <a href="/profiles/my" class="btn btn-secondary" >Back</a>
                     </div><br/>
                     <#if message??>${message}</#if>

@@ -2,7 +2,7 @@
 <#include "../parts/security.ftl" />
 <@c.page "Adverts">
 <#if isSeller>
-<a href="/adverts/create" class="btn btn-secondary">Create new advert</a>
+<a href="/adverts/create" class="btn btn-secondary mt-4 mb-4">Create new advert</a>
 </#if>
     <#list adverts as advert>
         <div>

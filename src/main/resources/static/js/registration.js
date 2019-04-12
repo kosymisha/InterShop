@@ -25,6 +25,26 @@ function isValidForm() {
         isValidFlag = false;
     } else { document.getElementById("labelInputFNCard").style.color = "#495057"; }
 
+    if (document.getElementById("inputPassword4").value !== document.getElementById("inputPasswordConfirm4").value) {
+        document.getElementById("labelInputConfirmPass").style.color = "red";
+        isValidFlag = false;
+    } else { document.getElementById("labelInputConfirmPass").style.color = "#495057"; }
+
+    if (document.getElementById("inputPassword4").value.length < 6 || document.getElementById("inputPassword4").value.length > 20) {
+        document.getElementById("labelInputPass").style.color = "red";
+        isValidFlag = false;
+    } else { document.getElementById("labelInputPass").style.color = "#495057"; }
+
+    if (document.getElementById("inputPasswordConfirm4").value.length < 6 || document.getElementById("inputPasswordConfirm4").value.length > 20) {
+        document.getElementById("labelInputConfirmPass").style.color = "red";
+        isValidFlag = false;
+    } else { document.getElementById("labelInputConfirmPass").style.color = "#495057"; }
+
+    if (document.getElementById("inputRole").options[document.getElementById("inputRole").selectedIndex].value === "EMPTY") {
+        document.getElementById("labelInputRole").style.color = "red";
+        isValidFlag = false;
+    } else { document.getElementById("labelInputRole").style.color = "#495057"; }
+
     if(!/^[a-zA-Z]+$/.test(document.getElementById("inputLastNameCard").value)) {
         document.getElementById("labelInputLNCard").style.color = "red";
         isValidFlag = false;

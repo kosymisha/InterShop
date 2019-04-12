@@ -66,3 +66,21 @@ function isValidChangingForm () {
 
     return isValidFlag;
 }
+
+function isValidPasswordForm () {
+    var isValidFlag = true;
+
+    if (document.getElementById("inputPass").value !== document.getElementById("inputConfirmPass").value) {
+        document.getElementById("labelConfirmPass").style.color = "red";
+        document.getElementById("hint").innerText = "Passwords do not match";
+        isValidFlag = false;
+    } else { document.getElementById("labelConfirmPass").style.color = "#495057"; }
+
+    if (document.getElementById("inputPass").value.length < 6) {
+        document.getElementById("labelPass").style.color = "red";
+        document.getElementById("hint").innerText = "Too small (size should be between 6 and 20 characters)";
+        isValidFlag = false;
+    } else { document.getElementById("labelPass").style.color = "#495057"; }
+
+    return isValidFlag;
+}

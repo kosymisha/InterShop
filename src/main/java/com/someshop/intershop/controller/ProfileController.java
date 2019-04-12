@@ -83,4 +83,18 @@ public class ProfileController {
         return "profile/options";
         }
     }
+
+    @GetMapping("/profiles/my/password")
+    public String password () {
+        return "profile/password";
+    }
+
+    @PostMapping("/profiles/my/password/save")
+    public String passwordSave (@RequestParam Map<String, String> form, @AuthenticationPrincipal User profileUser,
+                                Model model) {
+        if (!userService.changePassword(profileUser, form)) {
+            model.addAttribute("message", "Current password is incorrect");
+            return "profile/password";
+        } else return "redirect:/profiles/my";
+    }
 }
