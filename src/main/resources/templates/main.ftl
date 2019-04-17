@@ -81,9 +81,8 @@
 
 <div class="row">
 <div class="col">
-
-<div align="center" id="advs"></div>
-
+    <div align="center" id="spinnerDiv"></div>
+    <div id="advs"></div>
 </div>
 </div>
 </@c.page>

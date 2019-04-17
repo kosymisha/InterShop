@@ -7,7 +7,7 @@
     <div class="col ml-8 mr-8 mt-5" id="profile">
         <div class="row">
             <div class="col">
-                <form action="/profiles/my/options/save" method="post" enctype="multipart/form-data" onsubmit="return isValidChangingForm()">
+                <form action="/profiles/my/options" method="post" enctype="multipart/form-data" onsubmit="return isValidChangingForm()">
                     <h5>User info</h5>
                     <div class="form-row">
                         <div class="form-group col-md-6">

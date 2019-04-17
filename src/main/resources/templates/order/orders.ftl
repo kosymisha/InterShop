@@ -3,6 +3,9 @@
 <#import "../parts/common.ftl" as c>
 <@c.page "Orders">
 <script src="/js/cart.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="/js/react.js" ></script>
 <link rel="stylesheet" type="text/css"  href="/css/orders.css" media="all">
 <nav>
     <div class="nav nav-tabs" id="nav-tab">

@@ -2,6 +2,7 @@
 <#import "../login.ftl" as l>
 <#include "../parts/security.ftl" />
 <@c.page "${profileUser.firstName} ${profileUser.lastName}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="/js/profile.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <link rel="stylesheet" type="text/css"  href="/css/profile.css" media="all">
 <div class="row">
@@ -39,14 +40,14 @@
                         <a href="/logout" class="btn btn-primary" >Sign out</a>
                     </#if>
                     <#if profileUser.id == currentUserId>
-                        <a href="/profiles/${profileUser.id}/delete" class="btn btn-danger">Delete profile</a>
+                        <a class="btn btn-danger" onclick="deleteProfile('${profileUser.id}')">Delete profile</a>
                         <a href="/profiles/my/options" class="btn btn-secondary">Change info</a>
                         <a href="/profiles/my/password" class="btn btn-secondary">Change password</a>
                     <#elseif  isAdmin>
                         <#if profileUser.isActive()>
-                        <a href="/profiles/${profileUser.id}/active?value=false" class="btn btn-danger">Set non active</a>
+                        <a onclick="setNonActiveProfile('${profileUser.id}')" class="btn btn-danger">Set non active</a>
                         <#else >
-                        <a href="/profiles/${profileUser.id}/active?value=true" class="btn btn-warning">Set active</a>
+                        <a onclick="setActiveProfile('${profileUser.id}')" class="btn btn-warning">Set active</a>
                         </#if>
                     </#if>
                 </div>

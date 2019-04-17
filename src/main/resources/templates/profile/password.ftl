@@ -7,7 +7,7 @@
     <div class="col ml-8 mr-8 mt-5" id="profile">
         <div class="row">
             <div class="col">
-                <form action="/profiles/my/password/save" method="post" enctype="multipart/form-data" onsubmit="return isValidPasswordForm()">
+                <form action="/profiles/my/password" method="post" enctype="multipart/form-data" onsubmit="return isValidPasswordForm()">
                     <h5>Password changing</h5>
                     <div class="form-row">
                         <div class="form-group col-md-6">

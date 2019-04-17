@@ -171,10 +171,16 @@ public class AdvertServiceImpl implements AdvertService {
     }
 
     public List<Advert> addWithoutDuplicates(List<Advert> advertsTo, List<Advert> advertsFrom) {
-        for (Advert advert : advertsFrom){
-            if (!advertsTo.contains(advert)) {
-                advertsTo.add(advert);
-            }
+        boolean isContain;
+        for (Advert advertFrom : advertsFrom) {
+            isContain = false;
+            for (Advert advertTo : advertsTo)
+                if (advertTo.getStoreId().equals(advertFrom.getStoreId())) {
+                    isContain = true;
+                    break;
+                }
+            if (!isContain)
+                advertsTo.add(advertFrom);
         }
         return advertsTo;
     }

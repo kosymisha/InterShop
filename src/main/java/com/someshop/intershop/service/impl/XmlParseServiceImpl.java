@@ -33,17 +33,19 @@ public class XmlParseServiceImpl implements XmlParseService {
                 Node node = nList.item(temp);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    adverts.add(
-                    advertServiceImpl.create(
-                            element.getElementsByTagName("itemId").item(0).getTextContent(),
-                            element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
-                            element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent(),
-                            element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
-                            element.getElementsByTagName("title").item(0).getTextContent(),
-                            element.getElementsByTagName("primaryCategory").item(0).getFirstChild().getTextContent(),
-                            element.getElementsByTagName("primaryCategory").item(0).getLastChild().getTextContent(),
-                            "eBay",
-                            element.getElementsByTagName("galleryURL").item(0).getTextContent()));
+                    if (element.getElementsByTagName("galleryURL").getLength() != 0) {
+                        adverts.add(
+                                advertServiceImpl.create(
+                                        element.getElementsByTagName("itemId").item(0).getTextContent(),
+                                        element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
+                                        element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent(),
+                                        element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
+                                        element.getElementsByTagName("title").item(0).getTextContent(),
+                                        element.getElementsByTagName("primaryCategory").item(0).getFirstChild().getTextContent(),
+                                        element.getElementsByTagName("primaryCategory").item(0).getLastChild().getTextContent(),
+                                        "eBay",
+                                        element.getElementsByTagName("galleryURL").item(0).getTextContent()));
+                    }
                 }
             }
         }

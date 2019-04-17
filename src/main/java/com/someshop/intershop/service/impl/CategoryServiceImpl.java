@@ -14,14 +14,13 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     public Category findByIdAndNameOrCreate (String id, String name) {
-        if (categoryRepository.findById(id) == null &&
-                categoryRepository.findByCategoryName(name) == null) {
-            Category category = new Category(new Long(id), name);
-            categoryRepository.save(category);
-            return category;
-        } else {
-            return categoryRepository.findById(id.toString());
-        }
+        if (categoryRepository.findById(id) == null) {
+            if (categoryRepository.findByCategoryName(name) == null) {
+                Category category = new Category(new Long(id), name);
+                categoryRepository.save(category);
+                return category;
+            } else return categoryRepository.findByCategoryName(name);
+        } else return categoryRepository.findById(id.toString());
     }
 
     public Category findByCategoryName (String name) {

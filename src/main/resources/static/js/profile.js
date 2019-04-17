@@ -84,3 +84,36 @@ function isValidPasswordForm () {
 
     return isValidFlag;
 }
+
+function deleteProfile (profileId) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function () {
+        if(this.readyState === 4 && this.status === 200) {
+            window.location.replace('/logout');
+        }
+    };
+    httpRequest.open("DELETE", "/profiles/" + profileId, true);
+    httpRequest.send();
+}
+
+function setActiveProfile (profileId) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function () {
+        if(this.readyState === 4 && this.status === 200) {
+            location.reload();
+        }
+    };
+    httpRequest.open("PUT", "/profiles/" + profileId + "/active?value=true", true);
+    httpRequest.send();
+}
+
+function setNonActiveProfile (profileId) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function () {
+        if(this.readyState === 4 && this.status === 200) {
+            location.reload();
+        }
+    };
+    httpRequest.open("PUT", "/profiles/" + profileId + "/active?value=false", true);
+    httpRequest.send();
+}
