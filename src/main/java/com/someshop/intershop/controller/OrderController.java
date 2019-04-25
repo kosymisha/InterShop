@@ -3,9 +3,7 @@ package com.someshop.intershop.controller;
 import com.someshop.intershop.dto.CurrencyDto;
 import com.someshop.intershop.model.Order;
 import com.someshop.intershop.model.User;
-import com.someshop.intershop.service.AdvertService;
-import com.someshop.intershop.service.CurrencyService;
-import com.someshop.intershop.service.OrderService;
+import com.someshop.intershop.service.*;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,9 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class OrderController {
+
+    @Autowired
+    private PriceService priceService;
 
     @Autowired
     private OrderService orderService;
@@ -31,6 +33,9 @@ public class OrderController {
 
     @Autowired
     private CurrencyService currencyService;
+
+    @Autowired
+    private BankCardService bankCardService;
 
     @GetMapping("/orders")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -44,13 +49,15 @@ public class OrderController {
     @PreAuthorize("hasAuthority('USER')")
     public String myOrders (Model model, @AuthenticationPrincipal User user) {
         List<Order> orders = orderService.getOrdersByUserIdPaid(user.getId().toString());
-        BigDecimal sumPrice = orderService.sumPrice(orders);
+        Map<String, Integer> sumPrice = orderService.sumPrice(orders);
         model.addAttribute("orders", orderService.getOrdersByUserIdNotPaid(user.getId().toString()));
         model.addAttribute("paidOrders", orders);
         model.addAttribute("itemCount", orders.size());
-        model.addAttribute("totalUsd", new CurrencyDto(sumPrice, "USD"));
-        model.addAttribute("totalEur", currencyService.getEurValueFromUsd(sumPrice));
-        model.addAttribute("totalByn", currencyService.getBynValueFromUsd(sumPrice));
+        model.addAttribute("totalUsd", new CurrencyDto(priceService.getPrice(sumPrice), "USD"));
+        model.addAttribute("totalEur", currencyService.getEurValueFromUsd(sumPrice.get("intPartPrice"), sumPrice.get("fractPartPrice")));
+        model.addAttribute("totalByn", currencyService.getBynValueFromUsd(sumPrice.get("intPartPrice"), sumPrice.get("fractPartPrice")));
+        model.addAttribute("defaultBankCard", bankCardService.findActiveByUserId(user.getId().toString()));
+        model.addAttribute("bankCards", bankCardService.findNonActiveByUserId(user.getId().toString()));
         return "order/orders";
     }
 
@@ -68,11 +75,13 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{order}/confirm")
-    public String confirmOrder (@PathVariable Order order, @AuthenticationPrincipal User user,
+    @ResponseBody
+    public Boolean confirmOrder (@PathVariable Order order, @AuthenticationPrincipal User user,
+                                @RequestParam(name = "cardId") String cardId,
                                 Model model) {
-        orderService.payOrder(order, user);
-        model.addAttribute("orders", orderService.getOrdersByUserIdNotPaid(user.getId().toString()));
-        model.addAttribute("paidOrders", orderService.getOrdersByUserIdPaid(user.getId().toString()));
-        return "redirect:/orders/my";
+        return orderService.payOrder(order, user, cardId);
+        //model.addAttribute("orders", orderService.getOrdersByUserIdNotPaid(user.getId().toString()));
+        //model.addAttribute("paidOrders", orderService.getOrdersByUserIdPaid(user.getId().toString()));
+        //return "redirect:/orders/my";
     }
 }

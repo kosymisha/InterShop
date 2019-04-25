@@ -10,6 +10,8 @@ import com.someshop.intershop.service.impl.AdvertServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,21 +37,18 @@ public class AdvertController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private ProductService productService;
-
     @GetMapping("/adverts")
-    public String adverts (Model model, @RequestParam(name = "shop", required = false) Shop shop,
-                           @AuthenticationPrincipal User user) {
-        model.addAttribute("adverts", advertService.findAllAndOrderByShop(shop, user)); //dto
+    public String adverts (Model model, @RequestParam(name = "shop") Shop shop) {
+        model.addAttribute("adverts", advertService.findByShop(shop.getId().toString()));
         return "advert/adverts";
     }
 
     @GetMapping("/adverts/{advert}")
     public String advert (Model model, @PathVariable Advert advert){
         model.addAttribute("advert", advert);
-        model.addAttribute("eurPrice", currencyService.getEurValueFromUsd(advert.getPrice()));
-        model.addAttribute("bynPrice", currencyService.getBynValueFromUsd(advert.getPrice()));
+        model.addAttribute("usdPrice", currencyService.getUsdValue(advert.getIntPartPrice(), advert.getFractPartPrice()));
+        model.addAttribute("eurPrice", currencyService.getEurValueFromUsd(advert.getIntPartPrice(), advert.getFractPartPrice()));
+        model.addAttribute("bynPrice", currencyService.getBynValueFromUsd(advert.getIntPartPrice(), advert.getFractPartPrice()));
         advertService.addView(advert);
         return "advert/advert";
     }
@@ -58,7 +57,6 @@ public class AdvertController {
     public String advertsCreate (@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("shops", shopService.findByOwner(user.getId().toString())); //dto
         model.addAttribute("categories", categoryService.findAll());
-        model.addAttribute("products", productService.findAll());
         return "advert/create";
     }
 
@@ -66,8 +64,8 @@ public class AdvertController {
     public String advertDelete (@AuthenticationPrincipal User user, Model model,
                                       @PathVariable Advert advert) {
         advertService.delete(advert, user);
-        model.addAttribute("adverts", advertService.findAllAndOrderByShop(null, user)); //dto
-        return "redirect:/adverts";
+        model.addAttribute("adverts", advertService.findAll()); //dto
+        return "redirect:/";
     }
 
     @PostMapping("/adverts")
@@ -83,7 +81,6 @@ public class AdvertController {
     public String setAvailable (@PathVariable Advert advert, @AuthenticationPrincipal User user,
                                 @RequestParam(name = "value") Boolean value, Model model) {
         advertService.setAvailable(advert, user, value);
-        //model.addAttribute("advert", advert);
         return "redirect:/adverts/" + advert.getId();
     }
 }

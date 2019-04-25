@@ -1,24 +1,38 @@
 package com.someshop.intershop.service.impl;
 
 import com.someshop.intershop.dto.AdvertDto;
-import com.someshop.intershop.model.*;
+import com.someshop.intershop.model.Advert;
+import com.someshop.intershop.model.Category;
+import com.someshop.intershop.model.Role;
+import com.someshop.intershop.model.User;
 import com.someshop.intershop.repository.AdvertRepository;
 import com.someshop.intershop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdvertServiceImpl implements AdvertService {
 
     @Autowired
-    private ProductService productService;
+    private PriceService priceService;
 
     @Autowired
     private AdvertRepository advertRepository;
@@ -32,65 +46,50 @@ public class AdvertServiceImpl implements AdvertService {
     @Autowired
     private EbayService ebayService;
 
+    @Autowired
+    private FileService fileService;
+
+
     public void addView (Advert advert) {
         advert.addView();
         advertRepository.save(advert);
     }
 
-    public Advert create (Map<String, String> form, MultipartFile file)
-            throws IOException {
-        if(form.get("productId") != null) {
-            return createWithExistingProduct(form);
-        } else {
-            return createWithNewProduct(form, file);
-        }
-    }
-
-    public Advert create (String storeId, String currency, String price, String productURL, String title, String categoryId,
-                          String categoryName, String shop, String photoURL) {
-        if (advertRepository.findByStoreId(storeId) == null) {
-            Advert advert = new Advert(storeId,
-                    currency,
-                    new BigDecimal(price).setScale(2),
-                    0,
-                    productURL,
-                    productService.create(title, categoryService.findByIdAndNameOrCreate(categoryId, categoryName), photoURL),
-                    shopService.findByNameShop(shop),
-                    "For more information click in URL.",
-                    true);
-            advertRepository.save(advert);
-            return advert;
-        } else { return advertRepository.findByStoreId(storeId); }
-    }
-
-    @Override
-    public Advert createWithExistingProduct(Map<String, String> form) {
-        Advert advert = new Advert(null,
-                "USD",
-                new BigDecimal(form.get("price")),
+    public Advert create (String storeId, String currency, String price, String productURL, String title, Category category,
+                          String shop, String photoURL) {
+        Map<String, Integer> priceParts = priceService.getParts(price);
+        Advert advert = new Advert(storeId,
+                currency,
                 0,
-                "",
-                productService.findById(form.get("productId")),
-                shopService.findByNameShop(form.get("shop")),
-                form.get("description"),
-                true);
-        advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getProduct().getId());
+                "For more information click in URL.",
+                productURL,
+                title,
+                category,
+                photoURL,
+                true,
+                shopService.findByNameShop(shop),
+                priceParts.get("intPartPrice"),
+                priceParts.get("fractPartPrice"));
         advertRepository.save(advert);
         return advert;
     }
 
     @Override
-    public Advert createWithNewProduct(Map<String, String> form, MultipartFile file) throws IOException {
+    public Advert create (Map<String, String> form, MultipartFile file) throws IOException {
+        Map<String, Integer> priceParts = priceService.getParts(form.get("price"));
         Advert advert = new Advert(null,
                 "USD",
-                new BigDecimal(form.get("price")),
                 0,
-                "",
-                productService.create(form.get("title"), categoryService.findById(form.get("options")), file),
-                shopService.findByNameShop(form.get("shop")),
                 form.get("description"),
-                true);
-        advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getProduct().getId());
+                "",
+                form.get("title"),
+                categoryService.findById(form.get("options")),
+                fileService.uploadToS3(file),
+                true,
+                shopService.findByNameShop(form.get("shop")),
+                priceParts.get("intPartPrice"),
+                priceParts.get("fractPartPrice"));
+        advert.setProductURL(advert.getShop().getUrl() + "/" + advert.getId());
         advertRepository.save(advert);
         return advert;
     }
@@ -115,73 +114,93 @@ public class AdvertServiceImpl implements AdvertService {
     }
 
     @Override
-    public List<Advert> findAll() {
-        return advertRepository.findAll();
-    }
-
-    public List<AdvertDto> findAllAndOrderByShop (Shop shop, User user) {
+    public List<AdvertDto> findAll() {
         List<AdvertDto> advertDtos = new LinkedList<>();
-        if(shop != null) {
-            for (Advert advert : advertRepository.findByShop(shop)) {
-                advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getPrice(), advert.getViews(), advert.getProduct(), advert.getShop()));
-            }
-        } else {
-            for (Advert advert : advertRepository.findAllOrderByOwner(user)) {
-                advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getPrice(), advert.getViews(), advert.getProduct(), advert.getShop()));
-            }
-        }
+        for (Advert advert : advertRepository.findAll())
+            advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getViews(),
+                    advert.getTitle(), advert.getPhotoURL(), advert.getCategory().getCategoryName(),
+                    advert.getShop(), advert.getIntPartPrice(), advert.getFractPartPrice()));
         return advertDtos;
     }
 
-    public List<AdvertDto> search (String categoryId, String keyword, String minPrice, String maxPrice, String sort) throws ParserConfigurationException, SAXException, IOException {
+    @Override
+    public Page<Advert> findAll(Pageable pageable) {/*
         List<AdvertDto> advertDtos = new LinkedList<>();
-        List<Advert> adverts = new LinkedList<>();
-        List<Product> products = productService.findByCriteria(categoryId, keyword);
-        for (Product product : products) { adverts.addAll(product.getAdverts()); }
-        adverts = addWithoutDuplicates(adverts, ebayService.getItems(keyword, minPrice, maxPrice, categoryId));
-        adverts = filterByPrice(adverts, minPrice, maxPrice);
-        adverts = sort(adverts, sort);
-        for (Advert advert : adverts) {
-            advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getPrice(), advert.getViews(), advert.getProduct(), advert.getShop()));
-        }
+        for (Advert advert : advertRepository.findAll(pageable))
+            advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getPrice(), advert.getViews(), advert.getTitle(), advert.getPhotoURL(), advert.getCategory().getCategoryName(), advert.getShop()));
+        */
+        return advertRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<AdvertDto> findByShop(String shopId) {
+        List<AdvertDto> advertDtos = new LinkedList<>();
+        for (Advert advert : advertRepository.findByShop(shopId))
+            advertDtos.add(new AdvertDto(advert.getId(), advert.getCurrency(), advert.getViews(),
+                    advert.getTitle(), advert.getPhotoURL(), advert.getCategory().getCategoryName(),
+                    advert.getShop(), advert.getIntPartPrice(), advert.getFractPartPrice()));
         return advertDtos;
     }
 
-    public List<Advert> filterByPrice(List<Advert> adverts, String minPrice, String maxPrice) {
-        if (minPrice != null) { adverts.removeIf(advert -> new Double(advert.getPrice().toString()) < new Double(minPrice)); }
-        if (maxPrice != null) { adverts.removeIf(advert -> new Double(advert.getPrice().toString()) > new Double(maxPrice)); }
-        return adverts;
+    @Override
+    public Page<Advert> search (String categoryId, String keyword, String minPrice, String maxPrice, String sort,
+                                Integer page, Integer size) throws ParserConfigurationException, SAXException, IOException {
+        ebayService.getItems(keyword, minPrice, maxPrice, categoryId);
+        return getPage(categoryId, keyword, minPrice, maxPrice, sort, page, size);
     }
 
-    public List<Advert> sort (List<Advert> adverts, String sortType) {
-        if (sortType.equals("1")){
-            Comparator<Advert> comparator = Comparator.comparing(Advert::getViews);
-            Collections.sort(adverts, comparator.reversed());
-        } else if (sortType.equals("2")) {
-            Comparator<Advert> comparator = Comparator.comparing(Advert::getCommentsSize);
-            Collections.sort(adverts, comparator.reversed());
-        } else if (sortType.equals("3")) {
-            Comparator<Advert> comparator = Comparator.comparing(Advert::getPrice);
-            Collections.sort(adverts, comparator);
-        } else if (sortType.equals("4")) {
-            Comparator<Advert> comparator = Comparator.comparing(Advert::getPrice);
-            Collections.sort(adverts, comparator.reversed());
-        }
-        return adverts;
+    @Override
+    public Page<Advert> getPage(String categoryId, String keyword, String minPrice, String maxPrice, String sort,
+                                Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        if (sort.equals("1")) pageable = PageRequest.of(page, size, Sort.Direction.DESC, "views");
+        if (sort.equals("2")) pageable = PageRequest.of(page, size, Sort.Direction.ASC, "intPartPrice", "fractPartPrice");
+        if (sort.equals("3")) pageable = PageRequest.of(page, size, Sort.Direction.DESC, "intPartPrice", "fractPartPrice");
+        return findByCriteria(categoryId, keyword, minPrice, maxPrice, pageable);
     }
 
-    public List<Advert> addWithoutDuplicates(List<Advert> advertsTo, List<Advert> advertsFrom) {
-        boolean isContain;
-        for (Advert advertFrom : advertsFrom) {
-            isContain = false;
-            for (Advert advertTo : advertsTo)
-                if (advertTo.getStoreId().equals(advertFrom.getStoreId())) {
-                    isContain = true;
-                    break;
+    public Page<Advert> findByCriteria(String categoryId, String keyword, String minPrice, String maxPrice, Pageable pageable) {
+        return advertRepository.findAll(new Specification<Advert>() {
+            @Override
+            public Predicate toPredicate(Root<Advert> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                String[] parts;
+                if (categoryId != null) predicates.add(criteriaBuilder.equal(root.get("category"), categoryService.findById(categoryId)));
+                if (keyword != null) {
+                    parts = keyword.split("-");
+                    for (String part : parts) predicates.add(criteriaBuilder.like(root.get("title"), "%" + part + "%"));
                 }
-            if (!isContain)
-                advertsTo.add(advertFrom);
-        }
-        return advertsTo;
+                if (minPrice.contains(".")){
+                    String[] partsPrice = minPrice.split("\\.");
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.greaterThan(root.get("intPartPrice"), new Integer(partsPrice[0])),
+                            criteriaBuilder.and(criteriaBuilder.equal(root.get("intPartPrice"), new Integer(partsPrice[0])),
+                                    criteriaBuilder.greaterThanOrEqualTo(root.get("fractPartPrice"), new Integer(partsPrice[1])))
+                            ));
+                } else {
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.greaterThan(root.get("intPartPrice"), minPrice),
+                            criteriaBuilder.and(criteriaBuilder.equal(root.get("intPartPrice"), minPrice),
+                                    criteriaBuilder.greaterThanOrEqualTo(root.get("fractPartPrice"), 0))
+                    ));
+                }
+                if (maxPrice.contains(".")){
+                    String[] partsPrice = maxPrice.split("\\.");
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.lessThan(root.get("intPartPrice"), new Integer(partsPrice[0])),
+                            criteriaBuilder.and(criteriaBuilder.equal(root.get("intPartPrice"), new Integer(partsPrice[0])),
+                                    criteriaBuilder.lessThanOrEqualTo(root.get("fractPartPrice"), new Integer(partsPrice[1])))
+                    ));
+                } else {
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.lessThan(root.get("intPartPrice"), maxPrice),
+                            criteriaBuilder.and(criteriaBuilder.equal(root.get("intPartPrice"), maxPrice),
+                                    criteriaBuilder.lessThanOrEqualTo(root.get("fractPartPrice"), 0))
+                    ));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, pageable);
+    }
+
+    @Override
+    public Boolean isContainsAdvert(String storeId) {
+        return advertRepository.findByStoreId(storeId) != null;
     }
 }

@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class XmlRequestServiceImpl implements XmlRequestService {
@@ -24,14 +26,14 @@ public class XmlRequestServiceImpl implements XmlRequestService {
     @Value("${exchangeRatesUrl}")
     private URL exchangeRatesUrl;
 
-    public List<Advert> getAds(URL url) throws IOException, SAXException, ParserConfigurationException {
+    public void saveItems(URL url, String categoryId) throws IOException, SAXException, ParserConfigurationException {
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
         while ((inputLine = in.readLine()) != null) { response.append(inputLine); } in.close(); //httpURLConnection.disconnect();
-        return xmlParseServiceImpl.parseEbay(response);
+        xmlParseServiceImpl.parseEbay(response, categoryId);
     }
 
     @Override
@@ -43,5 +45,17 @@ public class XmlRequestServiceImpl implements XmlRequestService {
         StringBuffer response = new StringBuffer();
         while ((inputLine = in.readLine()) != null) { response.append(inputLine); } in.close(); //httpURLConnection.disconnect();
         return xmlParseServiceImpl.parseCurrency(response, currency);
+    }
+
+    @Override
+    public String filterQueryString(String queryString) {
+        String result = "";
+        String[] parts = queryString.split("&");
+        for (String part : parts) {
+            String[] kv = part.split("=");
+            if (!kv[0].equals("page") && !kv[0].equals("size"))
+                result += part + "&";
+        }
+        return result.substring(0, result.length() - 1);
     }
 }

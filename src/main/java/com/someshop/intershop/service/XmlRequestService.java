@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.List;
 
 public interface XmlRequestService {
-    List<Advert> getAds(URL url) throws IOException, SAXException, ParserConfigurationException;
+    void saveItems (URL url, String categoryId) throws IOException, SAXException, ParserConfigurationException;
     String getCurrencyValue (String currency) throws IOException, ParserConfigurationException, SAXException;
+    String filterQueryString (String queryString);
 }

@@ -14,9 +14,9 @@
     </tr>
     </thead>
     <tbody>
-    <#list shopList as shop>
+    <#list shops as shop>
 <tr>
-    <td><img width="100" height="100" src="${shop.photoURL}" /></td>
+    <td><img width="70" src="${shop.photoURL}" /></td>
     <td>${shop.nameShop}</td>
     <#if isAdmin>
         <td><a href="/profiles/${shop.owner.id}">${shop.owner.firstName} ${shop.owner.lastName}</a> </td>

@@ -4,6 +4,7 @@
 <@c.page "${profileUser.firstName} ${profileUser.lastName}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="/js/profile.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
+<script src="/js/bankCard.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <link rel="stylesheet" type="text/css"  href="/css/profile.css" media="all">
 <div class="row">
     <div class="col ml-8 mr-8 mt-5" id="profile">
@@ -23,6 +24,9 @@
                 <#if isAdmin && !profileUser.isSeller()>
                     <form action="/profiles/${profileUser.id}/role" method="post" onsubmit="return isValidRolForm()">
                         <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Role</label>
+                            </div>
                             <select class="custom-select" id="inputRole" name="role" aria-label="Example select with button addon">
                                 <option value="EMPTY">Choose...</option>
                                 <option value="USER">USER</option>
@@ -41,8 +45,7 @@
                     </#if>
                     <#if profileUser.id == currentUserId>
                         <a class="btn btn-danger" onclick="deleteProfile('${profileUser.id}')">Delete profile</a>
-                        <a href="/profiles/my/options" class="btn btn-secondary">Change info</a>
-                        <a href="/profiles/my/password" class="btn btn-secondary">Change password</a>
+                        <a href="/profiles/my/options" class="btn btn-secondary">Settings</a>
                     <#elseif  isAdmin>
                         <#if profileUser.isActive()>
                         <a onclick="setNonActiveProfile('${profileUser.id}')" class="btn btn-danger">Set non active</a>

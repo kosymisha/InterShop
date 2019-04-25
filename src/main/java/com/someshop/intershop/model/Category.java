@@ -12,8 +12,13 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
+    /*
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products;
+    */
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<Advert> adverts;
 
     public Category() {
     }
@@ -27,6 +32,15 @@ public class Category {
         return id.toString();
     }
 
+    public Set<Advert> getAdverts() {
+        return adverts;
+    }
+
+    public void setAdverts(Set<Advert> adverts) {
+        this.adverts = adverts;
+    }
+
+    /*
     public Set<Product> getProducts() {
         return products;
     }
@@ -34,6 +48,7 @@ public class Category {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+    */
 
     public Long getId() {
         return id;

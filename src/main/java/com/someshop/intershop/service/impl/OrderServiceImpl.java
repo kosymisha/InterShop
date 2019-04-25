@@ -1,21 +1,28 @@
 package com.someshop.intershop.service.impl;
 
 import com.someshop.intershop.model.Advert;
+import com.someshop.intershop.model.BankCard;
 import com.someshop.intershop.model.Order;
 import com.someshop.intershop.model.User;
 import com.someshop.intershop.repository.AdvertRepository;
 import com.someshop.intershop.repository.OrderRepository;
 import com.someshop.intershop.service.BankCardService;
 import com.someshop.intershop.service.OrderService;
+import com.someshop.intershop.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class OrderServiceImpl implements OrderService{
+
+    @Autowired
+    private PriceService priceService;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -36,10 +43,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public boolean payOrder(Order order, User user) {
-        if (order.getUser().getId().equals(user.getId()) && bankCardService.pay(user.getCard(), order)) {
+    public Boolean payOrder(Order order, User user, String cardId) {
+        if (order.getUser().getId().equals(user.getId()) &&
+                bankCardService.pay(bankCardService.findById(cardId), order)) {
             return true;
-        } else { return false; }
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -73,12 +83,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public BigDecimal sumPrice(List<Order> orders) {
+    public Map<String, Integer> sumPrice(List<Order> orders) {
         BigDecimal sum = new BigDecimal(0).setScale(2, RoundingMode.FLOOR);
         for (Order order : orders) {
-            sum = sum.add(order.getAdvert().getPrice());
+            sum = sum.add(new BigDecimal(order.getAdvert().getIntPartPrice().toString() +
+                    "." + order.getAdvert().getFractPartPrice().toString()));
         }
-        return sum;
+        return priceService.getParts(sum.toString());
     }
 
 

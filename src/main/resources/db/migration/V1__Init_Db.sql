@@ -1,23 +1,7 @@
 create table category (
   id bigint not null,
-  category_name varchar(40) UNIQUE ,
-  primary key (id));
-
-create table product (
-  id bigint not null AUTO_INCREMENT,
-  photo_url varchar(100),
-  title varchar(80) not null,
-  category_id bigint not null,
-  primary key (id),
-  foreign key (category_id) references category (id)) ;
-
-create table bank_card (
-  number_card VARCHAR(16) NOT NULL ,
-  first_name_card VARCHAR(20) NOT NULL ,
-  last_name_card VARCHAR(20) NOT NULL ,
-  month VARCHAR(2) NOT NULL ,
-  year VARCHAR(2) NOT NULL ,
-  PRIMARY KEY (number_card)
+  category_name varchar(100) UNIQUE ,
+  primary key (id)
 );
 
 create table user (
@@ -28,10 +12,21 @@ create table user (
   lastname varchar(20),
   password varchar(70) not null,
   photo_url varchar(100),
-  card_number VARCHAR(16),
-  primary key (id),
-  FOREIGN KEY (card_number) REFERENCES bank_card (number_card)
-) ;
+  primary key (id)
+);
+
+create table bank_card (
+  id bigint not null AUTO_INCREMENT,
+  number_card VARCHAR(16) NOT NULL ,
+  first_name_card VARCHAR(20) NOT NULL ,
+  last_name_card VARCHAR(20) NOT NULL ,
+  month VARCHAR(2) NOT NULL ,
+  year VARCHAR(2) NOT NULL ,
+  active bit,
+  user_id bigint not null,
+  PRIMARY KEY (id),
+  foreign key (user_id) references user (id)
+);
 
 create table user_role (
   user_id bigint not null,
@@ -52,16 +47,20 @@ create table advert (
   id bigint not null AUTO_INCREMENT,
   store_id varchar(50),
   currency varchar(5) not null,
-  price decimal(19,2) not null,
+  fract_part_price integer,
+  int_part_price integer,
   product_url varchar(160) ,
   views integer not null,
   description varchar(200),
   available bit NOT NULL ,
-  product_id bigint not null,
+  photo_url varchar(100),
+  title varchar(80) not null,
+  category_id bigint not null,
   shop_id bigint not null,
   primary key (id),
-  foreign key (product_id) references product (id),
-  foreign key (shop_id) references shop (id));
+  foreign key (category_id) references category (id),
+  foreign key (shop_id) references shop (id)
+);
 
 create table comment (
   id bigint not null AUTO_INCREMENT,
@@ -86,7 +85,6 @@ create table orders (
   FOREIGN KEY (user_id) REFERENCES user (id),
   FOREIGN KEY (advert_id) REFERENCES advert (id)
 );
-
 
 
 #create table hibernate_sequence (next_val bigint);

@@ -8,5 +8,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface EbayService {
-    List<Advert> getItems(String keyword, String minPrice, String maxPrice, String categoryId ) throws IOException, ParserConfigurationException, SAXException;
+    void getItems(String keyword, String minPrice, String maxPrice, String categoryId ) throws IOException, ParserConfigurationException, SAXException;
 }

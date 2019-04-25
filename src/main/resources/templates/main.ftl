@@ -37,7 +37,7 @@
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Search items..." id="keyword" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" onclick="search()">Search</button>
+                                <button id="searchbtn" class="btn btn-outline-secondary" onclick="search()">Search</button>
                             </div>
                         </div>
                     </div>
@@ -65,9 +65,8 @@
                             <select class="custom-select" id="inputGroupSelect01">
                                 <option value="0" selected>None</option>
                                 <option value="1">Most viewed</option>
-                                <option value="2">Most commented</option>
-                                <option value="3">Price low to high</option>
-                                <option value="4">Price high to low</option>
+                                <option value="2">Price low to high</option>
+                                <option value="3">Price high to low</option>
                             </select>
                         </div>
                     </div>
@@ -76,12 +75,9 @@
         </div>
     </div>
 </div>
-
-
-
 <div class="row">
 <div class="col">
-    <div align="center" id="spinnerDiv"></div>
+    <div align="center" id="spinnerDiv">${session}</div>
     <div id="advs"></div>
 </div>
 </div>

@@ -13,11 +13,13 @@
             </label>
         </object>
         <#list categories as category>
-            <object name="objects" class="btn btn-secondary" >
-                <label class="btn btn-secondary">
-                    <input type="radio" name="options" value="${category.getIdString()}" autocomplete="off" >${category.categoryName}
-                </label>
-            </object>
+            <#if category.categoryName != "UNSORTED">
+                <object name="objects" class="btn btn-secondary" >
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" value="${category.getIdString()}" autocomplete="off" >${category.categoryName}
+                    </label>
+                </object>
+            </#if>
         </#list>
     </div>
 </div>

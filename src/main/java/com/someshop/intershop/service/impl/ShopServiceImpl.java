@@ -79,12 +79,12 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<ShopDto> findAllOrderByOwner(User user) {
-        List<ShopDto> shopShortDtos = new LinkedList<>();
-        for (Shop shop : shopRepository.findAllOrderByOwner(user)){
-            shopShortDtos.add(new ShopDto(shop.getId(), shop.getNameShop(), shop.getPhotoURL(), shop.getOwner()));
+    public List<ShopDto> findAll() {
+        List<ShopDto> shopDtos = new LinkedList<>();
+        for (Shop shop : shopRepository.findAll()){
+            shopDtos.add(new ShopDto(shop.getId(), shop.getNameShop(), shop.getPhotoURL(), shop.getOwner()));
         }
-        return shopShortDtos;
+        return shopDtos;
     }
 
 }

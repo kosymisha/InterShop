@@ -1,6 +1,10 @@
 package com.someshop.intershop.service.impl;
 
 import com.someshop.intershop.model.Advert;
+import com.someshop.intershop.model.Category;
+import com.someshop.intershop.repository.AdvertRepository;
+import com.someshop.intershop.service.AdvertService;
+import com.someshop.intershop.service.CategoryService;
 import com.someshop.intershop.service.XmlParseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +26,12 @@ import java.util.List;
 public class XmlParseServiceImpl implements XmlParseService {
 
     @Autowired
-    private AdvertServiceImpl advertServiceImpl;
+    private AdvertService advertService;
 
-    public List<Advert> parseEbay (StringBuffer response) throws IOException, SAXException, ParserConfigurationException {
+    @Autowired
+    private CategoryService categoryService;
+
+    public void parseEbay (StringBuffer response, String categoryId) throws IOException, SAXException, ParserConfigurationException {
         List<Advert> adverts = new LinkedList<Advert>();
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(response.toString())));
         if (doc.getFirstChild().getFirstChild().getTextContent().equals("Success")) { //if request was successful
@@ -34,22 +41,24 @@ public class XmlParseServiceImpl implements XmlParseService {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
                     if (element.getElementsByTagName("galleryURL").getLength() != 0) {
-                        adverts.add(
-                                advertServiceImpl.create(
-                                        element.getElementsByTagName("itemId").item(0).getTextContent(),
-                                        element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
-                                        element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent(),
-                                        element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
-                                        element.getElementsByTagName("title").item(0).getTextContent(),
-                                        element.getElementsByTagName("primaryCategory").item(0).getFirstChild().getTextContent(),
-                                        element.getElementsByTagName("primaryCategory").item(0).getLastChild().getTextContent(),
-                                        "eBay",
-                                        element.getElementsByTagName("galleryURL").item(0).getTextContent()));
+                        if (!advertService.isContainsAdvert(element.getElementsByTagName("itemId").item(0).getTextContent())) {
+                            Category category;
+                            if (categoryId != null) category = categoryService.findById(categoryId);
+                            else category = categoryService.findById("0");
+                            advertService.create(
+                                    element.getElementsByTagName("itemId").item(0).getTextContent(),
+                                    element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getAttributes().item(0).getTextContent(),
+                                    element.getElementsByTagName("sellingStatus").item(0).getFirstChild().getTextContent(),
+                                    element.getElementsByTagName("viewItemURL").item(0).getTextContent(),
+                                    element.getElementsByTagName("title").item(0).getTextContent(),
+                                    category,
+                                    "eBay",
+                                    element.getElementsByTagName("galleryURL").item(0).getTextContent());
+                        }
                     }
                 }
             }
         }
-        return adverts;
     }
 
     @Override

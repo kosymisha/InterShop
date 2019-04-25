@@ -8,6 +8,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface XmlParseService {
-    List<Advert> parseEbay (StringBuffer response) throws IOException, SAXException, ParserConfigurationException;
+    void parseEbay (StringBuffer response, String categoryId) throws IOException, SAXException, ParserConfigurationException;
     String parseCurrency (StringBuffer response, String currency) throws IOException, SAXException, ParserConfigurationException;
 }

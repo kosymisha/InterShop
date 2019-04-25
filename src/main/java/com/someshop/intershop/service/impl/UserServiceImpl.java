@@ -4,6 +4,7 @@ import com.someshop.intershop.dto.UserDto;
 import com.someshop.intershop.model.BankCard;
 import com.someshop.intershop.model.Role;
 import com.someshop.intershop.model.User;
+import com.someshop.intershop.repository.BankCardRepository;
 import com.someshop.intershop.repository.UserRepository;
 import com.someshop.intershop.service.FileService;
 import com.someshop.intershop.service.UserService;
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private BankCardRepository bankCardRepository;
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userRepository.findByEmail(s);
@@ -43,12 +46,16 @@ public class UserServiceImpl implements UserService {
                 true,
                 Collections.singleton(Role.valueOf(form.get("role"))),
                 fileService.uploadToS3(file));
+        userRepository.save(user);
         BankCard bankCard = new BankCard(form.get("numberCard"),
                 form.get("firstNameCard").toUpperCase(),
                 form.get("lastNameCard").toUpperCase(),
                 form.get("monthCard"),
-                form.get("yearCard"));
-        user.setCard(bankCard);
+                form.get("yearCard"),
+                user,
+                true);
+        bankCardRepository.save(bankCard);
+        user.getCards().add(bankCard);
         userRepository.save(user);
         return "Success";
     }
@@ -75,11 +82,6 @@ public class UserServiceImpl implements UserService {
             profileUser.setFirstName(form.get("firstName"));
             profileUser.setLastName(form.get("lastName"));
             profileUser.setEmail(form.get("email"));
-            profileUser.getCard().setNumberCard(form.get("numberCard"));
-            profileUser.getCard().setFirstNameCard(form.get("firstNameCard").toUpperCase());
-            profileUser.getCard().setLastNameCard(form.get("lastNameCard").toUpperCase());
-            profileUser.getCard().setMonth(form.get("monthCard"));
-            profileUser.getCard().setYear(form.get("yearCard"));
             userRepository.save(profileUser);
             return profileUser;
         } else return null;

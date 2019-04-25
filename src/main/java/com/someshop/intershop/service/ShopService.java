@@ -16,5 +16,5 @@ public interface ShopService {
     Shop saveInfo (Shop shop, User user, Map<String, String> form, MultipartFile file);
     Shop findByNameShop (String shop);
     List<ShopDto> findByOwner (String id);
-    List<ShopDto> findAllOrderByOwner (User user);
+    List<ShopDto> findAll ();
 }

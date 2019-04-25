@@ -43,9 +43,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Shop> shops;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "card_number", referencedColumnName = "number_card")
-    private BankCard card;
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<BankCard> cards;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Comment> comments;
@@ -67,12 +66,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public BankCard getCard() {
-        return card;
+    public Set<BankCard> getCards() {
+        return cards;
     }
 
-    public void setCard(BankCard card) {
-        this.card = card;
+    public void setCards(Set<BankCard> cards) {
+        this.cards = cards;
     }
 
     public Set<Order> getOrders() {

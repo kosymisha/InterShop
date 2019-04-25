@@ -1,5 +1,6 @@
 <#import "../parts/common.ftl" as c>
 <#include "../parts/security.ftl" />
+<#import "../parts/pager.ftl" as p>
 <@c.page "Adverts">
 <#if isSeller>
 <a href="/adverts/create" class="btn btn-secondary mt-4 mb-4">Create new advert</a>
@@ -7,10 +8,9 @@
     <#list adverts as advert>
         <div>
             <br/>
-            <img width="100" height="100" src="${advert.product.photoURL}" /> <br/>
-            <p>${advert.product.title}</p> <br/>
-            <i>${advert.product.category.categoryName}</i> <br/>
-            <i>${advert.currency} <b>${advert.price}</b></i> <br/>
+            <img width="100" height="100" src="${advert.photoURL}" /> <br/>
+            <p>${advert.title}</p> <br/>
+            <i>${advert.categoryName}</i> <br/>
             <a href="/adverts/${advert.id}">more</a>
             <br/>
         </div>

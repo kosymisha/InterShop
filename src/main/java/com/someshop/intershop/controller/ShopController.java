@@ -8,10 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,8 +21,15 @@ public class ShopController {
     private ShopService shopService;
 
     @GetMapping("/shops")
-    public String shops(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("shopList", shopService.findAllOrderByOwner(user)); //dto
+    public String shops(Model model) {
+        model.addAttribute("shops", shopService.findAll()); //dto
+        return "shop/shops";
+    }
+
+    @GetMapping("/shops/my")
+    @PreAuthorize("hasAuthority('SELLER')")
+    public String myShops (Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("shops", shopService.findByOwner(user.getId().toString()));
         return "shop/shops";
     }
 
@@ -37,11 +41,10 @@ public class ShopController {
         return "shop/shop";
     }
 
-    @GetMapping("/shops/{shop}/delete")
-    public String deleteShop (@PathVariable Shop shop, @AuthenticationPrincipal User user, Model model) {
+    @DeleteMapping("/shops/{shop}")
+    @ResponseBody
+    public void deleteShop (@PathVariable Shop shop, @AuthenticationPrincipal User user) {
         shopService.delete(shop, user);
-        model.addAttribute("shopList", shopService.findAllOrderByOwner(user)); //dto
-        return "shop/shops";
     }
 
     @GetMapping("shops/create")
@@ -66,7 +69,7 @@ public class ShopController {
         return "shop/options";
     }
 
-    @PostMapping("/shops/{shop}/options/save")
+    @PutMapping("/shops/{shop}/options")
     @PreAuthorize("hasAuthority('SELLER')")
     public String optionsSave (@PathVariable Shop shop, @AuthenticationPrincipal User user, Model model,
                                @RequestParam Map<String, String> form, @RequestParam("photo_url") MultipartFile file) {

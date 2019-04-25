@@ -1,6 +1,5 @@
 package com.someshop.intershop.dto;
 
-import com.someshop.intershop.model.Product;
 import com.someshop.intershop.model.Shop;
 
 import java.math.BigDecimal;
@@ -8,21 +7,52 @@ import java.math.BigDecimal;
 public class AdvertDto {
     private Long id;
     private String currency;
-    private BigDecimal price;
+    private Integer intPartPrice;
+    private Integer fractPartPrice;
     private Integer views;
-    private Product product;
+    private String title;
+    private String photoURL;
+    private String categoryName;
     private Shop shop;
 
     public AdvertDto() {
     }
 
-    public AdvertDto(Long id, String currency, BigDecimal price, Integer views, Product product, Shop shop) {
+    public AdvertDto(Long id, String currency, Integer views, String title, String photoURL,
+                     String categoryName, Shop shop, Integer intPartPrice, Integer fractPartPrice) {
         this.id = id;
         this.currency = currency;
-        this.price = price;
+        this.intPartPrice = intPartPrice;
+        this.fractPartPrice = fractPartPrice;
         this.views = views;
-        this.product = product;
+        this.title = title;
+        this.photoURL = photoURL;
+        this.categoryName = categoryName;
         this.shop = shop;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public Long getId() {
@@ -41,12 +71,20 @@ public class AdvertDto {
         this.currency = currency;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public Integer getIntPartPrice() {
+        return intPartPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setIntPartPrice(Integer intPartPrice) {
+        this.intPartPrice = intPartPrice;
+    }
+
+    public Integer getFractPartPrice() {
+        return fractPartPrice;
+    }
+
+    public void setFractPartPrice(Integer fractPartPrice) {
+        this.fractPartPrice = fractPartPrice;
     }
 
     public Integer getViews() {
@@ -55,14 +93,6 @@ public class AdvertDto {
 
     public void setViews(Integer views) {
         this.views = views;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Shop getShop() {

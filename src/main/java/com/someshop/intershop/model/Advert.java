@@ -19,8 +19,11 @@ public class Advert implements Serializable {
     @Column
     private String currency;
 
-    @Column
-    private BigDecimal price;
+    @Column(name = "int_part_price")
+    private Integer intPartPrice;
+
+    @Column(name = "fract_part_price")
+    private Integer fractPartPrice;
 
     @Column
     private Integer views;
@@ -34,9 +37,15 @@ public class Advert implements Serializable {
     @Column(name = "available")
     private Boolean available;
 
+    @Column(name = "photo_url")
+    private String photoURL;
+
+    @Column
+    private String title;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shop_id")
@@ -52,17 +61,20 @@ public class Advert implements Serializable {
 
     }
 
-    public Advert(String storeId, String currency, BigDecimal price, Integer views, String productURL, Product product, Shop shop, String description,
-                  Boolean available) {
+    public Advert(String storeId, String currency, Integer views, String description, String productURL, String title,
+                  Category category, String photoURL, Boolean available, Shop shop, Integer intPartPrice, Integer fractPartPrice) {
         this.storeId = storeId;
         this.currency = currency;
-        this.price = price;
+        this.intPartPrice = intPartPrice;
+        this.fractPartPrice = fractPartPrice;
         this.views = views;
-        this.productURL = productURL;
-        this.product = product;
-        this.shop = shop;
         this.description = description;
+        this.productURL = productURL;
         this.available = available;
+        this.photoURL = photoURL;
+        this.title = title;
+        this.category = category;
+        this.shop = shop;
     }
 
     public List<Comment> getCommentsOrderByDate(){
@@ -73,6 +85,46 @@ public class Advert implements Serializable {
             }
         });
         return comments;
+    }
+
+    public Integer getIntPartPrice() {
+        return intPartPrice;
+    }
+
+    public void setIntPartPrice(Integer intPartPrice) {
+        this.intPartPrice = intPartPrice;
+    }
+
+    public Integer getFractPartPrice() {
+        return fractPartPrice;
+    }
+
+    public void setFractPartPrice(Integer fracPartPrice) {
+        this.fractPartPrice = fracPartPrice;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Boolean getAvailable() {
@@ -141,22 +193,6 @@ public class Advert implements Serializable {
 
     public void setCurrency(String currency) {
         this.currency = currency;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Shop getShop() {

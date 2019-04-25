@@ -22,13 +22,13 @@ public class EbayServiceImpl implements EbayService {
     @Value("${ebayUrlPattern}")
     private String urlPattern;
 
-    public List<Advert> getItems(String keyword, String minPrice, String maxPrice, String categoryId ) throws IOException, ParserConfigurationException, SAXException {
+    public void getItems(String keyword, String minPrice, String maxPrice, String categoryId ) throws IOException, ParserConfigurationException, SAXException {
         int i = 0;
         if (categoryId != null) { urlPattern += "&categoryId=" + categoryId; }
         if (keyword != null) { urlPattern += "&keywords=" + keyword; }
         if (minPrice != null) { urlPattern += "&itemFilter(" + i + ").name=MinPrice&itemFilter(" + i + ").value=" + minPrice; i++; }
         if (maxPrice != null) { urlPattern += "&itemFilter(" + i + ").name=MaxPrice&itemFilter(" + i + ").value=" + maxPrice; }
-        return xmlRequestService.getAds(new URL(urlPattern));
+        xmlRequestService.saveItems(new URL(urlPattern), categoryId);
     }
 }
 /*

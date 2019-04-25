@@ -8,6 +8,16 @@ insert into user_role (user_id, roles) values (1, 'ADMIN');
 insert into user_role (user_id, roles) values (2, 'SELLER');
 insert into user_role (user_id, roles) values (3, 'USER');
 
-insert into bank_card (number_card, first_name_card, last_name_card, month, year)
-	values ('1111000011110000', 'kate', 'sesh', 12, 21) ;
-update user set card_number = '1111000011110000' where id = 3;
+insert into bank_card (id, number_card, first_name_card, last_name_card, month, year, active, user_id)
+	              values (1, '1111222211112222', 'masha', 'badun', 12, 21, 1, 1) ;
+insert into bank_card (id, number_card, first_name_card, last_name_card, month, year, active, user_id)
+	              values (2, '5555000011115555', 'isu', 'abs', 14, 21, 1, 2) ;
+insert into bank_card (id, number_card, first_name_card, last_name_card, month, year, active, user_id)
+	              values (3, '1111000011110000', 'kate', 'sesh', 12, 26, 0, 3) ;
+
+insert into bank_card (id, number_card, first_name_card, last_name_card, month, year, active, user_id)
+	              values (4, '1111000011111234', 'kate', 'sesh', 12, 24, 0, 3) ;
+insert into bank_card (id, number_card, first_name_card, last_name_card, month, year, active, user_id)
+	              values (5, '1111000011114321', 'kate', 'sesh', 12, 25, 1, 3) ;
+insert into bank_card (id, number_card, first_name_card, last_name_card, month, year, active, user_id)
+	              values (6, '1111000011117778', 'kate', 'sesh', 12, 26, 0, 3) ;

@@ -1,17 +1,18 @@
-<div id="advs">
-    <#if adverts??>
-        <#list adverts as advert>
-            <div>
-                <br/>
-                <img width="100" height="100" src="${advert.product.photoURL}" /> <br/>
-                <p>${advert.product.title}</p><br/>
-                <i>${advert.product.category.categoryName}</i> <br/>
-                <i>${advert.currency} <b>${advert.price}</b></i> <br/>
-                <a href="/adverts/${advert.id}">more</a>
-                <br/>
+<#import "pager.ftl" as p>
+    <@p.pager url page />
+    <div class="card-columns">
+        <#list page.content as advert>
+            <div class="card my-3">
+                <div class="row">
+                    <div class="col">
+                        <img height="170" src="${advert.photoURL}" />
+                    </div>
+                    <div class="col">
+                        <a href="/adverts/${advert.id}">${advert.title}</a> <br/>
+                        <b>${advert.intPartPrice}.${advert.fractPartPrice}</b> <sup>${advert.currency}</sup>
+                    </div>
+                </div>
             </div>
         </#list>
-    <#else>
-No adverts.
-    </#if>
-</div>
+    </div>
+    <@p.pager url page />

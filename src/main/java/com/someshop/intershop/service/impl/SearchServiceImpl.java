@@ -5,6 +5,8 @@ import com.someshop.intershop.model.Advert;
 import com.someshop.intershop.service.AdvertService;
 import com.someshop.intershop.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -19,9 +21,10 @@ public class SearchServiceImpl implements SearchService {
     private AdvertService advertService;
 
     @Override
-    public List<AdvertDto> search(String categoryId, String keyword, String minPrice, String maxPrice, String sort) {
+    public Page<Advert> search(String categoryId, String keyword, String minPrice, String maxPrice, String sort,
+                               Integer page, Integer size) {
         try {
-            return advertService.search(categoryId, keyword, minPrice, maxPrice, sort);
+            return advertService.search(categoryId, keyword, minPrice, maxPrice, sort, page, size);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace(); return null;
         }

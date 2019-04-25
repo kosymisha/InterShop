@@ -7,6 +7,9 @@ import javax.persistence.*;
 public class BankCard {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "number_card")
     private String numberCard;
 
@@ -22,18 +25,57 @@ public class BankCard {
     @Column(name = "year")
     private String year;
 
-    @OneToOne(mappedBy = "card", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private User user;
+    @Column(name = "active")
+    private Boolean active;
 
-    public BankCard(String numberCard, String firstNameCard, String lastNameCard, String month, String year) {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User owner;
+
+    public BankCard(String numberCard, String firstNameCard, String lastNameCard, String month, String year,
+                    User owner, Boolean active) {
         this.numberCard = numberCard;
         this.firstNameCard = firstNameCard;
         this.lastNameCard = lastNameCard;
         this.month = month;
         this.year = year;
+        this.owner = owner;
+        this.active = active;
     }
 
     public BankCard() {
+    }
+
+    public boolean isActive () {
+        return active;
+    }
+
+    public String getLastNumbers () {
+        return numberCard.substring(numberCard.length() - 4);
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNumberCard() {
@@ -74,13 +116,5 @@ public class BankCard {
 
     public void setYear(String year) {
         this.year = year;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

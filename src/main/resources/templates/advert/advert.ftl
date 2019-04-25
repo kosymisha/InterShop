@@ -1,6 +1,6 @@
 <#import "../parts/common.ftl" as c>
 <#include "../parts/security.ftl" />
-<@c.page "${advert.product.title}">
+<@c.page "${advert.title}">
 <script src="/js/advertComments.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <script src="/js/cart.js" type="text/javascript" xmlns="http://www.w3.org/1999/html"></script>
 <link rel="stylesheet" type="text/css"  href="/css/advert.css" media="all">
@@ -8,45 +8,28 @@
     <div class="col ml-8 mr-8 mt-5" id="advert">
         <div class="row">
             <div class="col">
-                <img width="250" src="${advert.product.photoURL}" /> <br/>
+                <img width="250" src="${advert.photoURL}" /> <br/>
             </div>
             <div class="col">
-                <h3>${advert.product.title}</h3>
+                <h3>${advert.title}</h3>
                 <label><a href="${advert.productURL}">go to ${advert.shop.nameShop}</a></label><br/>
-                <label>Category:</label><i> ${advert.product.category.categoryName}</i><br/>
-                <label>Price:</label> <b>${advert.price}</b> <sup>${advert.currency}</sup> <b id="currencyHelp">${eurPrice.price}</b><sup id="currencyHelp">${eurPrice.currency}</sup> <b id="currencyHelp">${bynPrice.price}</b> <sup id="currencyHelp">${bynPrice.currency}</sup><br/>
+                <label>Category:</label><i> ${advert.category.categoryName}</i><br/>
+                <label>Price:</label> <b>${usdPrice.price}</b> <sup>${usdPrice.currency}</sup> <b id="currencyHelp">${eurPrice.price}</b><sup id="currencyHelp">${eurPrice.currency}</sup> <b id="currencyHelp">${bynPrice.price}</b> <sup id="currencyHelp">${bynPrice.currency}</sup><br/>
                 <label>Views: </label><i> ${advert.views}</i><br/>
                 <label>Description:</label><i id="desc"> ${advert.description}</i><br/>
                 <label>Shop: </label><i><a href="/shops/${advert.shop.id}" > ${advert.shop.nameShop}</a></i>
                 <br/>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <#if isAdmin || advert.shop.owner.id == currentUserId>
-                       <!-- <button class="btn btn-danger" onclick="window.location.href = '/adverts/${advert.id}/delete';">DELETE</button> -->
                         <a href="/adverts/${advert.id}/delete" class="btn btn-danger">DELETE</a>
                     </#if>
-                    <#if !advert.available && advert.shop.owner.id == currentUserId><!--
-                        <form method="get" action="/adverts/{advert.id}/available">
-                            <input type="hidden" name="value" value="true" >
-                            <button type="submit" id="notAvailBtn" class="btn btn-warning" >SET AVAILABLE</button>
-                        </form> -->
-                    <a href="/adverts/${advert.id}/available?value=true" class="btn btn-warning">SET AVAILABLE</a>
-                    <#elseif advert.available && advert.shop.owner.id == currentUserId><!--
-                        <form method="get" action="/adverts/{advert.id}/available">
-                            <input type="hidden" name="value" value="false" >
-                            <button type="submit" id="notAvailBtn" class="btn btn-warning" >SET NON AVAILABLE</button>
-                        </form> -->
-                    <a href="/adverts/${advert.id}/available?value=false" class="btn btn-warning">SET NON AVAILABLE</a>
-                    <#elseif !advert.available><!--
-                    <div class="col">
-                        <button id="notAvailBtn" class="btn btn-warning" >NOT AVAILABLE</button>
-                    </div>-->
-                    <a class="btn btn-warning">NOT AVAILABLE</a>
+                    <#if !advert.available && advert.shop.owner.id == currentUserId>
+                        <a href="/adverts/${advert.id}/available?value=true" class="btn btn-warning">SET AVAILABLE</a>
+                    <#elseif advert.available && advert.shop.owner.id == currentUserId>
+                        <a href="/adverts/${advert.id}/available?value=false" class="btn btn-warning">SET NON AVAILABLE</a>
+                    <#elseif !advert.available>
+                        <a class="btn btn-warning">NOT AVAILABLE</a>
                     <#elseif isUser && advert.available>
-                        <!--
-                        <form method="get" action="/orders/create">
-                            <input type="hidden" name="advertId" value="{advert.id}" >
-                            <button type="submit" id="addCartBtn" class="btn btn-warning">ADD TO CART</button>
-                        </form> -->
                         <a href="/orders/create?advertId=${advert.id}" class="btn btn-warning">ADD TO CART</a>
                     </#if>
                 </div>

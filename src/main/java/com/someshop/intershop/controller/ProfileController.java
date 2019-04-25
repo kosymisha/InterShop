@@ -1,6 +1,7 @@
 package com.someshop.intershop.controller;
 
 import com.someshop.intershop.model.User;
+import com.someshop.intershop.service.BankCardService;
 import com.someshop.intershop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,9 @@ public class ProfileController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BankCardService bankCardService;
 
     @GetMapping("/profiles")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -62,6 +66,8 @@ public class ProfileController {
     @GetMapping("/profiles/my/options")
     public String options (@AuthenticationPrincipal User profileUser, Model model) {
         model.addAttribute("profileUser", profileUser);
+        model.addAttribute("activeCard", bankCardService.findActiveByUserId(profileUser.getId().toString()));
+        model.addAttribute("nonActiveCards", bankCardService.findNonActiveByUserId(profileUser.getId().toString()));
         return "profile/options";
     }
 
@@ -80,17 +86,11 @@ public class ProfileController {
         }
     }
 
-    @GetMapping("/profiles/my/password")
-    public String password () {
-        return "profile/password";
-    }
-
     @PostMapping("/profiles/my/password")
-    public String passwordSave (@RequestParam Map<String, String> form, @AuthenticationPrincipal User profileUser,
-                                Model model) {
+    @ResponseBody
+    public String passwordSave (@RequestParam Map<String, String> form, @AuthenticationPrincipal User profileUser) {
         if (!userService.changePassword(profileUser, form)) {
-            model.addAttribute("message", "Current password is incorrect");
-            return "profile/password";
-        } else return "redirect:/profiles/my";
+            return "Current password is incorrect";
+        } else return "Success";
     }
 }

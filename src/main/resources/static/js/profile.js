@@ -85,6 +85,22 @@ function isValidPasswordForm () {
     return isValidFlag;
 }
 
+function newPassword () {
+    if (isValidPasswordForm()) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                document.getElementById("passMessage").innerText = this.responseText;
+            }
+        };
+        httpRequest.open("POST", "/profiles/my/password", true);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send("currentPassword=" + document.getElementById("inputCurrentPass").value + "&" +
+                         "password=" + document.getElementById("inputPass").value + "&" +
+                         "confirmPassword=" + document.getElementById("inputConfirmPass").value);
+    }
+}
+
 function deleteProfile (profileId) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function () {

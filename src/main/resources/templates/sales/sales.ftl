@@ -21,8 +21,8 @@
                         <#list sales as sale>
                         <tr class="rows">
                             <td scope="row"><a href="/shops/${sale.advert.shop.id}">${sale.advert.shop.nameShop}</a></td>
-                            <td><img height="100" src="${sale.advert.product.photoURL}" /></td>
-                            <td><a href="/adverts/${sale.advert.id}">${sale.advert.product.title}</a></td>
+                            <td><img height="100" src="${sale.advert.photoURL}" /></td>
+                            <td><a href="/adverts/${sale.advert.id}">${sale.advert.title}</a></td>
                             <td>
                                 ${sale.advert.price} ${sale.advert.currency}
                             </td>

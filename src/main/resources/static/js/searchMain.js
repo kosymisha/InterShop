@@ -2,6 +2,7 @@ function search() {
     document.getElementById("spinnerDiv").innerHTML = "<div  class=\"spinner-border text-secondary\" role=\"status\">" +
         "  <span class=\"sr-only\">Loading...</span>" +
         "</div>";
+    document.getElementById("advs").innerHTML = "";
     debugger;
     var sort = document.getElementById("inputGroupSelect01").value;
     var category = document.querySelector('input[name="options"]:checked').value;
@@ -32,7 +33,18 @@ function isValidPriceChecker(value) {
 }
 
 function get(url) {
-    //alert(url);
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function () {
+        if(this.readyState === 4 && this.status === 200) {
+            document.getElementById("spinnerDiv").innerHTML = "";
+            document.getElementById("advs").innerHTML = this.responseText;
+        }
+    };
+    httpRequest.open("GET", url, true);
+    httpRequest.send();
+}
+
+function getPage(url) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function () {
         if(this.readyState === 4 && this.status === 200) {

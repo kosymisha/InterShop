@@ -19,7 +19,8 @@ public class CurrencyServiceImpl implements CurrencyService {
     private XmlRequestService xmlRequestService;
 
     @Override
-    public BigDecimal convertUsdToEur(BigDecimal price) {
+    public BigDecimal convertUsdToEur(Integer intPartPrice, Integer fractPartPrice) {
+        BigDecimal price = new BigDecimal(intPartPrice.toString() + "." + fractPartPrice.toString());
         BigDecimal valueUSD = null;
         BigDecimal valueEUR = null;
         BigDecimal e2 = null;
@@ -35,7 +36,8 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public BigDecimal convertUsdToByn(BigDecimal price) {
+    public BigDecimal convertUsdToByn(Integer intPartPrice, Integer fractPartPrice) {
+        BigDecimal price = new BigDecimal(intPartPrice.toString() + "." + fractPartPrice.toString());
         BigDecimal valueUSD = null;
         BigDecimal valueBYN = null;
         BigDecimal e2 = null;
@@ -51,12 +53,18 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public CurrencyDto getEurValueFromUsd(BigDecimal price) {
-        return new CurrencyDto(convertUsdToEur(price), "EUR");
+    public CurrencyDto getEurValueFromUsd(Integer intPartPrice, Integer fractPartPrice) {
+        return new CurrencyDto(convertUsdToEur(intPartPrice, fractPartPrice), "EUR");
     }
 
     @Override
-    public CurrencyDto getBynValueFromUsd(BigDecimal price) {
-        return new CurrencyDto(convertUsdToByn(price), "BYN");
+    public CurrencyDto getBynValueFromUsd(Integer intPartPrice, Integer fractPartPrice) {
+        return new CurrencyDto(convertUsdToByn(intPartPrice, fractPartPrice), "BYN");
+    }
+
+    @Override
+    public CurrencyDto getUsdValue(Integer intPartPrice, Integer fractPartPrice) {
+        return new CurrencyDto(new BigDecimal(
+                intPartPrice.toString() + "." + fractPartPrice.toString()), "USD");
     }
 }
